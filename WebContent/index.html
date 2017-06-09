@@ -1,10 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	rel="stylesheet" type="text/css" />
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Sign In</title>
+<link rel="stylesheet" href="main.css">
 </head>
 <body>
+	<div class="container">
+	<h1 align="center">Welcome To The Red Pill Website</h1>
+		<form action="LoginServlet" class="form-horizontal"  align = "center">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">User Name:</label>
+				<div class="col-xs-4">
+					<input type="text" class="form-control" name="user-name"
+						placeholder="User Name">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Password:</label>
+				<div class="col-xs-4">
+					<input type="password" class="form-control" name="password"
+						placeholder="Password">
+				</div>
+			</div>
+			<div class="form-group">
+				<div align = "center" >
+					<button type="submit" class="btn btn-primary btn-lg">Sign
+						In</button>
+					<a class="btn btn-success btn-lg" href="register.jsp"
+						role="button">Sign Up</a>
+				</div>
+			</div>
+		</form>
 
+	</div>
 </body>
+
 </html>
