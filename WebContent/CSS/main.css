@@ -2,8 +2,44 @@
 	margin-top:15px;
 }
 
+.container{
+	width:100%;
+}
+
 .registration-form{
-	padding:15px;
-	width:300px;
+	padding:5px;
+	width:310px;
+	margin: 0 auto;
 	background-color:#F2F2F2;
+}
+
+.formTitle{
+	margin-bottom:5px;
+}
+
+.alert{
+	color:Red;
+	margin-top:5px;
+}
+
+.input-field{
+	padding:5px;
+	border:1px solid black;
+	width:140px;
+}
+
+.day{
+	width:35px;
+	padding:5px;
+}
+
+.select-field{
+	width:126px;
+	padding:5px;
+}
+
+.username{
+	width:297px;
+	border:1px solid black;
+	padding:5px;
 }
