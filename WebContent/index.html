@@ -10,31 +10,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <title>Sign In</title>
-<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="CSS/main.css">
 </head>
 <body>
-	<div class="container">
-	<h1 align="center">Welcome To The Red Pill Website</h1>
-		<form action="LoginServlet" class="form-horizontal"  align = "center">
-			<div class="form-group">
-				<label class="col-sm-2 control-label">User Name:</label>
-				<div class="col-xs-4">
+	<div class="login-container" >
+	<h1 align="center"><b>WELCOME</b></h1><br>
+		<form action="LoginServlet" class="form-horizontal">
+			<div class="form-group" >
+				<div class="col-md-2 form-group-lg" >
 					<input type="text" class="form-control" name="user-name"
 						placeholder="User Name">
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Password:</label>
-				<div class="col-xs-4">
+			<div class="form-group" >
+				<div class="col-md-2  form-group-lg">
 					<input type="password" class="form-control" name="password"
 						placeholder="Password">
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group" >
 				<div align = "center" >
 					<button type="submit" class="btn btn-primary btn-lg">Sign
 						In</button>
-					<a class="btn btn-success btn-lg" href="register.jsp"
+					<a class="btn btn-success btn-lg " href="register.jsp"
 						role="button">Sign Up</a>
 				</div>
 			</div>

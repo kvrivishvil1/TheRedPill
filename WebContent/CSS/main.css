@@ -43,3 +43,13 @@
 	border:1px solid black;
 	padding:5px;
 }
+
+
+
+.login-container {
+	margin: 0 auto;
+	font-family: Palatino Linotype;
+	width: 500px;
+	height: 270px;
+	background: linear-gradient(rgba(150, 0, 0, 0.2), rgba(150, 0, 0, 1));
+}
