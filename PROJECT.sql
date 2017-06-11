@@ -15,7 +15,7 @@ CREATE TABLE Persons (
 CREATE TABLE Accounts (
     account_id INT NOT NULL AUTO_INCREMENT,
     account_userName VARCHAR(50) NOT NULL,
-    account_lastName VARCHAR(50) NOT NULL,
+    account_password VARCHAR(50) NOT NULL,
     
     
     CONSTRAINT Accounts_pk PRIMARY KEY (account_id)
