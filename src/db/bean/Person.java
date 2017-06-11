@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Person {
 
-	public enum Gender {
+	public static enum Gender {
 		MALE, FEMALE
 	}
 

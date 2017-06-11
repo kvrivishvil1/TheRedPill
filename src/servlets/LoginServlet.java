@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import db.bean.Account;
+import db.bean.Person;
 import db.dao.UserDao;
 import helpers.PasswordEncryptor;
 
@@ -48,29 +49,23 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ServletContext context = getServletContext();
-		UserDao data = (UserDao) context.getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
+		UserDao userDataAccess = (UserDao) context.getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
 		String userName = request.getParameter("user-name");
 		String password = request.getParameter("password");
 		String encryptedPassword = PasswordEncryptor.encrypt(password);
-
-		UserDao userDataAccess;
 		try {
-			userDataAccess = new UserDao();
 			Account currentlySigningIn = userDataAccess.getAccount(userName);
 			if (currentlySigningIn != null) {
 				if (currentlySigningIn.getPassword().equals(encryptedPassword)) {
-					//successful try to login, go to homePage
+					// successful try of login, go to homePage
 					RequestDispatcher rd = getServletContext().getRequestDispatcher("/homepage.jsp");
 					rd.forward(request, response);
 				} else {
-					//password was incorrect for given user-name
-					response.sendRedirect("unsuccessful_try.html");
+					// password was incorrect for given user-name, (decide later were to redirect)
 				}
 			} else {
-				//given user doesn't exist at all
+				// given user doesn't exist at all
 			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
