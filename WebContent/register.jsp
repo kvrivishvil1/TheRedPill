@@ -15,7 +15,7 @@
 <div class="container">
 	<div class="registration-form">
 		<form action="RegisterServlet" id="registration">
-			<div class="fullname">
+			<div class="">
 				<div class="formTitle">Name</div>
 				<input type="text" name="firstname" class="first-name input-field" onfocusout="firstLastFilled()" placeholder="First">
 				<input type="text" name="lastname " class="last-name input-field" onfocusout="firstLastFilled()" placeholder="Last">	
