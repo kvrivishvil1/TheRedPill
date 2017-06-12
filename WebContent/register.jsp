@@ -14,8 +14,8 @@
 <body>
 <div class="container">
 	<div class="registration-form">
-		<form action="RegisterServlet" method="post">
-			<div class="">
+		<form action="RegisterServlet" id="registration">
+			<div class="fullname">
 				<div class="formTitle">Name</div>
 				<input type="text" name="firstname" class="first-name input-field" onfocusout="firstLastFilled()" placeholder="First">
 				<input type="text" name="lastname " class="last-name input-field" onfocusout="firstLastFilled()" placeholder="Last">	
@@ -40,8 +40,8 @@
 	  		</div>
   			<div class="form-line">
   				<div class="formTitle">Birthday</div>
-  				<input type="text" name="day" placeholder="Day" class="day" onfocusout="dayFilled()">
-  				<select class="month select-field" onchange="dateFilled()">
+  				<input type="text" name="day" placeholder="Day" class="day" onfocusout="correctDate()">
+  				<select class="month select-field" onchange="correctDate()">
   					<option selected disabled>Month</option>
   					<option value="january">January</option>
   					<option value="february">February</option>
@@ -56,18 +56,16 @@
   					<option value="november">November</option>
   					<option value="december">December</option>
   				</select>	
-  				<select class="year select-field" onchange="dateFilled()">
+  				<select class="year select-field" onchange="correctDate()">
   					<option selected disabled>Year</option>
   					<% for(int i=Year.now().getValue(); i>=Year.now().getValue()-100; i--) {
   						out.println("<option value=\"" + i + "\">" + i + "</option>"); 
   					}%>
   				</select>
 				<div class="day-check alert"></div>
-				<div class="month-check alert"></div>
-				<div class="year-check alert"></div>
   			</div>
   			<div class="form-line">
-  				<input type="submit" value="Create Account">
+  				<center><button  onclick="validate()">Create Account</button></center>
   			</div>
 		</form>
 	</div>
