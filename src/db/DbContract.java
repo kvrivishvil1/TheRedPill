@@ -16,24 +16,39 @@ public class DbContract {
 		public static final String COLUMN_NAME_TIME = "time_sent";
 	}
 
-	// Persons table names' contract
-	public static final String PERSON_TABLE = "Persons";
-	public static final String PERSON_ID_COLUMN = "person_id";
-	public static final String NAME_COLUMN = "person_firstName";
-	public static final String LAST_NAME_COLUMN = "person_lastName";
-	public static final String GENDER_COLUMN = "person_gender";
-	public static final String MALE = "male";
-	public static final String FEMALE = "female";
-	public static final String BIRTHDATE_COLUMN = "person_birthdate";
+	/**
+	 * @author tamar
+	 * static class to have name agreements for Persons table
+	 */
+	public class PersonsTable {
+		public static final String TABLE_TABLE = "Persons";
+		public static final String COLUMN_NAME_PERSON_ID = "person_id";
+		public static final String COLUMN_NAME_FIRSTNAME = "person_firstName";
+		public static final String COLUMN_NAME_LASTNAME = "person_lastName";
+		public static final String COLUMN_NAME_GENDER = "person_gender";
+		public static final String ENUM_MALE = "male";
+		public static final String ENUM_FEMALE = "female";
+		public static final String COLUMN_NAME_BIRTHDATE = "person_birthdate";
+	}
 
-	// Accounts table names' contract
-	public static final String ACCOUNTS_TABLE = "Accounts";
-	public static final String ACCOUNT_ID_COLUMN = "account_id";
-	public static final String USER_NAME_COLUMN = "account_userName";
-	public static final String PASSWORD_COLUMN = "account_password";
+	/**
+	 * @author tamar
+	 *static class to have name agreements for Accounts table
+	 */
+	public class AccountsTable {
+		public static final String TABLE_NAME = "Accounts";
+		public static final String COLUMN_NAME_ID = "account_id";
+		public static final String COLUMN_NAME_USERNAME = "account_userName";
+		public static final String COLUMN_NAME_PASSWORD = "account_password";
+	}
 
-	// Person_account_map table names' contract
-	public static final String PERSON_ACCOUNT_MAP_TABLE = "person_account_map";
-	public static final String PERSON_COLUMN = "person_id";
-	public static final String ACCOUNT_COLUMN = "account_id";
+	/**
+	 * @author tamar
+	 *static class to have name agreements for PersonAccountMap table
+	 */
+	public class PersonAccountMapTable {
+		public static final String TABLE_NAME = "person_account_map";
+		public static final String COLUMN_NAME_PERSON_ID = "person_id";
+		public static final String COLUMN_NAME_ACCOUNT_ID = "account_id";
+	}
 }

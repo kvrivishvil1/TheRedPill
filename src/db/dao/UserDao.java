@@ -43,14 +43,14 @@ public class UserDao {
 	 * gets user-name String as parameter and returns Account object
 	 */
 	public Account getAccount(String searchedUser) throws SQLException {
-		String query = "SELECT * FROM " + DbContract.ACCOUNTS_TABLE + " WHERE " + DbContract.USER_NAME_COLUMN + " = ?";
+		String query = "SELECT * FROM " + DbContract.AccountsTable.TABLE_NAME + " WHERE " + DbContract.AccountsTable.COLUMN_NAME_USERNAME + " = ?";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setString(1, searchedUser);
 		ResultSet rs = stm.executeQuery();
 		rs.last();
 		if (rs.getRow() != 0) {
-			return new Account((String) rs.getObject(DbContract.USER_NAME_COLUMN),
-					(String) rs.getObject(DbContract.PASSWORD_COLUMN));
+			return new Account((String) rs.getObject(DbContract.AccountsTable.COLUMN_NAME_USERNAME),
+					(String) rs.getObject(DbContract.AccountsTable.COLUMN_NAME_PASSWORD));
 		}
 		return null;
 	}
@@ -61,25 +61,25 @@ public class UserDao {
 	 * @throws SQLException
 	 */
 	public Person getPersonByUserId(int searchedUserId) throws SQLException {
-		String query = "SELECT * FROM " + DbContract.PERSON_TABLE + " WHERE " + DbContract.PERSON_TABLE + "."
-				+ DbContract.PERSON_ID_COLUMN + " = (SELECT " + DbContract.PERSON_ACCOUNT_MAP_TABLE + "."
-				+ DbContract.PERSON_COLUMN + " FROM " + DbContract.PERSON_ACCOUNT_MAP_TABLE + " WHERE "
-				+ DbContract.PERSON_ACCOUNT_MAP_TABLE + "." + DbContract.ACCOUNT_COLUMN + " = ?)";
+		String query = "SELECT * FROM " + DbContract.PersonsTable.TABLE_TABLE + " WHERE " + DbContract.PersonsTable.TABLE_TABLE + "."
+				+ DbContract.PersonsTable.COLUMN_NAME_PERSON_ID + " = (SELECT " + DbContract.PersonAccountMapTable.TABLE_NAME + "."
+				+ DbContract.PersonAccountMapTable.COLUMN_NAME_PERSON_ID + " FROM " + DbContract.PersonAccountMapTable.TABLE_NAME + " WHERE "
+				+ DbContract.PersonAccountMapTable.TABLE_NAME + "." + DbContract.PersonAccountMapTable.COLUMN_NAME_ACCOUNT_ID + " = ?)";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setString(1, Integer.toString(searchedUserId));
 		ResultSet rs = stm.executeQuery();
 		rs.last();
 		if (rs.getRow() != 0) {
-			String gender = (String) rs.getObject(DbContract.GENDER_COLUMN);
+			String gender = (String) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_GENDER);
 			Gender curGender;
-			if (gender.equals(DbContract.MALE)) {
+			if (gender.equals(DbContract.PersonsTable.ENUM_MALE)) {
 				curGender = Gender.MALE;
 			} else {
 				curGender = Gender.FEMALE;
 			}
-			return new Person((String) rs.getObject(DbContract.NAME_COLUMN),
-					(String) rs.getObject(DbContract.LAST_NAME_COLUMN), curGender,
-					(Date) rs.getObject(DbContract.BIRTHDATE_COLUMN));
+			return new Person((String) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_FIRSTNAME),
+					(String) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_LASTNAME), curGender,
+					(Date) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_BIRTHDATE));
 		}
 		return null;
 
