@@ -23,5 +23,12 @@ public class Account {
 		return password;
 	}
 	
-
+	@Override
+	public String toString() {
+		StringBuilder build = new StringBuilder();
+		build.append("Username: " + userName + "\n");
+		build.append("Password: " + password);
+		return build.toString(); 
+	}
+	
 }

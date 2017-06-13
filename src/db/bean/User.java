@@ -4,9 +4,9 @@ public class User {
 	private Person person;
 	private Account account;
 
-	public User(Person person, Account accont) {
+	public User(Person person, Account account) {
 		this.person = person;
-		this.account = accont;
+		this.account = account;
 	}
 
 	/**
@@ -23,4 +23,12 @@ public class User {
 		return account;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Person" + "\n" + person.toString());
+		builder.append("\n"+ "Account" + "\n" + account.toString());
+		return builder.toString();
+	}
+	
 }

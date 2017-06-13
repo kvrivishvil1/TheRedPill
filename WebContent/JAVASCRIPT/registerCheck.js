@@ -84,14 +84,18 @@ function correctDate() {
 }
 
 function validate() {
-	if(document.getElementsByClassName("day-check")[0].innerHTML == "" &&
-		document.getElementsByClassName("password-check")[0].innerHTML == "" &&
-		document.getElementsByClassName("username-check")[0].innerHTML == "" &&
-		document.getElementsByClassName("name-check")[0].innerHTML == "" &&
-		document.getElementsByClassName("gender-check")[0].innerHTML == "" && 
-		document.getElementsByClassName("username")[0].value != "") {
-		document.getElementsById("registration").submit();
-	} else {
+	if(document.getElementsByClassName("day")[0].value == ""
+			|| document.getElementsByClassName("username")[0].value == ""
+			|| document.getElementsByClassName("first-name")[0].value == "" 
+			|| document.getElementsByClassName("last-name")[0].value == ""
+			|| document.getElementsByClassName("password")[0].value == ""
+			|| document.getElementsByClassName("password-confirm")[0].value == "" 
+			|| document.getElementsByClassName("year")[0].selectedIndex == 0 
+			|| document.getElementsByClassName("month")[0].selectedIndex == 0
+		) {
 		alert("Fill every field");
+	} else {
+		document.getElementsById("registration").action="RegisterServlet" 
+		document.getElementsById("registration").submit();
 	}
 }

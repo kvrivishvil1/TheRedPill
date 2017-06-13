@@ -14,11 +14,12 @@
 <body>
 <div class="container">
 	<div class="registration-form">
-		<form action="RegisterServlet" id="registration">
+		<form id="registration" onsubmit="validate(); return false;"  action="RegisterServlet" method="post">
 			<div class="">
 				<div class="formTitle">Name</div>
 				<input type="text" name="firstname" class="first-name input-field" onfocusout="firstLastFilled()" placeholder="First">
-				<input type="text" name="lastname " class="last-name input-field" onfocusout="firstLastFilled()" placeholder="Last">	
+				<input type="text" name="lastname" class="last-name input-field" onfocusout="firstLastFilled()" placeholder="Last">	
+				
 				<div class="name-check alert"></div>
 			</div>
 			<div class="form-line">
@@ -34,29 +35,29 @@
 			</div>
 	  		<div class="form-line">
 	  			<div class="formTitle">Gender:</div>
-	  			<input type="radio" name="gender" value="male" class="male"> Male
+	  			<input type="radio" name="gender" value="male" class="male" checked> Male
 	  			<input type="radio" name="gender" value="female" class="female"> Female
 	  			<div class="gender-check alert"></div>
 	  		</div>
   			<div class="form-line">
   				<div class="formTitle">Birthday</div>
   				<input type="text" name="day" placeholder="Day" class="day" onfocusout="correctDate()">
-  				<select class="month select-field" onchange="correctDate()">
+  				<select class="month select-field" name="month" onchange="correctDate()">
   					<option selected disabled>Month</option>
-  					<option value="january">January</option>
-  					<option value="february">February</option>
-  					<option value="march">March</option>
-  					<option value="april">April</option>
-  					<option value="may">May</option>
-  					<option value="june">June</option>
-  					<option value="july">July</option>
-  					<option value="august">August</option>
-  					<option value="september">September</option>
-  					<option value="october">October</option>
-  					<option value="november">November</option>
-  					<option value="december">December</option>
+  					<option value="1">January</option>
+  					<option value="2">February</option>
+  					<option value="3">March</option>
+  					<option value="4">April</option>
+  					<option value="5">May</option>
+  					<option value="6">June</option>
+  					<option value="7">July</option>
+  					<option value="8">August</option>
+  					<option value="9">September</option>
+  					<option value="10">October</option>
+  					<option value="11">November</option>
+  					<option value="12">December</option>
   				</select>	
-  				<select class="year select-field" onchange="correctDate()">
+  				<select class="year select-field" name="year" onchange="correctDate()">
   					<option selected disabled>Year</option>
   					<% for(int i=Year.now().getValue(); i>=Year.now().getValue()-100; i--) {
   						out.println("<option value=\"" + i + "\">" + i + "</option>"); 
@@ -65,7 +66,7 @@
 				<div class="day-check alert"></div>
   			</div>
   			<div class="form-line">
-  				<center><button  onclick="validate()">Create Account</button></center>
+  				<input type="submit" value="sign">
   			</div>
 		</form>
 	</div>

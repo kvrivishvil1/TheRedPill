@@ -13,6 +13,7 @@ import db.MyDbInfo;
 import db.bean.Account;
 import db.bean.Person;
 import db.bean.Person.Gender;
+import db.bean.User;
 
 public class UserDao {
 	public static final String CONTEXT_ATTRIBUTE_NAME = "userDataAccess";
@@ -102,5 +103,9 @@ public class UserDao {
 				+ DbContract.PersonAccountMapTable.TABLE_NAME + " WHERE " + DbContract.PersonAccountMapTable.TABLE_NAME
 				+ "." + DbContract.PersonAccountMapTable.COLUMN_NAME_ACCOUNT_ID + " = ?)";
 	}
-
+	
+	public boolean addNewUser(Person person, Account account) {
+		
+		return false;
+	}
 }

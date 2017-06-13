@@ -35,4 +35,13 @@ public class Note extends Message {
 		return note;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder build = new StringBuilder();
+		build.append("Note Sender: " + senderID + "\n");
+		build.append("Note Reciever: " + recieverID + "\n");
+		build.append("Sending Date: " + date.toString() + "\n");
+		build.append("Note: " + note);
+		return build.toString();
+	}
 }

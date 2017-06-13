@@ -48,4 +48,14 @@ public class Person {
 		return birthDate;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder build = new StringBuilder();
+		build.append("First Name: " + name + "\n");
+		build.append("Last Name: " + lastName + "\n");
+		build.append("Gender: " + gender + "\n");
+		build.append("Born: " + birthDate);
+		return build.toString();
+	}
+	
 }

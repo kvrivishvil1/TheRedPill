@@ -10,15 +10,13 @@ html, body {
 }
 
 .form-line{
-	margin-top:15px; 
-	
+	margin-top:15px;
 }
 
 .registration-form{
 	padding:5px;
 	width:310px;
 	margin: 0 auto;
-	background-color:#F2F2F2;
 }
 
 .formTitle{
@@ -52,6 +50,3 @@ html, body {
 	padding:5px;
 }
 <<<<<<< HEAD
-=======
-
-

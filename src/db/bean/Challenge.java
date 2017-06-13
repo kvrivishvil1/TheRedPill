@@ -44,5 +44,16 @@ public class Challenge extends Message {
 	public int getMaxScore() {
 		return maxScore;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder build = new StringBuilder();
+		build.append("Challenge Sender: " + senderID + "\n");
+		build.append("Challenge Receiver: " + recieverID + "\n");
+		build.append("Challenge Date: " + date.toString() + "\n");
+		build.append("Challenge link: " + link + "\n");
+		build.append("Challenge MaxScore: " + maxScore);
+		return build.toString();
+	}
 
 }

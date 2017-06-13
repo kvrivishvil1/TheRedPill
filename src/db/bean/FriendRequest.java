@@ -25,4 +25,13 @@ public class FriendRequest extends Message {
 		return new Date(date.getTime());
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder build = new StringBuilder();
+		build.append("Friend Request Sender: " + senderID + "\n");
+		build.append("Friend Request Reciever: " + recieverID + "\n");
+		build.append("Friend Request Send Date: " + date.toString());
+	
+		return build.toString();
+	}
 }
