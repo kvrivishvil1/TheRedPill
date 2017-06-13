@@ -22,7 +22,7 @@ public class UserDao {
 	private static final String password = MyDbInfo.MYSQL_PASSWORD;
 	private static final String server = MyDbInfo.MYSQL_DATABASE_SERVER;
 
-	public UserDao() throws ClassNotFoundException {
+	public UserDao() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {

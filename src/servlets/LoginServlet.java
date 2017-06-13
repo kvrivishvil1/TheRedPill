@@ -61,7 +61,8 @@ public class LoginServlet extends HttpServlet {
 					RequestDispatcher rd = getServletContext().getRequestDispatcher("/homepage.jsp");
 					rd.forward(request, response);
 				} else {
-					// password was incorrect for given user-name, (decide later were to redirect)
+					// password was incorrect for given user-name, (decide later
+					// were to redirect)
 				}
 			} else {
 				// given user doesn't exist at all

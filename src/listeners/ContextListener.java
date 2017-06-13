@@ -13,30 +13,27 @@ import db.dao.UserDao;
 @WebListener
 public class ContextListener implements ServletContextListener {
 	UserDao userDataAccess;
-    /**
-     * Default constructor. 
-     */
-    public ContextListener() {
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-     * @see ServletContextListener#contextDestroyed(ServletContextEvent)
-     */
-    public void contextDestroyed(ServletContextEvent arg0)  { 
-         // TODO Auto-generated method stub
-    }
+	 * Default constructor.
+	 */
+	public ContextListener() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
-     * @see ServletContextListener#contextInitialized(ServletContextEvent)
-     */
-    public void contextInitialized(ServletContextEvent arg0)  { 
-    	try {
-			userDataAccess = new UserDao();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
+	 */
+	public void contextDestroyed(ServletContextEvent arg0) {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
+	 */
+	public void contextInitialized(ServletContextEvent arg0) {
+		userDataAccess = new UserDao();
 		arg0.getServletContext().setAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME, userDataAccess);
-    }
-	
+	}
+
 }
