@@ -2,6 +2,7 @@ package db.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,24 +39,28 @@ public class MessageDao {
 	 * @return list of their conversation, sorted by time of sent
 	 */
 	public List<Note> getConversation(int firstUser, int secondUser) {
+		String query = "SELECT " + DbContract.MessagesTable.COLUMN_NAME_SENDER_ID + ", "
+				+ DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID + ", " + DbContract.MessagesTable.COLUMN_NAME_TEXT
+				+ ", " + DbContract.MessagesTable.COLUMN_NAME_TIME + " FROM " + DbContract.MessagesTable.TABLE_NAME
+				+ " WHERE (" + DbContract.MessagesTable.COLUMN_NAME_SENDER_ID + " = ? AND "
+				+ DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID + " = ?) OR ("
+				+ DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID + " = ? AND "
+				+ DbContract.MessagesTable.COLUMN_NAME_SENDER_ID + " = ?) ORDER BY "
+				+ DbContract.MessagesTable.COLUMN_NAME_TIME;
 		List<Note> result = new ArrayList<Note>();
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
 				Statement stmt = con.createStatement()) {
 			stmt.executeQuery("USE " + database);
-			String query = "SELECT " + DbContract.MessagesTable.COLUMN_NAME_SENDER_ID + ", "
-					+ DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID + ", "
-					+ DbContract.MessagesTable.COLUMN_NAME_TEXT + ", " + DbContract.MessagesTable.COLUMN_NAME_TIME
-					+ " FROM " + DbContract.MessagesTable.TABLE_NAME + " WHERE ("
-					+ DbContract.MessagesTable.COLUMN_NAME_SENDER_ID + " = " + firstUser + " AND "
-					+ DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID + " = " + secondUser + ") OR ("
-					+ DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID + " = " + firstUser + " AND "
-					+ DbContract.MessagesTable.COLUMN_NAME_SENDER_ID + " = " + secondUser + ") ORDER BY "
-					+ DbContract.MessagesTable.COLUMN_NAME_TIME;
-			System.out.println(query);
-			try (ResultSet rs = stmt.executeQuery(query)) {
-				while (rs.next()) {
-					Note currValue = generateNote(rs);
-					result.add(currValue);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, firstUser);
+				ps.setInt(2, secondUser);
+				ps.setInt(3, firstUser);
+				ps.setInt(4, secondUser);
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						Note currValue = generateNote(rs);
+						result.add(currValue);
+					}
 				}
 			}
 		} catch (SQLException e) {
@@ -75,12 +80,76 @@ public class MessageDao {
 			senderID = rs.getInt(DbContract.MessagesTable.COLUMN_NAME_SENDER_ID);
 			recieverID = rs.getInt(DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID);
 			text = rs.getString(DbContract.MessagesTable.COLUMN_NAME_TEXT);
-			sentTime = rs.getDate(DbContract.MessagesTable.COLUMN_NAME_TIME);
+			sentTime = rs.getTimestamp(DbContract.MessagesTable.COLUMN_NAME_TIME);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		Note note = new Note(senderID, recieverID, sentTime, text);
 		return note;
+	}
+
+	/**
+	 * Adds new note into database
+	 * 
+	 * @param note
+	 *            note that should be added
+	 */
+	public boolean addNote(Note note) {
+		boolean result = false;
+		String query = "INSERT INTO " + DbContract.MessagesTable.TABLE_NAME + " ("
+				+ DbContract.MessagesTable.COLUMN_NAME_SENDER_ID + ", "
+				+ DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID + ", " + DbContract.MessagesTable.COLUMN_NAME_TEXT
+				+ ", " + DbContract.MessagesTable.COLUMN_NAME_TIME + ") VALUES (?, ?, ?, ?);";
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, note.getSenderID());
+				ps.setInt(2, note.getRecieverID());
+				ps.setString(3, note.getText());
+				ps.setTimestamp(4, new java.sql.Timestamp(note.getDate().getTime()));
+				result = ps.execute();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Looks for current user's recent messages, finds most recent ones
+	 * 
+	 * @param userID
+	 *            current user
+	 * @return list of the recent messages
+	 */
+	public List<Note> getRecentMessages(int userID) {
+		List<Note> result = new ArrayList<Note>();
+		String query = "SELECT " + DbContract.MessagesTable.COLUMN_NAME_SENDER_ID + ", "
+				+ DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID + ", " + DbContract.MessagesTable.COLUMN_NAME_TEXT
+				+ ", " + DbContract.MessagesTable.COLUMN_NAME_TIME + " FROM " + DbContract.MessagesTable.TABLE_NAME
+				+ " WHERE " + DbContract.MessagesTable.COLUMN_NAME_MESSAGE_ID + " IN (SELECT MAX("
+				+ DbContract.MessagesTable.COLUMN_NAME_MESSAGE_ID + ") FROM " + DbContract.MessagesTable.TABLE_NAME
+				+ " GROUP BY (CASE WHEN " + DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID + " = ? THEN "
+				+ DbContract.MessagesTable.COLUMN_NAME_SENDER_ID + " ELSE "
+				+ DbContract.MessagesTable.COLUMN_NAME_RECIEVER_ID + " END)) ORDER BY "
+				+ DbContract.MessagesTable.COLUMN_NAME_TIME + " DESC;";
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, userID);
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						Note currValue = generateNote(rs);
+						result.add(currValue);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }
