@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import db.bean.Challenge;
 import db.bean.FriendRequest;
+import db.bean.Friendship;
 import db.bean.Note;
 
 public class MessageTest {
@@ -19,7 +20,7 @@ public class MessageTest {
 		assertEquals(note.getSenderID(), 1);
 		assertEquals(note.getRecieverID(), 2);
 		assertEquals(note.getDate(), date);
-		assertEquals(note.getNote(), "Very Simple Test");
+		assertEquals(note.getText(), "Very Simple Test");
 	}
 	
 	@Test
@@ -41,5 +42,5 @@ public class MessageTest {
 		assertEquals(challenge.getLink(), "Simple.test.com");
 		assertEquals(challenge.getMaxScore(), 0);
 	}
-
+	
 }

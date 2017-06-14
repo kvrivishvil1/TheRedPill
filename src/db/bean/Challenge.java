@@ -6,6 +6,14 @@ public class Challenge extends Message {
 	private String link;
 	private int maxScore;
 	
+	/**
+	 * Constructor for a challenge object with the specified parameters
+	 * @param senderID The user ID of challenge sender
+	 * @param recieverID The user ID of challenge reciever
+	 * @param date The challenge creation date
+	 * @param link The link of this challenge
+	 * @param maxScore Challenger's max score in this quiz
+	 */
 	public Challenge(int senderID, int recieverID, Date date, String link, int maxScore){
 		this.senderID = senderID;
 		this.recieverID = recieverID;
