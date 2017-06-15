@@ -13,32 +13,36 @@
 <link rel="stylesheet" href="CSS/login.css">
 </head>
 <body>
-<div class = container>
-	<div class="login-container" >
-	<h2><b>THE RED PILL</b></h2>
-		<form action="LoginServlet" class="form-horizontal">
-			<div class="form-group" >
-				<div class="form-group-lg" >
-					<input type="text" class="form-control" name="user-name"
-						placeholder="User Name">
+	<div class="container">
+
+		<div class="login-container">
+			<h2>
+			<b>WELCOME</b>				
+			</h2><br>
+			<form action="LoginServlet" class="form-horizontal" method="post">
+				<div class="form-group">
+					<div class="form-group-lg">
+						<input type="text" class="form-control" name="user-name"
+							placeholder="User Name"><br>
+					</div>
 				</div>
-			</div>
-			<div class="form-group" >
-				<div class="form-group-lg">
-					<input type="password" class="form-control" name="password"
-						placeholder="Password">
+				<div class="form-group">
+					<div class="form-group-lg">
+						<input type="password" class="form-control" name="password"
+							placeholder="Password">
+					</div>
 				</div>
-			</div>
-			<div class="form-group" >
-				<div align = "center" >
-					<button type="submit" class="btn btn-primary btn-lg">Sign
-						In</button>
-					<a class="btn btn-success btn-lg" href="register.jsp"
-						role="button">Sign Up</a>
+				<div class="form-group">
+					<div align="center">
+					<br>
+						<button type="submit" class="btn btn-primary btn-lg">Sign
+							In</button>
+						<a class="btn btn-success btn-lg" href="register.jsp"
+							role="button">Sign Up</a>
+					</div>
 				</div>
-			</div>
-		</form>
-	</div>
+			</form>
+		</div>
 	</div>
 </body>
 
