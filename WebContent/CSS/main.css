@@ -1,52 +1,122 @@
-html, body {
+html {
 	width: 100%;
 	height: 100%;
 }
 
+body {
+	width: 100%;
+	height: 100%;
+	background-image: url("bg.jpg");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	padding-left: 30%;
+}
+
 .container {
-	position:relative;
-	top:50%;
-    transform: translateY(-50%);
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
-.form-line{
-	margin-top:15px;
+.registration-form {
+	border-radius: 25px;
+	background: hsl(181, 100%, 10%);
+	position: relative;
+	margin: auto;
+	font-style: italic;
+	font-family: 'FranchiseRegular';
+	width: 30%;
+	height: 50%;
+	padding-top: 15px;
+	text-align: center;
 }
 
-.registration-form{
-	padding:5px;
-	width:310px;
-	margin: 0 auto;
+.alert {
+	margin-top: 4px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: rgba(255, 0, 0, 0.7);
+	border-radius: 5px;
+	font-style: normal;;
+	color: black;
+	width: 80%;
 }
 
-.formTitle{
-	margin-bottom:5px;
+.form-line {
+	margin-top: 20px;
 }
 
-.alert{
-	color:Red;
-	margin-top:5px;
+.formTitle {
+	font-size: 30px;
+	color: #ff9900;
+	padding: 2px 0 10px 0;
+	font-weight: bold;
 }
 
-.input-field{
-	padding:5px;
-	border:1px solid black;
-	width:140px;
+.formGender {
+	font-size: 15px;
+	color: #ff9900;
+	margin-right: 10px;
+	display: inline-block;
+	font-weight: 20;
+	display: inline-block;
+	margin-right: 10px;
 }
 
-.day{
-	width:35px;
-	padding:5px;
+.input-field {
+	width: 80%;
+	margin-top: 4px;
+	padding: 10px 5px 10px 32px;
+	border: 1px solid rgb(150, 120, 250);
+	background: rgba(0, 0, 0, 0.2);
+	color: white;
+	text-shadow: 0px 0px 5px white;
+	border-radius: 8px;
+	box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+	transition: all 0.2s linear;
 }
 
-.select-field{
-	width:126px;
-	padding:5px;
+.day {
+	width: 35px;
+	border-radius: 8px;
+	background: rgba(0, 0, 0, 0.4);
+	color: white;
+	font-style: italic;
+	font-family: 'FranchiseRegular';
+	text-align: center;
+	padding: 5px;
+	font-style: italic;
+	font-family: 'FranchiseRegular';
+	text-align: center;
 }
 
-.username{
-	width:297px;
-	border:1px solid black;
-	padding:5px;
+.select-field {
+	width: 126px;
+	border-radius: 8px;
+	background: rgba(0, 0, 0, 0.4);
+	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.8);
+	padding: 5px;
+	color: white;
+	font-style: italic;
+	font-family: 'FranchiseRegular';
+	text-align: center;
 }
-<<<<<<< HEAD
+
+.submit {
+	width: 60%;
+	cursor: pointer;
+	background: #ff9900;
+	padding: 8px 5px;
+	text-align: center;
+	font-family: 'BebasNeueRegular';
+	color: rgba(0, 0, 0, 0.8);
+	font-weight: bold;
+	font-size: 24px;
+	border: 2px solid #ff9900;
+	margin-bottom: 15px;
+	text-shadow: 0 2px 2px rgba(255, 0, 0, 0.5);
+	border-radius: 3px;
+	box-shadow: 0px 1px 6px 4px rgba(0, 0, 0, 0.07) inset, 0px 0px 0px 3px
+		rgb(254, 254, 254), 0px 1px 6px 4px rgb(210, 210, 210);
+	transition: all 0.2s linear;
+}
