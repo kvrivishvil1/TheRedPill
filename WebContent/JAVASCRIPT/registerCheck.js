@@ -10,8 +10,8 @@ function firstLastFilled() {
 }
 
 function usernameFilled() {
-	if(document.getElementsByClassName("username")[0].value=="") {
-		document.getElementsByClassName("username-check")[0].innerHTML = "Username field couldn't be empty";
+	if(document.getElementsByClassName("user-name")[0].value=="") {
+		document.getElementsByClassName("username-check")[0].innerHTML = "Username field must be filled";
 	} else {
 		document.getElementsByClassName("username-check")[0].innerHTML = "";
 	}
@@ -26,6 +26,14 @@ function passwordFilled() {
 		document.getElementsByClassName("password-check")[0].innerHTML = "Passwords doesn't match each other";
 	} else {
 		document.getElementsByClassName("password-check")[0].innerHTML = "";
+	}
+}
+
+function emailFilled() {
+	if(document.getElementsByClassName("email")[0].value=="") {
+		document.getElementsByClassName("email-check")[0].innerHTML = "Email field must be filled";
+	} else {
+		document.getElementsByClassName("email-check")[0].innerHTML = "";
 	}
 }
 
@@ -85,7 +93,7 @@ function correctDate() {
 
 function validate() {
 	if(document.getElementsByClassName("day")[0].value == ""
-			|| document.getElementsByClassName("username")[0].value == ""
+			|| document.getElementsByClassName("user-name")[0].value == ""
 			|| document.getElementsByClassName("first-name")[0].value == "" 
 			|| document.getElementsByClassName("last-name")[0].value == ""
 			|| document.getElementsByClassName("password")[0].value == ""
