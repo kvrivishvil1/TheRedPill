@@ -3,8 +3,8 @@ var count = 0;
 function fillQuestionDivForQuestionResponse(){
     var mainTag = document.getElementById("question");
 
-	var spec = document.createElement("div");
-  	spec.setAttribute("id", "question-response");
+    var spec = document.createElement("div");
+    spec.setAttribute("id", "question-response");
     
     mainTag.appendChild(spec);
         
@@ -30,7 +30,7 @@ function fillQuestionDivForQuestionResponse(){
 }
 
 function fillQuestionDivForFillBlank(){
-	var mainTag = document.getElementById("question");
+    var mainTag = document.getElementById("question");
     
     var spec = document.createElement("div");
     spec.setAttribute("id", "fill-blank");
@@ -40,7 +40,7 @@ function fillQuestionDivForFillBlank(){
     var questionLabel = document.createElement("label");
     questionLabel.innerHTML = "Question: ";
     
-  	var questionArea = document.createElement("textarea");
+    var questionArea = document.createElement("textarea");
     questionArea.setAttribute("rows", "1");
     questionArea.setAttribute("cols", "70");
     
@@ -60,7 +60,7 @@ function fillQuestionDivForFillBlank(){
 }
 
 function fillQuestionDivForMultiAnswer(){
-	var mainTag = document.getElementById("question");
+    var mainTag = document.getElementById("question");
     
     var spec = document.createElement("div");
     spec.setAttribute("id", "multi-answer");
@@ -70,7 +70,7 @@ function fillQuestionDivForMultiAnswer(){
     var questionLabel = document.createElement("label");
     questionLabel.innerHTML = "Question: ";
     
-  	var questionArea = document.createElement("textarea");
+    var questionArea = document.createElement("textarea");
     questionArea.setAttribute("rows", "1");
     questionArea.setAttribute("cols", "70");
     
@@ -80,7 +80,7 @@ function fillQuestionDivForMultiAnswer(){
 }
 
 function fillQuestionDivForPictureResponse(){
-	var mainTag = document.getElementById("question");
+    var mainTag = document.getElementById("question");
        
     var spec = document.createElement("div");
     spec.setAttribute("id", "picture-response");
@@ -91,23 +91,23 @@ function fillQuestionDivForPictureResponse(){
 }
 
 function removePictureResponse(id){
-	var str = "picture" + id.substr(16);
-	var picture = document.getElementById(str);
+    var str = "picture" + id.substr(16);
+    var picture = document.getElementById(str);
     picture.parentNode.removeChild(picture);
 }
 
 function addPictureResponse(id){
-	var answers = document.getElementById("picture-response");
+    var answers = document.getElementById("picture-response");
     answers.appendChild(createPictureResponse());
 }
 
 function createPictureResponse(){
-	count++;
-	var picture = document.createElement("div");
+    count++;
+    var picture = document.createElement("div");
     var id = "picture" + count; 
     picture.setAttribute("id", id);
     
- 	var questionLabel = document.createElement("label");
+    var questionLabel = document.createElement("label");
     questionLabel.innerHTML = "Picture link: ";
     
     var questionArea = document.createElement("textarea");
@@ -148,8 +148,8 @@ function createPictureResponse(){
 
 
 function createSingleField(isMulti){
-	count++;
-	var field = document.createElement("div");
+    count++;
+    var field = document.createElement("div");
     var id = "answer" + count; 
     field.setAttribute("id", id);
       
@@ -169,7 +169,7 @@ function createSingleField(isMulti){
         }
     });
     var addButtonText = document.createTextNode("Add Another Answer");
-  	addButton.appendChild(addButtonText);
+    addButton.appendChild(addButtonText);
     
     var removeButton = document.createElement("button");
     removeButton.setAttribute("id", "answerRemoveButt" + count);
@@ -177,16 +177,16 @@ function createSingleField(isMulti){
     	removeSingleChoiceField(this.id);
     });
     var removeButtonText = document.createTextNode("Remove Answer");
-  	removeButton.appendChild(removeButtonText);
+    removeButton.appendChild(removeButtonText);
     
-  	field.appendChild(addButton);
-  	field.appendChild(removeButton);
+    field.appendChild(addButton);
+    field.appendChild(removeButton);
     
     return field;  
 }
 
 function fillQuestionDivForMultipleChoice(){
-	var div = document.getElementById("question");
+    var div = document.getElementById("question");
        
     var spec = document.createElement("div");
     spec.setAttribute("id", "multiple-choice");
@@ -202,7 +202,7 @@ function fillQuestionDivForMultipleChoice(){
 }
 
 function fillQuestionDivForMultipleChoiceAnswer(){
-	var mainTag = document.getElementById("question");
+    var mainTag = document.getElementById("question");
        
     var spec = document.createElement("div");
     spec.setAttribute("id", "multiple-choice-answer");
@@ -218,8 +218,8 @@ function fillQuestionDivForMultipleChoiceAnswer(){
 }
 
 function addAnotherSingleField(isMulti){
-	var div;
-	if(isMulti){
+    var div;
+    if(isMulti){
 		div = document.getElementById("multi-answer");
     }
     if(!isMulti) {
@@ -229,28 +229,28 @@ function addAnotherSingleField(isMulti){
 }
 
 function addAnotherSingleAnswer(){
-	var answers = document.getElementById("multiple-choice");
+    var answers = document.getElementById("multiple-choice");
     answers.appendChild(createSingleChoiceField(true));
 }
 
 function addAnotherMultiAnswer(){
-	var answers = document.getElementById("multiple-choice-answer");
+    var answers = document.getElementById("multiple-choice-answer");
     answers.appendChild(createSingleChoiceField(false));
 }
 
 function removeSingleChoiceField(id){
-	var str = "answer" + id.substr(16);
-	var answer = document.getElementById(str);
+    var str = "answer" + id.substr(16);
+    var answer = document.getElementById(str);
     answer.parentNode.removeChild(answer);
 }
 
 function createSingleChoiceField(isSingle){
-	count++;
-	var answer = document.createElement("div");
+    count++;
+    var answer = document.createElement("div");
     var id = "answer" + count; 
     answer.setAttribute("id", id);
     
-	var inp = document.createElement("input");
+    var inp = document.createElement("input");
     if(isSingle){
     	inp.setAttribute("type", "radio");
     } else {
@@ -283,14 +283,14 @@ function createSingleChoiceField(isSingle){
     var removeButtonText = document.createTextNode("Remove Answer");
   	removeButton.appendChild(removeButtonText);
     
- 	answer.appendChild(addButton);
+    answer.appendChild(addButton);
     answer.appendChild(removeButton);
     
     return answer;    
 }
 
 function fillQuestionDivForMatching(){
-	var mainTag = document.getElementById("question");
+    var mainTag = document.getElementById("question");
        
     var spec = document.createElement("div");
     spec.setAttribute("id", "matching");
@@ -319,7 +319,7 @@ function fillQuestionDivForMatching(){
     var correctAnswersBar = document.createElement("div");
     correctAnswersBar.id = "correctAnswers";
     
-	var firstQuestion = document.createElement("label");  
+    var firstQuestion = document.createElement("label");  
     firstQuestion.id = "questionNum" + 1;
     firstQuestion.innerHTML = "A ";
     correctAnswersBar.appendChild(firstQuestion);
@@ -337,11 +337,11 @@ function fillQuestionDivForMatching(){
 }
 
 function addCouple(){
-	var div = document.getElementById("matching");
+    var div = document.getElementById("matching");
     div.appendChild(createCouple());
     var answers = document.getElementById("correctAnswers");
  
-	var newQuestion = document.createElement("label");  
+    var newQuestion = document.createElement("label");  
     newQuestion.id = "questionNum" + count;
     newQuestion.innerHTML = " " + String.fromCharCode(64+count) + " ";
     answers.appendChild(newQuestion);
@@ -354,8 +354,8 @@ function addCouple(){
 }
 
 function removeCouple(lastId){
-	var str = "answer" + lastId
-	var fields = document.getElementById(str);
+    var str = "answer" + lastId
+    var fields = document.getElementById(str);
     fields.parentNode.removeChild(fields);
     
     var quest = "questionNum" + count;
@@ -371,8 +371,8 @@ function removeCouple(lastId){
 
 
 function createCouple(){
-	count++;
-	var couple = document.createElement("div");
+    count++;
+    var couple = document.createElement("div");
     var id = "answer" + count; 
     couple.setAttribute("id", id);
              
