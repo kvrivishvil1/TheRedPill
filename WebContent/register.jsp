@@ -41,6 +41,11 @@
 					<div class="password-check alert"></div>
 				</div>
 				<div class="form-line">
+					<div class="formTitle">Enter your email</div>
+					<input type="text" name="email" class="email input-field"
+						onfocusout="emailFilled()" placeholder="Email">
+				</div>
+				<div class="form-line">
 					<div class="formTitle">
 						Gender: <input type="radio" name="gender" value="male"
 							class="male" checked>
