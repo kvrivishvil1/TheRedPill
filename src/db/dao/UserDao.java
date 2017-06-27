@@ -94,12 +94,11 @@ public class UserDao {
 	}
 
 	private String generateQueryForAccount() {
-		return "SELECT * FROM " + DbContract.AccountsTable.TABLE_NAME + " WHERE "
-				+ DbContract.AccountsTable.COLUMN_NAME_USERNAME + " = ?";
+		return "SELECT *, COUNT(1) as count FROM " + DbContract.AccountsTable.TABLE_NAME + " WHERE "
+				+ DbContract.AccountsTable.COLUMN_NAME_USERNAME + " like " + "?";
 	}
 
 	private String generateQueryForPerson() {
-		// TODO Auto-generated method stub
 		return "SELECT * FROM " + DbContract.PersonsTable.TABLE_NAME + " WHERE " + DbContract.PersonsTable.TABLE_NAME
 				+ "." + DbContract.PersonsTable.COLUMN_NAME_PERSON_ID + " = (SELECT "
 				+ DbContract.PersonAccountMapTable.TABLE_NAME + "."
@@ -107,12 +106,43 @@ public class UserDao {
 				+ DbContract.PersonAccountMapTable.TABLE_NAME + " WHERE " + DbContract.PersonAccountMapTable.TABLE_NAME
 				+ "." + DbContract.PersonAccountMapTable.COLUMN_NAME_ACCOUNT_ID + " = ?)";
 	}
+	
+	private String generateQueryForPerson1() {
+		return "SELECT *, COUNT(1) as count FROM " + DbContract.PersonsTable.TABLE_NAME + " WHERE "
+				+ DbContract.PersonsTable.COLUMN_NAME_EMAIL + " like " + "?";
+	}
+	
+	public boolean usernameIsAvailable(String username) {
+		String sql = generateQueryForAccount();
+		return chechkIfAvailableInDatabase(sql, username);
+	}
+	
+	public boolean emailIsAvailable(String email) {
+		String sql = generateQueryForPerson1();
+		return chechkIfAvailableInDatabase(sql, email);
+	}
+
+	private boolean chechkIfAvailableInDatabase(String sql, String compare) {
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1, compare);
+			System.out.println(st.toString());
+			ResultSet rs = st.executeQuery();
+			rs.next();
+			if(rs.getInt("count") != 0) {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
 
 	/**
 	 * Adds new person in database
-	 * 
-	 * @param person
-	 *            person who must be added in database
+	 * @param person person who must be added in database
 	 */
 	private void addPerson(Person person) {
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
@@ -144,9 +174,7 @@ public class UserDao {
 
 	/**
 	 * Adds account in database
-	 * 
-	 * @param account
-	 *            account which must be added in database
+	 * @param account account which must be added in database
 	 */
 	private void addAccount(Account account) {
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
@@ -167,32 +195,11 @@ public class UserDao {
 		}
 	}
 	
-	private int getPersonId(Person person, Connection connection) throws SQLException{
-		String sql = "SELECT " + DbContract.PersonsTable.COLUMN_NAME_PERSON_ID + " FROM " + 
-		DbContract.PersonsTable.TABLE_NAME + " WHERE " + DbContract.PersonsTable.COLUMN_NAME_EMAIL + 
-		" like " + "?";
-		PreparedStatement st = connection.prepareStatement(sql);
-		st.setString(1, person.getEmail());
-		ResultSet rs = st.executeQuery();
-		int personId = -1;
-		if (rs.getRow() != 0)
-			personId = (int) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_PERSON_ID);
-		return personId;
-	}
-	
-	private int getAccountId(Account account, Connection connection) throws SQLException {
-		String sql = "SELECT " + DbContract.AccountsTable.COLUMN_NAME_ID + " FROM " + 
-				DbContract.AccountsTable.TABLE_NAME + " WHERE " + DbContract.AccountsTable.COLUMN_NAME_USERNAME + 
-				" like " + "?";
-		PreparedStatement st = connection.prepareStatement(sql);
-		st.setString(1, account.getUserName());
-		ResultSet rs = st.executeQuery();
-		int accountId = -1;
-		if (rs.getRow() != 0)
-			accountId = (int) rs.getObject(DbContract.AccountsTable.COLUMN_NAME_ID);
-		return accountId;
-	}
-
+	/**
+	 * maps person and account to each other and adds in database
+	 * @param person 
+	 * @param account
+	 */
 	private void addUser(Person person, Account account) {
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
 				Statement stmt = con.createStatement()) {
@@ -211,7 +218,52 @@ public class UserDao {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Searches id of person in database
+	 * @param person person which we must find in database
+	 * @param connection connection with database
+	 * @return id of person in database
+	 * @throws SQLException
+	 */
+	private int getPersonId(Person person, Connection connection) throws SQLException{
+		String sql = "SELECT " + DbContract.PersonsTable.COLUMN_NAME_PERSON_ID + " FROM " + 
+		DbContract.PersonsTable.TABLE_NAME + " WHERE " + DbContract.PersonsTable.COLUMN_NAME_EMAIL + 
+		" like " + "?";
+		PreparedStatement st = connection.prepareStatement(sql);
+		st.setString(1, person.getEmail());
+		ResultSet rs = st.executeQuery();
+		int personId = -1;
+		if (rs.getRow() != 0)
+			personId = (int) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_PERSON_ID);
+		return personId;
+	}
+	
+	/**
+	 * Searches id of account in database
+	 * @param account account which we must find it database
+	 * @param connection connection with database
+	 * @return id of account in database
+	 * @throws SQLException
+	 */
+	private int getAccountId(Account account, Connection connection) throws SQLException {
+		String sql = "SELECT " + DbContract.AccountsTable.COLUMN_NAME_ID + " FROM " + 
+				DbContract.AccountsTable.TABLE_NAME + " WHERE " + DbContract.AccountsTable.COLUMN_NAME_USERNAME + 
+				" like " + "?";
+		PreparedStatement st = connection.prepareStatement(sql);
+		st.setString(1, account.getUserName());
+		ResultSet rs = st.executeQuery();
+		int accountId = -1;
+		if (rs.getRow() != 0)
+			accountId = (int) rs.getObject(DbContract.AccountsTable.COLUMN_NAME_ID);
+		return accountId;
+	}
 
+	/**
+	 * Adds new user person and account in database
+	 * @param person 
+	 * @param account
+	 */
 	public void addNewUser(Person person, Account account) {
 		addPerson(person);
 		addAccount(account);

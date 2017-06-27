@@ -13,7 +13,47 @@ function usernameFilled() {
 	if(document.getElementsByClassName("user-name")[0].value=="") {
 		document.getElementsByClassName("username-check")[0].innerHTML = "Username field must be filled";
 	} else {
-		document.getElementsByClassName("username-check")[0].innerHTML = "";
+		var nm = $('.user-name').val();
+		console.log(nm);
+		$.ajax({
+			url: "RegisterServlet",
+			type: "get",
+			data: {
+				type: "username",
+				userName: nm
+			},
+			success: function(data){
+				if(data == "true") {
+					document.getElementsByClassName("username-check")[0].innerHTML = "";
+				} else {
+				}
+			}
+			
+		});
+	}
+}
+
+function emailFilled() {
+	if(document.getElementsByClassName("email")[0].value=="") {
+		document.getElementsByClassName("email-check")[0].innerHTML = "Email field must be filled";
+	} else {
+		console.log($('.email').val());
+		$.ajax({
+			url: "RegisterServlet",
+			type: "get",
+			data: {
+				type: "email",
+				email: $('.email').val()
+			},
+			success: function(data){
+				if(data == "true") {
+					document.getElementsByClassName("email-check")[0].innerHTML = "";
+				} else {
+					document.getElementsByClassName("email-check")[0].innerHTML = "User with this email is allready registered";
+				}
+			}
+			
+		});
 	}
 }
 
@@ -26,14 +66,6 @@ function passwordFilled() {
 		document.getElementsByClassName("password-check")[0].innerHTML = "Passwords doesn't match each other";
 	} else {
 		document.getElementsByClassName("password-check")[0].innerHTML = "";
-	}
-}
-
-function emailFilled() {
-	if(document.getElementsByClassName("email")[0].value=="") {
-		document.getElementsByClassName("email-check")[0].innerHTML = "Email field must be filled";
-	} else {
-		document.getElementsByClassName("email-check")[0].innerHTML = "";
 	}
 }
 

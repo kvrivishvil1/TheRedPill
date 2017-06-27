@@ -47,15 +47,32 @@ public class RegisterServlet extends HttpServlet {
      */
     public RegisterServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		System.out.println("x");
+		UserDao dao = (UserDao)request.getServletContext().getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
+		String type = request.getParameter("type");
+		if(type.equals("email")) {
+			String email = request.getParameter("email");
+			System.out.println(email);
+			boolean bool = dao.emailIsAvailable(email);
+			if(bool) 
+				response.getWriter().print(true);
+			else 
+				response.getWriter().print(false);
+		} else if (type.equals("username")) {
+			String username = request.getParameter("userName");
+			boolean bool = dao.usernameIsAvailable(username);
+			if(bool) 
+				response.getWriter().print(true);
+			else 
+				response.getWriter().print(false);
+		}
+		
 	}
 
 	/**

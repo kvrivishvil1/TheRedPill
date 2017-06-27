@@ -9,6 +9,7 @@
 <title>Registration</title>
 <link rel="stylesheet" href="CSS/normalize.css">
 <link rel="stylesheet" href="CSS/main.css">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="JAVASCRIPT/registerCheck.js"></script>
 </head>
 <body>
@@ -43,7 +44,7 @@
 					<div class="formTitle">Enter your email</div>
 					<input type="text" name="email" class="email input-field"
 						onfocusout="emailFilled()" placeholder="Email">
-					<div class="email-check alert">s</div>
+					<div class="email-check alert"></div>
 				</div>
 				<div class="form-line">
 					<div class="formTitle">
