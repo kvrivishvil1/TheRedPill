@@ -9,6 +9,7 @@
 <title>Registration</title>
 <link rel="stylesheet" href="CSS/normalize.css">
 <link rel="stylesheet" href="CSS/main.css">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="JAVASCRIPT/registerCheck.js"></script>
 </head>
 <body>
@@ -34,16 +35,16 @@
 				<div class="form-line">
 					<div class="formTitle">Create password</div>
 					<input type="password" name="password" class="password input-field"
-						onfocusout="passwordFilled()" placeholder="Password"> <input
-						type="password" name="conpassword"
-						class="password-confirm input-field" onfocusout="passwordFilled()"
-						placeholder="Confirm">
+						onfocusout="passwordFilled()" placeholder="Password"> 
+					<input type="password" name="conpassword" class="password-confirm input-field" 
+						onfocusout="passwordFilled()" placeholder="Confirm">
 					<div class="password-check alert"></div>
 				</div>
 				<div class="form-line">
 					<div class="formTitle">Enter your email</div>
 					<input type="text" name="email" class="email input-field"
 						onfocusout="emailFilled()" placeholder="Email">
+					<div class="email-check alert"></div>
 				</div>
 				<div class="form-line">
 					<div class="formTitle">

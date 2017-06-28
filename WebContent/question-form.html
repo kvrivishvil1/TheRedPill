@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="JAVASCRIPT/quizCreation.js"></script>
+</head>
+<body>
+
+<p style="display: inline-block;"> 1. </p>
+<form  style="display:inline;" >
+  <select name="questiontype" id="types">
+  	<option value="select-type">Select Question Type</option>
+    <option value="question-response">Question-Response</option>
+    <option value="fill-blank">Fill in the Blank</option>
+    <option value="multiple-choice">Multiple Choice</option>
+    <option value="picture-response">Picture-Response Questions</option>
+    <option value="multi-answer">Multi-Answer Questions</option>
+    <option value="multiple-choice-answer">Multiple Choice with Multiple Answers</option>
+    <option value="matching">Matching</option>
+  </select>
+</form>
+
+<div id="question"> </div>
+
+<button id="finish" onclick="" style="float: right;"> Finish </button> 
+<button id="next" style="float: right;"> Next Question </button> 
+
+</body>
+</html>

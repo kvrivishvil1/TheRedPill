@@ -6,11 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import db.DbContract;
 import db.MyDbInfo;
 import db.bean.Account;
+import db.bean.Note;
 import db.bean.Person;
 import db.bean.Person.Gender;
 import db.bean.User;
@@ -79,7 +82,8 @@ public class UserDao {
 					curGender = Gender.FEMALE;
 				}
 				return new Person((String) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_FIRSTNAME),
-						(String) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_LASTNAME), curGender,
+						(String) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_LASTNAME), 
+						(String)rs.getObject(DbContract.PersonsTable.COLUMN_NAME_EMAIL), curGender,
 						(Date) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_BIRTHDATE));
 			}
 		} catch (ClassNotFoundException e) {
@@ -90,13 +94,12 @@ public class UserDao {
 	}
 
 	private String generateQueryForAccount() {
-		return "SELECT * FROM " + DbContract.AccountsTable.TABLE_NAME + " WHERE "
-				+ DbContract.AccountsTable.COLUMN_NAME_USERNAME + " = ?";
+		return "SELECT *, COUNT(1) as count FROM " + DbContract.AccountsTable.TABLE_NAME + " WHERE "
+				+ DbContract.AccountsTable.COLUMN_NAME_USERNAME + " like " + "?";
 	}
 
 	private String generateQueryForPerson() {
-		// TODO Auto-generated method stub
-		return "SELECT * FROM " + DbContract.PersonsTable.TABLE_TABLE + " WHERE " + DbContract.PersonsTable.TABLE_TABLE
+		return "SELECT * FROM " + DbContract.PersonsTable.TABLE_NAME + " WHERE " + DbContract.PersonsTable.TABLE_NAME
 				+ "." + DbContract.PersonsTable.COLUMN_NAME_PERSON_ID + " = (SELECT "
 				+ DbContract.PersonAccountMapTable.TABLE_NAME + "."
 				+ DbContract.PersonAccountMapTable.COLUMN_NAME_PERSON_ID + " FROM "
@@ -104,8 +107,166 @@ public class UserDao {
 				+ "." + DbContract.PersonAccountMapTable.COLUMN_NAME_ACCOUNT_ID + " = ?)";
 	}
 	
-	public boolean addNewUser(Person person, Account account) {
-		
-		return false;
+	private String generateQueryForPerson1() {
+		return "SELECT *, COUNT(1) as count FROM " + DbContract.PersonsTable.TABLE_NAME + " WHERE "
+				+ DbContract.PersonsTable.COLUMN_NAME_EMAIL + " like " + "?";
+	}
+	
+	public boolean usernameIsAvailable(String username) {
+		String sql = generateQueryForAccount();
+		return chechkIfAvailableInDatabase(sql, username);
+	}
+	
+	public boolean emailIsAvailable(String email) {
+		String sql = generateQueryForPerson1();
+		return chechkIfAvailableInDatabase(sql, email);
+	}
+
+	private boolean chechkIfAvailableInDatabase(String sql, String compare) {
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1, compare);
+			System.out.println(st.toString());
+			ResultSet rs = st.executeQuery();
+			rs.next();
+			if(rs.getInt("count") != 0) {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	/**
+	 * Adds new person in database
+	 * @param person person who must be added in database
+	 */
+	private void addPerson(Person person) {
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			System.out.println(new java.sql.Timestamp(person.getBirthDate().getTime()));
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
+			System.out.println(dateFormat.format(person.getBirthDate()));
+
+			String sql = "INSERT INTO " + DbContract.PersonsTable.TABLE_NAME + "("
+					+ DbContract.PersonsTable.COLUMN_NAME_FIRSTNAME + ", "
+					+ DbContract.PersonsTable.COLUMN_NAME_LASTNAME + ", " 
+					+ DbContract.PersonsTable.COLUMN_NAME_EMAIL + ", "
+					+ DbContract.PersonsTable.COLUMN_NAME_GENDER + ", " 
+					+ DbContract.PersonsTable.COLUMN_NAME_BIRTHDATE + ")" + 
+					" values (?, ?, ?, ?, ?);";
+			
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setString(1, person.getName());
+			st.setString(2, person.getLastName());
+			st.setString(3, person.getEmail());
+			st.setString(4, "" + person.getGender());
+			st.setTimestamp(5, new java.sql.Timestamp(person.getBirthDate().getTime()));
+			st.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Adds account in database
+	 * @param account account which must be added in database
+	 */
+	private void addAccount(Account account) {
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+
+			String sql = "INSERT INTO " + DbContract.AccountsTable.TABLE_NAME + " ("
+					+ DbContract.AccountsTable.COLUMN_NAME_USERNAME + ", "
+					+ DbContract.AccountsTable.COLUMN_NAME_PASSWORD + ") VALUES (?, ?);";
+			
+			try (PreparedStatement st = con.prepareStatement(sql)) {
+				st.setString(1, account.getUserName());
+				st.setString(2, account.getPassword());
+				st.execute();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * maps person and account to each other and adds in database
+	 * @param person 
+	 * @param account
+	 */
+	private void addUser(Person person, Account account) {
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			int personId = getPersonId(person, con);
+			int accountId = getAccountId(account, con);
+			String sql = "INSERT INTO " + DbContract.PersonAccountMapTable.TABLE_NAME + " ("
+					+ DbContract.PersonAccountMapTable.COLUMN_NAME_ACCOUNT_ID + ", "
+					+ DbContract.PersonAccountMapTable.COLUMN_NAME_PERSON_ID + ") VALUES (?, ?);";
+			
+			PreparedStatement st = con.prepareStatement(sql);
+			st.setInt(1, accountId);
+			st.setInt(2, personId);
+			st.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Searches id of person in database
+	 * @param person person which we must find in database
+	 * @param connection connection with database
+	 * @return id of person in database
+	 * @throws SQLException
+	 */
+	private int getPersonId(Person person, Connection connection) throws SQLException{
+		String sql = "SELECT " + DbContract.PersonsTable.COLUMN_NAME_PERSON_ID + " FROM " + 
+		DbContract.PersonsTable.TABLE_NAME + " WHERE " + DbContract.PersonsTable.COLUMN_NAME_EMAIL + 
+		" like " + "?";
+		PreparedStatement st = connection.prepareStatement(sql);
+		st.setString(1, person.getEmail());
+		ResultSet rs = st.executeQuery();
+		int personId = -1;
+		if (rs.getRow() != 0)
+			personId = (int) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_PERSON_ID);
+		return personId;
+	}
+	
+	/**
+	 * Searches id of account in database
+	 * @param account account which we must find it database
+	 * @param connection connection with database
+	 * @return id of account in database
+	 * @throws SQLException
+	 */
+	private int getAccountId(Account account, Connection connection) throws SQLException {
+		String sql = "SELECT " + DbContract.AccountsTable.COLUMN_NAME_ID + " FROM " + 
+				DbContract.AccountsTable.TABLE_NAME + " WHERE " + DbContract.AccountsTable.COLUMN_NAME_USERNAME + 
+				" like " + "?";
+		PreparedStatement st = connection.prepareStatement(sql);
+		st.setString(1, account.getUserName());
+		ResultSet rs = st.executeQuery();
+		int accountId = -1;
+		if (rs.getRow() != 0)
+			accountId = (int) rs.getObject(DbContract.AccountsTable.COLUMN_NAME_ID);
+		return accountId;
+	}
+
+	/**
+	 * Adds new user person and account in database
+	 * @param person 
+	 * @param account
+	 */
+	public void addNewUser(Person person, Account account) {
+		addPerson(person);
+		addAccount(account);
+		addUser(person, account);
 	}
 }

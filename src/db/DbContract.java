@@ -21,11 +21,12 @@ public class DbContract {
 	 * static class to have name agreements for Persons table
 	 */
 	public class PersonsTable {
-		public static final String TABLE_TABLE = "Persons";
+		public static final String TABLE_NAME = "Persons";
 		public static final String COLUMN_NAME_PERSON_ID = "person_id";
-		public static final String COLUMN_NAME_FIRSTNAME = "person_firstName";
-		public static final String COLUMN_NAME_LASTNAME = "person_lastName";
+		public static final String COLUMN_NAME_FIRSTNAME = "person_first_name";
+		public static final String COLUMN_NAME_LASTNAME = "person_last_name";
 		public static final String COLUMN_NAME_GENDER = "person_gender";
+		public static final String COLUMN_NAME_EMAIL = "person_email";
 		public static final String ENUM_MALE = "male";
 		public static final String ENUM_FEMALE = "female";
 		public static final String COLUMN_NAME_BIRTHDATE = "person_birthdate";
@@ -38,7 +39,7 @@ public class DbContract {
 	public class AccountsTable {
 		public static final String TABLE_NAME = "Accounts";
 		public static final String COLUMN_NAME_ID = "account_id";
-		public static final String COLUMN_NAME_USERNAME = "account_userName";
+		public static final String COLUMN_NAME_USERNAME = "account_user_name";
 		public static final String COLUMN_NAME_PASSWORD = "account_password";
 	}
 

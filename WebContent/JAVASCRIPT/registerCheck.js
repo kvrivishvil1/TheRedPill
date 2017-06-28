@@ -10,10 +10,50 @@ function firstLastFilled() {
 }
 
 function usernameFilled() {
-	if(document.getElementsByClassName("username")[0].value=="") {
-		document.getElementsByClassName("username-check")[0].innerHTML = "Username field couldn't be empty";
+	if(document.getElementsByClassName("user-name")[0].value=="") {
+		document.getElementsByClassName("username-check")[0].innerHTML = "Username field must be filled";
 	} else {
-		document.getElementsByClassName("username-check")[0].innerHTML = "";
+		var nm = $('.user-name').val();
+		console.log(nm);
+		$.ajax({
+			url: "RegisterServlet",
+			type: "get",
+			data: {
+				type: "username",
+				userName: nm
+			},
+			success: function(data){
+				if(data == "true") {
+					document.getElementsByClassName("username-check")[0].innerHTML = "";
+				} else {
+				}
+			}
+			
+		});
+	}
+}
+
+function emailFilled() {
+	if(document.getElementsByClassName("email")[0].value=="") {
+		document.getElementsByClassName("email-check")[0].innerHTML = "Email field must be filled";
+	} else {
+		console.log($('.email').val());
+		$.ajax({
+			url: "RegisterServlet",
+			type: "get",
+			data: {
+				type: "email",
+				email: $('.email').val()
+			},
+			success: function(data){
+				if(data == "true") {
+					document.getElementsByClassName("email-check")[0].innerHTML = "";
+				} else {
+					document.getElementsByClassName("email-check")[0].innerHTML = "User with this email is allready registered";
+				}
+			}
+			
+		});
 	}
 }
 
@@ -85,7 +125,7 @@ function correctDate() {
 
 function validate() {
 	if(document.getElementsByClassName("day")[0].value == ""
-			|| document.getElementsByClassName("username")[0].value == ""
+			|| document.getElementsByClassName("user-name")[0].value == ""
 			|| document.getElementsByClassName("first-name")[0].value == "" 
 			|| document.getElementsByClassName("last-name")[0].value == ""
 			|| document.getElementsByClassName("password")[0].value == ""
