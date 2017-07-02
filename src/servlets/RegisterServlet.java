@@ -1,32 +1,18 @@
 package servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import db.DbContract;
-import db.MyDbInfo;
 import db.bean.Account;
-import db.bean.Note;
 import db.bean.Person;
 import db.bean.Person.Gender;
-import db.bean.User;
 import db.dao.UserDao;
 import helpers.PasswordEncryptor;
 
@@ -35,13 +21,7 @@ import helpers.PasswordEncryptor;
  */
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
-	
-	private static String account = MyDbInfo.MYSQL_USERNAME;
-	private static String password = MyDbInfo.MYSQL_PASSWORD;
-	private static String server =	"jdbc:mysql://" + MyDbInfo.MYSQL_DATABASE_SERVER;
-	private static String database = MyDbInfo.MYSQL_DATABASE_NAME;
 	private static final long serialVersionUID = 1L;
-       
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -53,12 +33,10 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("x");
 		UserDao dao = (UserDao)request.getServletContext().getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
 		String type = request.getParameter("type");
 		if(type.equals("email")) {
 			String email = request.getParameter("email");
-			System.out.println(email);
 			boolean bool = dao.emailIsAvailable(email);
 			if(bool) 
 				response.getWriter().print(true);
@@ -72,7 +50,6 @@ public class RegisterServlet extends HttpServlet {
 			else 
 				response.getWriter().print(false);
 		}
-		
 	}
 
 	/**

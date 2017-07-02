@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="JAVASCRIPT/loginCheck.js"></script>
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -13,31 +14,32 @@
 <link rel="stylesheet" href="CSS/normalize.css">
 <link rel="stylesheet" href="CSS/login.css">
 </head>
-<body id = "background">
+<body id="background">
 	<div class="login-container">
 		<h2>
-			<b>WELCOME</b>				
-		</h2><br>
-		<form action="LoginServlet" class="form-horizontal" method="post">
+			<b>WELCOME</b>
+		</h2>
+		<br>
+		<form id="login" onsubmit="validate(); return false;"
+			action="LoginServlet" method="post">
 			<div class="form-group">
 				<div class="form-group-lg">
-					<input type="text" class="form-control" name="user-name"
+					<input type="text" class="username form-control" name="username"
 						placeholder="User Name"><br>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="form-group-lg">
-					<input type="password" class="form-control" name="password"
-						placeholder="Password">
+					<input type="password" class="password form-control"
+						name="password" placeholder="Password">
 				</div>
 			</div>
 			<div class="form-group">
 				<div align="center">
-				<br>
-					<button type="submit" class="btn btn-primary btn-lg">Sign
-						In</button>
-					<a class="btn btn-success btn-lg" href="register.jsp"
-					role="button">Sign Up</a>
+					<p class = "user-check"></p>
+					<input type="submit" class="btn" value = "Sign In"></input>
+					<a class="btn" href="register.jsp" role="button">Sign
+						Up</a>
 				</div>
 			</div>
 		</form>

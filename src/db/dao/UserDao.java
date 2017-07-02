@@ -128,7 +128,6 @@ public class UserDao {
 			stmt.executeQuery("USE " + database);
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setString(1, compare);
-			System.out.println(st.toString());
 			ResultSet rs = st.executeQuery();
 			rs.next();
 			if(rs.getInt("count") != 0) {
@@ -148,10 +147,7 @@ public class UserDao {
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
 				Statement stmt = con.createStatement()) {
 			stmt.executeQuery("USE " + database);
-			System.out.println(new java.sql.Timestamp(person.getBirthDate().getTime()));
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
-			System.out.println(dateFormat.format(person.getBirthDate()));
-
 			String sql = "INSERT INTO " + DbContract.PersonsTable.TABLE_NAME + "("
 					+ DbContract.PersonsTable.COLUMN_NAME_FIRSTNAME + ", "
 					+ DbContract.PersonsTable.COLUMN_NAME_LASTNAME + ", " 
