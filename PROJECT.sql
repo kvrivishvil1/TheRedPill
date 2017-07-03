@@ -70,6 +70,8 @@ CREATE TABLE Challenges (
 CREATE TABLE Quizes (
     quiz_id INT NOT NULL AUTO_INCREMENT,
     quiz_name VARCHAR(100) NOT NULL,
+    is_rearrangable BOOLEAN NOT NULL,
+    is_practicable BOOLEAN NOT NULL,
     CONSTRAINT Quizes_pk PRIMARY KEY (quiz_id),
     CONSTRAINT Quizes_uk UNIQUE (quiz_name)
 );
