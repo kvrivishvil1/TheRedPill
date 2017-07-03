@@ -42,7 +42,7 @@ public class UserDao {
 	}
 
 	/**
-	 * gets user-name String as parameter and returns Account object
+	 * gets username String as parameter and returns Account object
 	 */
 	public Account getAccount(String searchedUser) throws SQLException {
 		try (Connection connection = createConnection()) {
@@ -128,9 +128,11 @@ public class UserDao {
 			stmt.executeQuery("USE " + database);
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setString(1, compare);
+			System.out.println(st.toString());
 			ResultSet rs = st.executeQuery();
 			rs.next();
 			if(rs.getInt("count") != 0) {
+				System.out.println(rs.getRow());
 				return false;
 			}
 		} catch (SQLException e) {
@@ -209,6 +211,7 @@ public class UserDao {
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setInt(1, accountId);
 			st.setInt(2, personId);
+			System.out.println(st.toString());
 			st.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -230,8 +233,8 @@ public class UserDao {
 		st.setString(1, person.getEmail());
 		ResultSet rs = st.executeQuery();
 		int personId = -1;
-		if (rs.getRow() != 0)
-			personId = (int) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_PERSON_ID);
+		if(rs.next())
+			personId = rs.getInt(DbContract.PersonsTable.COLUMN_NAME_PERSON_ID);
 		return personId;
 	}
 	
@@ -250,8 +253,8 @@ public class UserDao {
 		st.setString(1, account.getUserName());
 		ResultSet rs = st.executeQuery();
 		int accountId = -1;
-		if (rs.getRow() != 0)
-			accountId = (int) rs.getObject(DbContract.AccountsTable.COLUMN_NAME_ID);
+		if (rs.next())
+			accountId = rs.getInt(DbContract.AccountsTable.COLUMN_NAME_ID);
 		return accountId;
 	}
 

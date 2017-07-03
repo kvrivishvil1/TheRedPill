@@ -14,7 +14,6 @@ function usernameFilled() {
 		document.getElementsByClassName("username-check")[0].innerHTML = "Username field must be filled";
 	} else {
 		var nm = $('.user-name').val();
-		console.log(nm);
 		$.ajax({
 			url: "RegisterServlet",
 			type: "get",
@@ -26,6 +25,7 @@ function usernameFilled() {
 				if(data == "true") {
 					document.getElementsByClassName("username-check")[0].innerHTML = "";
 				} else {
+					document.getElementsByClassName("username-check")[0].innerHTML = "User with this username is allready registered";
 				}
 			}
 			
@@ -37,7 +37,6 @@ function emailFilled() {
 	if(document.getElementsByClassName("email")[0].value=="") {
 		document.getElementsByClassName("email-check")[0].innerHTML = "Email field must be filled";
 	} else {
-		console.log($('.email').val());
 		$.ajax({
 			url: "RegisterServlet",
 			type: "get",

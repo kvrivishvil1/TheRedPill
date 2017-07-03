@@ -29,7 +29,7 @@
 				<div class="form-line">
 					<div class="formTitle">Choose your username</div>
 					<input type="text" name="username" class="user-name input-field"
-						onfocusout="usernameFilled()" placeholder="User name">
+						onfocusout="usernameFilled()" placeholder="Username">
 					<div class="username-check alert"></div>
 				</div>
 				<div class="form-line">
