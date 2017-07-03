@@ -5,16 +5,17 @@ import java.util.List;
 
 import db.bean.quiz.Answer;
 
-public class MultipleQuestion extends Question{
+public class FillTheBlankQuestion extends Question{
 	private String question;
 	private List<Answer> answers;
 	
+	
 	/**
-	 * Constructor for MultipleChoiceQuestion object 
+	 * Constructor for CompletionQuestion object 
 	 * @param question The question's text
 	 * @param answers The question's answers
 	 */
-	public MultipleQuestion(String question, List<Answer> answers){
+	public FillTheBlankQuestion (String question, List<Answer> answers){
 		this.question = question;
 		this.answers = answers;
 	}
@@ -30,8 +31,8 @@ public class MultipleQuestion extends Question{
 	}
 
 	@Override
-	public String getQuestionType() {
-		return "MultipleChoiceAnswer";
+	public int getQuestionType() {
+		return QuestionTypeContract.FILL_IN_THE_BLANK;
 	}
 
 }

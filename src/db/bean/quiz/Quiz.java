@@ -20,6 +20,7 @@ public class Quiz {
 
 	/**
 	 * Returns the name of quiz
+	 * 
 	 * @return The name of quiz
 	 */
 	public String getName() {
@@ -28,14 +29,16 @@ public class Quiz {
 
 	/**
 	 * Returns whether quiz questions are rearrangeable or not
+	 * 
 	 * @return true if they are, false otherwise.
 	 */
 	public boolean isRearrangable() {
 		return isRearrangable;
 	}
-	
+
 	/**
 	 * Returns whether quiz can be done in practice mode or not
+	 * 
 	 * @return true if it can be, false otherwise.
 	 */
 	public boolean isPracticable() {
@@ -44,6 +47,7 @@ public class Quiz {
 
 	/**
 	 * Returns all questions of quiz
+	 * 
 	 * @return The list of questions
 	 */
 	public List<Question> getAllQuestions() {
@@ -52,6 +56,7 @@ public class Quiz {
 
 	/**
 	 * Returns the number of questions in quiz
+	 * 
 	 * @return number of questions
 	 */
 	public int getNumQuestions() {
@@ -59,11 +64,12 @@ public class Quiz {
 	}
 
 	/**
-	 * Adds the new question into quiz 
-	 * @param newQuestion The question to add
+	 * Adds the new question into quiz
+	 * 
+	 * @param newQuestion
+	 *            The question to add
 	 */
 	public void addQuestion(Question newQuestion) {
 		questions.add(newQuestion);
 	}
-
 }

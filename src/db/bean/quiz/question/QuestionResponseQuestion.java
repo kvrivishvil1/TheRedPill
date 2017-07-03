@@ -5,7 +5,7 @@ import java.util.List;
 
 import db.bean.quiz.Answer;
 
-public class StandardTextQuestion extends Question{
+public class QuestionResponseQuestion extends Question{
 	private String question;
 	private List<Answer> answers;
 	
@@ -14,7 +14,7 @@ public class StandardTextQuestion extends Question{
 	 * @param question The question's text
 	 * @param answers The question's answers
 	 */
-	public StandardTextQuestion(String question, List<Answer> answers){
+	public QuestionResponseQuestion(String question, List<Answer> answers){
 		this.question = question;
 		this.answers = answers;
 	}
@@ -30,8 +30,8 @@ public class StandardTextQuestion extends Question{
 	}
 
 	@Override
-	public String getQuestionType() {
-		return "QuestionResponse";
+	public int getQuestionType() {
+		return QuestionTypeContract.QUESION_RESPONSE;
 	}
 
 }

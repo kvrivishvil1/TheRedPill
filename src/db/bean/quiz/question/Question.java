@@ -21,5 +21,5 @@ public abstract class Question {
 	 * Returns the type of the question
 	 * @return The type of the question
 	 */
-	public abstract String getQuestionType();
+	public abstract int getQuestionType();
 }

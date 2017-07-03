@@ -30,8 +30,8 @@ public class PictureResponseQuestion extends Question{
 	}
 
 	@Override
-	public String getQuestionType() {
-		return "PictureResponse";
+	public int getQuestionType() {
+		return QuestionTypeContract.PICTURE_RESPONCE;
 	}
 
 }

@@ -31,8 +31,8 @@ public class MultiAnswerQuestion extends Question{
 	}
 
 	@Override
-	public String getQuestionType() {
-		return "MultiAnswer";
+	public int getQuestionType() {
+		return QuestionTypeContract.MULTI_ANSWER;
 	}
 	
 }

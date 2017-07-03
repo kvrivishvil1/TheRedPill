@@ -52,4 +52,36 @@ public class DbContract {
 		public static final String COLUMN_NAME_PERSON_ID = "person_id";
 		public static final String COLUMN_NAME_ACCOUNT_ID = "account_id";
 	}
+	
+	/**
+	 * @author tamar
+	 * static class to have name agreements for Quizes table
+	 */
+	public class Quizes {
+		public static final String TABLE_NAME = "Quizes";
+		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
+		public static final String COLUMN_NAME_QUIZ_NAME = "quiz_name";
+		public static final String COLUMN_NAME_ISREARRANGABLE = "is_rearrangable";
+		public static final String COLUMN_NAME_ISPRACTICABLE = "is_practicable";
+	}
+
+	/**
+	 * @author tamar
+	 *static class to have name agreements for Questions table
+	 */
+	public class Questions{
+		public static final String TABLE_NAME = "Questions";
+		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
+		public static final String COLUMN_NAME_QUESTION_ID = "question_id";
+		public static final String COLUMN_NAME_QUESTION_TYPE = "question_type_id";
+		public static final String COLUMN_NAME_QUESTION ="question";
+	}
+	
+	public class Answers{
+		public static final String TABLE_NAME = "Answers";
+		public static final String COLUMN_NAME_ANSWER_ID = "answer_id";
+		public static final String COLUMN_NAME_QUESTION_ID = "question_id";
+		public static final String COLUMN_NAME_ANSWER_TYPE = "answer_type";
+		public static final String COLUMN_NAME_ANSWER ="answer";
+	}
 }

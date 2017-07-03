@@ -30,7 +30,7 @@ public class MatchingQuestion extends Question {
 	}
 
 	@Override
-	public String getQuestionType() {
-		return "Matching";
+	public int getQuestionType() {
+		return QuestionTypeContract.MATCHING_QUESTION;
 	}
 }

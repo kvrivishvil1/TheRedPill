@@ -30,8 +30,8 @@ public class MultipleChoiceQuestion extends Question {
 	}
 
 	@Override
-	public String getQuestionType() {
-		return "MultipleChoice";
+	public int getQuestionType() {
+		return QuestionTypeContract.MULTIPLE_CHOICE;
 	}
 
 }
