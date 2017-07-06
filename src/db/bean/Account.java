@@ -3,7 +3,7 @@ package db.bean;
 public class Account {
 	private String userName;
 	private String password;
-
+	public static final String SESSION_ATTRIBUTE_NAME = "account";
 	public Account(String userName, String password) {
 		this.userName = userName;
 		this.password = password;

@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import db.bean.Account;
 import db.dao.UserDao;
@@ -42,11 +43,10 @@ public class LoginServlet extends HttpServlet {
 			if (!userDataAccess.usernameIsAvailable(userName)) {
 				Account currentlySigningIn = userDataAccess.getAccount(userName);
 				if (currentlySigningIn.getPassword().equals(encryptedPassword)) {
-					saveLoginInfo(request, response);
+					saveLoginInfo(request, response,currentlySigningIn);
 					response.getWriter().print("{ 'success' : true, 'location' : 'homepage.jsp' }");
 				} else {
 					response.getWriter().write("{ 'success' : false, 'location' : 'unknown' }");
-//					response.getWriter().print(false);
 				}
 			} else {
 				response.getWriter().print("{ 'success' : false, 'location' : 'unknown' }");
@@ -66,9 +66,10 @@ public class LoginServlet extends HttpServlet {
 		
 	}
 
-	private void saveLoginInfo(HttpServletRequest request, HttpServletResponse response)
+	private void saveLoginInfo(HttpServletRequest request, HttpServletResponse response, Account currentAccount)
 			throws ServletException, IOException {
-		//will manage cookies and "stay logged in" state
+		HttpSession session = request.getSession(true);
+		session.setAttribute(Account.SESSION_ATTRIBUTE_NAME, currentAccount);
 	}
 
 }

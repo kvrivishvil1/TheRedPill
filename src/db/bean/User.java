@@ -3,7 +3,6 @@ package db.bean;
 public class User {
 	private Person person;
 	private Account account;
-
 	public User(Person person, Account account) {
 		this.person = person;
 		this.account = account;
