@@ -44,7 +44,8 @@ public class LoginServlet extends HttpServlet {
 				Account currentlySigningIn = userDataAccess.getAccount(userName);
 				if (currentlySigningIn.getPassword().equals(encryptedPassword)) {
 					saveLoginInfo(request, response,currentlySigningIn);
-					response.getWriter().print("{ 'success' : true, 'location' : 'homepage.jsp' }");
+					request.getSession().setAttribute("username", userName);
+					response.getWriter().print("{ 'success' : true, 'location' : 'profile.jsp' }");
 				} else {
 					response.getWriter().write("{ 'success' : false, 'location' : 'unknown' }");
 				}

@@ -92,6 +92,33 @@ public class UserDao {
 		return null;
 
 	}
+	
+	
+	/**
+	 * returns user's id number based on user name
+	 * @param username
+	 * @return id number of user
+	 * @throws SQLException
+	 */
+	public int getUserIdByUserName(String username) throws SQLException {
+		System.out.println("username " + username);
+		String query = "SELECT account_id FROM Accounts WHERE account_user_name = ?";
+		
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setString(1, username);
+			ResultSet rs = stm.executeQuery();
+			rs.last();
+			int result = rs.getInt("account_id");
+			System.out.println("hello " + result);
+			return result;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return -1;
+		
+	}
 
 	private String generateQueryForAccount() {
 		return "SELECT *, COUNT(1) as count FROM " + DbContract.AccountsTable.TABLE_NAME + " WHERE "
