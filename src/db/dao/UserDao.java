@@ -8,7 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+
+import org.apache.catalina.tribes.group.AbsoluteOrder.AbsoluteComparator;
 
 import db.DbContract;
 import db.MyDbInfo;
@@ -60,6 +63,25 @@ public class UserDao {
 		}
 		return null;
 	}
+	
+	public ArrayList<String> getAllUsernames() {
+		ArrayList<String> allUsers = new ArrayList<>();
+		String query = "Select " + DbContract.AccountsTable.COLUMN_NAME_USERNAME + " From " + DbContract.AccountsTable.TABLE_NAME;
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						allUsers.add(rs.getString(DbContract.AccountsTable.COLUMN_NAME_USERNAME));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return allUsers;
+	}
 
 	/**
 	 * returns Person object based on UserId (from Accounts table)
@@ -110,16 +132,13 @@ public class UserDao {
 			ResultSet rs = stm.executeQuery();
 			rs.last();
 			int result = rs.getInt("account_id");
-			System.out.println("hello " + result);
 			return result;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
 		return -1;
-		
 	}
-
+	
 	private String generateQueryForAccount() {
 		return "SELECT *, COUNT(1) as count FROM " + DbContract.AccountsTable.TABLE_NAME + " WHERE "
 				+ DbContract.AccountsTable.COLUMN_NAME_USERNAME + " like " + "?";
@@ -139,16 +158,31 @@ public class UserDao {
 				+ DbContract.PersonsTable.COLUMN_NAME_EMAIL + " like " + "?";
 	}
 	
+	/**
+	 * Checks if username is already in database
+	 * @param username username which must be checked in database
+	 * @return true if username isn't in database else return false
+	 */
 	public boolean usernameIsAvailable(String username) {
 		String sql = generateQueryForAccount();
 		return chechkIfAvailableInDatabase(sql, username);
 	}
 	
+	/**
+	 * Checks if email is already in database
+	 * @param email email which must be checked in database
+	 * @return true if email isn't in database else return false
+	 */
 	public boolean emailIsAvailable(String email) {
 		String sql = generateQueryForPerson1();
 		return chechkIfAvailableInDatabase(sql, email);
 	}
 
+	/**
+	 * @param executes this query 
+	 * @param compare string which must be set on ? in query
+	 * @return false if exists compare in database else true
+	 */
 	private boolean chechkIfAvailableInDatabase(String sql, String compare) {
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
 				Statement stmt = con.createStatement()) {
@@ -167,6 +201,8 @@ public class UserDao {
 		}
 		return true;
 	}
+	
+	
 
 	/**
 	 * Adds new person in database
@@ -176,7 +212,6 @@ public class UserDao {
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
 				Statement stmt = con.createStatement()) {
 			stmt.executeQuery("USE " + database);
-			DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
 			String sql = "INSERT INTO " + DbContract.PersonsTable.TABLE_NAME + "("
 					+ DbContract.PersonsTable.COLUMN_NAME_FIRSTNAME + ", "
 					+ DbContract.PersonsTable.COLUMN_NAME_LASTNAME + ", " 
