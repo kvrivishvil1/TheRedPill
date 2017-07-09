@@ -16,8 +16,8 @@ import db.DbContract;
 import db.MyDbInfo;
 import db.bean.quiz.Answer;
 import db.bean.quiz.Quiz;
-import db.bean.quiz.question.Question;
-import db.bean.quiz.question.QuestionTypeContract;
+import db.bean.quiz.Question;
+import db.bean.quiz.QuestionTypeContract;
 
 public class QuizDao {
 	private static final String database = MyDbInfo.MYSQL_DATABASE_NAME;

@@ -3,7 +3,7 @@ package db.bean.quiz;
 import java.util.ArrayList;
 import java.util.List;
 
-import db.bean.quiz.question.Question;
+import db.bean.quiz.Question;
 
 public class Quiz {
 	private String name;

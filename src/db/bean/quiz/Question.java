@@ -1,4 +1,4 @@
-package db.bean.quiz.question;
+package db.bean.quiz;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,25 +10,50 @@ public class Question {
 	private List<Option> options;
 	private int type;
 	private int questionID;
+	private boolean isOrderSensitive;
 
 	/**
 	 * Constructor for the Question object
-	 * @param type of the question
+	 * 
+	 * @param type
+	 *            of the question
 	 */
-	public Question(int type){
+	public Question(int type) {
 		this.type = type;
-		subquestions =  new ArrayList<Subquestion>();
-		options =  new ArrayList<Option>();
+		subquestions = new ArrayList<Subquestion>();
+		options = new ArrayList<Option>();
+		isOrderSensitive = false;
 	}
-	
+
+	/**
+	 * Sets question whether the answers should be listed as it's creator
+	 * entered or not
+	 * 
+	 * @param isOrderSensitive
+	 *            if question's answers are order sensitive or not.
+	 */
+	public void setOrderSensitive(boolean isOrderSensitive) {
+		this.isOrderSensitive = isOrderSensitive;
+	}
+
+	/**
+	 * Returns whether question's answers are order sensitive or not
+	 * 
+	 * @return true if it is order sensitive, false otherwise.
+	 */
+	public boolean isOrderSensitive() {
+		return isOrderSensitive;
+	}
+
 	/**
 	 * Set the note for the question
-	 * @param note 
+	 * 
+	 * @param note
 	 */
-	public void setNote(String note){
-		this.note = note;	
+	public void setNote(String note) {
+		this.note = note;
 	}
-	
+
 	/**
 	 * Returns the question's additional information
 	 * 
@@ -38,24 +63,26 @@ public class Question {
 		return note;
 	}
 
-	
 	/**
 	 * Adds subquestion to the question
 	 * 
-	 * @param subquestion which should be added
+	 * @param subquestion
+	 *            which should be added
 	 */
 	public void addSubquestion(Subquestion subquestion) {
 		subquestions.add(subquestion);
-	} 
-	
+	}
+
 	/**
 	 * Removes subquestion from the question
-	 * @param subquestion which should be removed
+	 * 
+	 * @param subquestion
+	 *            which should be removed
 	 */
-	public void removeSubquestion(Subquestion subquestion){
+	public void removeSubquestion(Subquestion subquestion) {
 		subquestions.remove(subquestion);
 	}
-	
+
 	/**
 	 * Returns the list of the question's subquestions
 	 * 
@@ -67,20 +94,24 @@ public class Question {
 
 	/**
 	 * Adds option to the question
-	 * @param option which should be added
+	 * 
+	 * @param option
+	 *            which should be added
 	 */
-	public void addOption(Option option){
+	public void addOption(Option option) {
 		options.add(option);
 	}
-	
+
 	/**
 	 * Removes option from the question
-	 * @param option which should be removed
+	 * 
+	 * @param option
+	 *            which should be removed
 	 */
-	public void removeOption(Option option){
+	public void removeOption(Option option) {
 		options.remove(option);
 	}
-	
+
 	/**
 	 * Returns the list of the answer options of the question
 	 * 
@@ -92,12 +123,14 @@ public class Question {
 
 	/**
 	 * Sets the type of the question
-	 * @param type of the question
+	 * 
+	 * @param type
+	 *            of the question
 	 */
-	public void setQuestionType(int type){
+	public void setQuestionType(int type) {
 		this.type = type;
 	}
-	
+
 	/**
 	 * Returns the type of the question
 	 * 
@@ -109,12 +142,14 @@ public class Question {
 
 	/**
 	 * Set the id for the question
-	 * @param questionID id of the question
+	 * 
+	 * @param questionID
+	 *            id of the question
 	 */
-	public void setQuestionID(int questionID){
+	public void setQuestionID(int questionID) {
 		this.questionID = questionID;
 	}
-	
+
 	/**
 	 * Returns the id of the question in database
 	 * 

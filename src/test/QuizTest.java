@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import db.bean.quiz.Answer;
 import db.bean.quiz.Quiz;
-import db.bean.quiz.question.Question;
+import db.bean.quiz.Question;
 
 public class QuizTest {
 	
@@ -51,7 +51,7 @@ public class QuizTest {
 		answers.add(first);
 		answers.add(second);
 		
-		 Question question = new Question(1);
+		Question question = new Question(1);
 		
 		quiz.addQuestion(question);
 		

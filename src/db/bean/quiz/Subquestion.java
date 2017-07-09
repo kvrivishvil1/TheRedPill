@@ -1,6 +1,7 @@
-package db.bean.quiz.question;
+package db.bean.quiz;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import db.bean.quiz.Answer;
@@ -43,18 +44,20 @@ public class Subquestion {
 	/**
 	 * Adds the answer for the subquestion
 	 * 
-	 * @param answer which should be added
+	 * @param answer
+	 *            which should be added
 	 */
 	public void addAnswer(Answer answer) {
 		answers.add(answer);
 	}
-	
-	
+
 	/**
 	 * Removes answer for the subquestion
-	 * @param answer which should be removed
+	 * 
+	 * @param answer
+	 *            which should be removed
 	 */
-	public void removeAnswer(Answer answer){
+	public void removeAnswer(Answer answer) {
 		answers.remove(answer);
 	}
 
@@ -86,11 +89,22 @@ public class Subquestion {
 	}
 
 	/**
-	 * Checks if the the user attested answers are correct
+	 * Counts the number of correct answers
 	 * 
-	 * @return true if they are correct, false otherwise.
+	 * @return The number of correct answers
 	 */
-	public boolean checkAnswers(ArrayList<String> attestAnswers) {
-		return true;
+	public int countCorrectAnswers(ArrayList<String> attestAnswers, int similarityPercentage) {
+		HashSet<Answer> checked = new HashSet<Answer>();
+		int numberOfCorrectAnswers = 0;
+		for (int i = 0; i < attestAnswers.size(); i++) {
+			for (int j = 0; j < answers.size(); j++) {
+				if (!checked.contains(answers.get(j))
+						&& answers.get(j).isCorrect(attestAnswers.get(i), similarityPercentage)) {
+					numberOfCorrectAnswers++;
+					checked.add(answers.get(j));
+				}
+			}
+		}
+		return numberOfCorrectAnswers;
 	}
 }

@@ -1,4 +1,4 @@
-package db.bean.quiz.question;
+package db.bean.quiz;
 
 /**
  * @author tamar question type enumeration agreement
