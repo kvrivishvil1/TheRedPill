@@ -155,9 +155,9 @@ public class MessageDao {
 
 	public void addAdministationNote(String header, String note) throws SQLException {
 		try (Connection connection = createConnection()) {
-			String query = "INSERT INTO " + DbContract.AdminNotifications.TABLE_NAME + " ( "
-					+ DbContract.AdminNotifications.COLUMN_NAME_NOTE_HEADER + " , "
-					+ DbContract.AdminNotifications.COLUMN_NAME_NOTE + " ) values ( ? , ? )";
+			String query = "INSERT INTO " + DbContract.adminNotificationsTable.TABLE_NAME + " ( "
+					+ DbContract.adminNotificationsTable.COLUMN_NAME_NOTE_HEADER + " , "
+					+ DbContract.adminNotificationsTable.COLUMN_NAME_NOTE + " ) values ( ? , ? )";
 			PreparedStatement stm = connection.prepareStatement(query);
 			stm.setString(1, header);
 			stm.setString(2, note);
