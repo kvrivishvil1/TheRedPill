@@ -64,6 +64,7 @@ public class DbContract {
 		public static final String COLUMN_NAME_ISREARRANGABLE = "is_rearrangable";
 		public static final String COLUMN_NAME_ISPRACTICABLE = "is_practicable";
 		public static final String COLUMN_NAME_DESCRIPTION = "Description";
+		public static final String COLUMN_NAME_CATEGORY_ID = "category_id";
 	}
 
 	/**
@@ -74,7 +75,8 @@ public class DbContract {
 		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
 		public static final String COLUMN_NAME_QUESTION_ID = "question_id";
 		public static final String COLUMN_NAME_QUESTION_TYPE = "question_type_id";
-		public static final String COLUMN_NAME_QUESTION_NOTE = "quesiton_note";
+		public static final String COLUMN_NAME_QUESTION_NOTE = "question_note";
+		public static final String COLUMN_NAME_ANSWER_ORDER_SENSITIVE = "answer_order_sensitivity";
 	}
 
 	/**
@@ -172,17 +174,6 @@ public class DbContract {
 		public static final String COLUMN_NAME_SCORE = "score";
 		public static final String COLUMN_NAME_START_TIME = "start_time";
 		public static final String COLUMN_NAME_FINISH_TIME = "finish_time";
-	}
-
-	/**
-	 * 
-	 * @author Mariami static class to have name agreements for quiz and
-	 *         category map table
-	 */
-	public class quizCategoryMap {
-		public static final String TABLE_NAME = "quiz_category_map";
-		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
-		public static final String COLUMN_NAME_CATEGORY_ID = "category_id";
 	}
 
 	/**

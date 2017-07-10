@@ -1,3 +1,4 @@
+drop database Quiz_Database;
 create database Quiz_Database;
 use Quiz_Database;
 
@@ -81,16 +82,14 @@ CREATE TABLE challenges (
 );
 
 
-
-
 CREATE TABLE quizzes (
     quiz_id INT NOT NULL AUTO_INCREMENT,
     quiz_name VARCHAR(100) NOT NULL,
     is_rearrangable BOOLEAN NOT NULL,
     is_practicable BOOLEAN NOT NULL,
     Description TEXT NOT NULL,
-    CONSTRAINT quizzes_pk PRIMARY KEY (quiz_id),
-    CONSTRAINT quizzes_uk UNIQUE (quiz_name)
+    category_id INT NOT NULL,
+    CONSTRAINT quizzes_pk PRIMARY KEY (quiz_id)
 );
 
 
@@ -110,6 +109,7 @@ CREATE TABLE questions (
     quiz_id INT NOT NULL,
     question_type_id INT NOT NULL,
     question_note TEXT NOT NULL,
+    answer_order_sensitivity BOOLEAN NOT NULL,
     CONSTRAINT questions_pk PRIMARY KEY (question_id),
     CONSTRAINT questions_fk1 FOREIGN KEY (quiz_id)
         REFERENCES quizzes (quiz_id),
@@ -122,12 +122,11 @@ CREATE TABLE questions (
 CREATE TABLE subquestions (
     subquestion_id INT NOT NULL AUTO_INCREMENT,
     question_id INT NOT NULL,
-    subqeuestion_text TEXT NOT NULL,
+    subquestion_text TEXT NOT NULL,
     CONSTRAINT subquestions_pk PRIMARY KEY (subquestion_id),
     CONSTRAINT subquestions_fk FOREIGN KEY (question_id)
         REFERENCES questions (question_id)
 );
-
 
 
 CREATE TABLE answer_subquestion_map (
@@ -144,7 +143,6 @@ CREATE TABLE answers (
     answer_id INT NOT NULL,
     answer_text TEXT NOT NULL,
     parser_symbol CHAR NOT NULL,
-    CONSTRAINT answers_pk PRIMARY KEY (answer_id),
     CONSTRAINT answers_fk FOREIGN KEY (answer_id)
         REFERENCES answer_subquestion_map (answer_id)
 );
@@ -153,10 +151,10 @@ CREATE TABLE answers (
 
 CREATE TABLE question_options (
     option_id INT NOT NULL AUTO_INCREMENT,
-    quiestion_id INT NOT NULL,
+    question_id INT NOT NULL,
     option_text TEXT NOT NULL,
     CONSTRAINT question_options_pk PRIMARY KEY (option_id),
-    CONSTRAINT question_options_fk FOREIGN KEY (quiestion_id)
+    CONSTRAINT question_options_fk FOREIGN KEY (question_id)
         REFERENCES questions (question_id)
 );
 
@@ -187,21 +185,11 @@ CREATE TABLE categories (
 );
 
 
-
-CREATE TABLE quiz_category_map (
-    quiz_id INT NOT NULL,
-    category_id INT NOT NULL,
-    CONSTRAINT quiz_category_map_fk1 FOREIGN KEY (quiz_id)
-        REFERENCES quizzes (quiz_id),
-    CONSTRAINT quiz_category_map_fk2 FOREIGN KEY (category_id)
-        REFERENCES categories (category_id)
-);
-
-
-
 CREATE TABLE quiz_tags (
+	tag_id INT NOT NULL AUTO_INCREMENT,
     quiz_id INT NOT NULL,
     tag_name VARCHAR(50) NOT NULL,
+     CONSTRAINT categories_pk PRIMARY KEY (tag_id),
     CONSTRAINT quiz_tag_fk1 FOREIGN KEY (quiz_id)
         REFERENCES quizzes (quiz_id)
 );
@@ -238,8 +226,6 @@ CREATE TABLE quiz_reports (
 );
 
 
-
-
 insert into categories
  (category_name, category_image_url)
 values
@@ -249,5 +235,13 @@ values
  ('Biology','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg'),
  ('Chemistry','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg');
 
-
-
+insert into question_types
+	(question_type_name)
+values
+	('QuestionResponseQuestion'),
+    ('FillTheBlankQuestion'),
+    ('MultipleChoiceQuestion'),
+    ('PictureResponseQuestion'),
+    ('MultiAnswerQuestion'),
+    ('MultipleChoiceMultipleAnswerQuestion'),
+    ('MatchingQuestion');

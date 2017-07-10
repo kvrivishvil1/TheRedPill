@@ -1,7 +1,5 @@
 package db.dao;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,9 +13,10 @@ import java.util.Map;
 import db.DbContract;
 import db.MyDbInfo;
 import db.bean.quiz.Answer;
+import db.bean.quiz.Option;
 import db.bean.quiz.Quiz;
+import db.bean.quiz.Subquestion;
 import db.bean.quiz.Question;
-import db.bean.quiz.QuestionTypeContract;
 
 public class QuizDao {
 	private static final String database = MyDbInfo.MYSQL_DATABASE_NAME;
@@ -45,25 +44,36 @@ public class QuizDao {
 		return connection;
 	}
 
+	// ----------- part of the program responsible for pushing quiz to database
 	/**
-	 * adds quiz, all its questions with their answers in database
+	 * adds quiz, all its questions, subquestions with their answers and options
+	 * in database
 	 * 
 	 * @param quiz
-	 *            quiz object which should be added
-	 * @return return type tells us whether insert was successful
+	 *            Quiz object to be added in database
+	 * @return return boolean tells us whether insert was successful
 	 * 
 	 * @throws SQLException
 	 */
-	/*
+
 	public boolean addQuiz(Quiz quiz) throws SQLException {
 		try (Connection connection = createConnection()) {
 			int lastQuizId = addQuizToDatabase(connection, quiz);
+			addTagsToQuizInDatabase(connection, quiz, lastQuizId);
 			List<Question> currentQuizQuestions = quiz.getAllQuestions();
 			for (Question currentQuestion : currentQuizQuestions) {
 				int lastQuestionId = addQuestionToDatabase(connection, currentQuestion, lastQuizId);
-				List<Answer> currentQuestionAnswers = currentQuestion.getAnswers();
-				for (Answer currentAnswer : currentQuestionAnswers) {
-					addAnswerToDatabase(connection, currentAnswer, lastQuestionId);
+				List<Subquestion> currentSubquestions = currentQuestion.getSubquestions();
+				for (Subquestion currentSubquestion : currentSubquestions) {
+					int lastSubquestionId = addSubquestionToDatabase(connection, currentSubquestion, lastQuestionId);
+					List<Answer> currentAnswers = currentSubquestion.getAnswers();
+					for (Answer currentAnswer : currentAnswers) {
+						addAnswerToDatabase(connection, currentAnswer, lastSubquestionId);
+					}
+				}
+				List<Option> curretntOptions = currentQuestion.getOptions();
+				for (Option currentOption : curretntOptions) {
+					addOptionToDatabase(connection, currentOption, lastQuestionId);
 				}
 			}
 			return true;
@@ -71,11 +81,71 @@ public class QuizDao {
 			e.printStackTrace();
 		}
 		return false;
-	}
-	*/
+	};
 
 	/**
-	 * adds single answer in database
+	 * 
+	 * adds all tags of a quiz in tags table in database
+	 * 
+	 * @param connection
+	 * @param quiz
+	 * @param lastQuizId
+	 * @throws SQLException
+	 */
+	private void addTagsToQuizInDatabase(Connection connection, Quiz quiz, int lastQuizId) throws SQLException {
+		String query = "INSERT INTO " + DbContract.quizTags.TABLE_NAME + " ( " + DbContract.quizTags.COLUMN_NAME_QUIZ_ID
+				+ " , " + DbContract.quizTags.COLUMN_NAME_TAG_NAME + " ) VALUES ( ? , ? )";
+
+		List<String> tags = quiz.getTags();
+		for (String tag : tags) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, lastQuizId);
+			stm.setString(2, tag);
+			stm.executeUpdate();
+		}
+	}
+
+	/**
+	 * gets category id from categories table
+	 * 
+	 * @param string
+	 * @param connection
+	 * @return
+	 * @throws SQLException
+	 */
+	private int selectCategory(String string, Connection connection) throws SQLException {
+		String query = "SELECT * FROM " + DbContract.categories.TABLE_NAME + " WHERE "
+				+ DbContract.categories.COLUMN_NAME_CATEGORY_NAME + " LIKE ?";
+		PreparedStatement stm = connection.prepareStatement(query);
+		stm.setString(1, string);
+		ResultSet rs = stm.executeQuery();
+		if (rs.next()) {
+			return rs.getInt(DbContract.categories.COLUMN_NAME_CATEGORY_ID);
+		}
+		return 0;
+	}
+
+	/**
+	 * adds single option in database
+	 * 
+	 * @param connection
+	 * @param currentOption
+	 * @param lastQuestionId
+	 * @throws SQLException
+	 */
+	private void addOptionToDatabase(Connection connection, Option currentOption, int lastQuestionId)
+			throws SQLException {
+		String query = "INSERT INTO " + DbContract.questionOptions.TABLE_NAME + " ( "
+				+ DbContract.questionOptions.COLUMN_NAME_QUESTION_ID + " , "
+				+ DbContract.questionOptions.COLUMN_NAME_OPTION_TEXT + " ) VALUES( ? , ? )";
+		PreparedStatement stm = connection.prepareStatement(query);
+		stm.setInt(1, lastQuestionId);
+		stm.setString(2, currentOption.getOption());
+		stm.executeUpdate();
+	}
+
+	/**
+	 * adds answers in database
 	 * 
 	 * @param connection
 	 *            JDBC connection
@@ -85,22 +155,70 @@ public class QuizDao {
 	 *            question id which the answer belongs to
 	 * @throws SQLException
 	 */
-	/*
-	private void addAnswerToDatabase(Connection connection, Answer currAnswer, int lastQuestionId) throws SQLException {
-		
-		 * String insertAnswerQuery = "INSERT INTO " + DbContract.answers.TABLE_NAME + " ( "
-				+ DbContract.answers.COLUMN_NAME_QUESTION_ID + " , " + DbContract.answers.COLUMN_NAME_ANSWER_TYPE
-				+ " , " + DbContract.answers.COLUMN_NAME_ANSWER + " ) values ( ? , ? , ? )";
-		PreparedStatement stm = connection.prepareStatement(insertAnswerQuery);
-		stm.setInt(1, lastQuestionId);
-		stm.setBoolean(2, currAnswer.isCorrect());
-		stm.setString(3, currAnswer.getAnswer());
-		stm.executeUpdate();
-		
+	private void addAnswerToDatabase(Connection connection, Answer currentAnswer, int lastSubquestionId)
+			throws SQLException {
+		int lastAnswerId = addPairInAnswerSubquestionMap(connection, lastSubquestionId);
+		String query = "INSERT INTO " + DbContract.answers.TABLE_NAME + " ( " + DbContract.answers.COLUMN_NAME_ANSWER_ID
+				+ " , " + DbContract.answers.COLUMN_NAME_ANSWER_TEXT + " , "
+				+ DbContract.answers.COLUMN_NAME_PARSER_SYMBOL + " ) values ( ? , ? , ? )";
+		for (String answerText : currentAnswer.getAnswers()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, lastAnswerId);
+			stm.setString(2, answerText);
+			stm.setString(3, "" + currentAnswer.getParserSymbol());
+			stm.executeUpdate();
+
+		}
 	}
-*/
-	
-	
+
+	/**
+	 * add answer id and subquestion id in mapping table
+	 * 
+	 * @param connection
+	 * @param lastSubquestionId
+	 * @return
+	 * @throws SQLException
+	 */
+	private int addPairInAnswerSubquestionMap(Connection connection, int lastSubquestionId) throws SQLException {
+		String query = "INSERT INTO " + DbContract.answerSubquestionMap.TABLE_NAME + " ( "
+				+ DbContract.answerSubquestionMap.COLUMN_NAME_SUBQUESTION_ID + " ) VALUES (?)";
+		PreparedStatement mappingStm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		mappingStm.setInt(1, lastSubquestionId);
+		mappingStm.executeUpdate();
+		int lastAnswerId = 0;
+		ResultSet rs = mappingStm.getGeneratedKeys();
+		if (rs.next()) {
+			lastAnswerId = rs.getInt(1);
+		}
+		return lastAnswerId;
+	}
+
+	/**
+	 * adds single subquestion in database
+	 * 
+	 * @param connection
+	 * @param currentSubquestion
+	 * @param lastQuestionId
+	 * @return integer, which represents id which the subquestion was added at
+	 * @throws SQLException
+	 */
+	private int addSubquestionToDatabase(Connection connection, Subquestion currentSubquestion, int lastQuestionId)
+			throws SQLException {
+		String query = "INSERT INTO " + DbContract.subquestions.TABLE_NAME + "( "
+				+ DbContract.subquestions.COLUMN_NAME_QUESTION_ID + " , " + ""
+				+ DbContract.subquestions.COLUMN_NAME_SUBQUESTION_TEXT + ") VALUES (? , ?)";
+		PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		stm.setInt(1, lastQuestionId);
+		stm.setString(2, currentSubquestion.getQuestion());
+		stm.executeUpdate();
+		int lastSubquestionId = 0;
+		ResultSet rs = stm.getGeneratedKeys();
+		if (rs.next()) {
+			lastSubquestionId = rs.getInt(1);
+		}
+		return lastSubquestionId;
+	}
+
 	/**
 	 * function adds single question in database *
 	 * 
@@ -110,22 +228,21 @@ public class QuizDao {
 	 *            question object
 	 * @param lastQuizId
 	 *            quiz id which the question belongs to
-	 * @return returns the unique id at which the question is added
+	 * @return returns the unique id which the question was added at
 	 * @throws SQLException
 	 * 
-	 * 
 	 */
-	/*
 	private int addQuestionToDatabase(Connection connection, Question currentQuestion, int lastQuizId)
 			throws SQLException {
-		String insertQuestionQuery = "INSERT INTO " + DbContract.Questions.TABLE_NAME + " ( "
+		String query = "INSERT INTO " + DbContract.Questions.TABLE_NAME + " ( "
 				+ DbContract.Questions.COLUMN_NAME_QUIZ_ID + " , " + DbContract.Questions.COLUMN_NAME_QUESTION_TYPE
-				+ " , " + DbContract.Questions.COLUMN_NAME_QUESTION + " ) values ( ? , ?, ? )";
-		System.out.println(insertQuestionQuery);
-		PreparedStatement stm = connection.prepareStatement(insertQuestionQuery, Statement.RETURN_GENERATED_KEYS);
+				+ " , " + DbContract.Questions.COLUMN_NAME_QUESTION_NOTE + " , "
+				+ DbContract.Questions.COLUMN_NAME_ANSWER_ORDER_SENSITIVE + " ) values ( ? , ? , ? , ? )";
+		PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		stm.setInt(1, lastQuizId);
 		stm.setInt(2, currentQuestion.getQuestionType());
-		stm.setString(3, currentQuestion.getQuestion());
+		stm.setString(3, currentQuestion.getNote());
+		stm.setBoolean(4, currentQuestion.isOrderSensitive());
 		stm.executeUpdate();
 		int lastQuestionId = 0;
 		ResultSet rs = stm.getGeneratedKeys();
@@ -134,7 +251,6 @@ public class QuizDao {
 		}
 		return lastQuestionId;
 	}
-	*/
 
 	/**
 	 * inserts Quiz in database
@@ -147,14 +263,17 @@ public class QuizDao {
 	 * @throws SQLException
 	 */
 	private int addQuizToDatabase(Connection connection, Quiz quiz) throws SQLException {
-		String insertQuizQuery = "INSERT INTO " + DbContract.quizzes.TABLE_NAME + " ( "
-				+ DbContract.quizzes.COLUMN_NAME_QUIZ_NAME + " , " + DbContract.quizzes.COLUMN_NAME_ISREARRANGABLE + " , "
-				+ DbContract.quizzes.COLUMN_NAME_ISPRACTICABLE + " ) values( ? , ? , ? )";
-		System.out.println(insertQuizQuery);
-		PreparedStatement stm = connection.prepareStatement(insertQuizQuery, Statement.RETURN_GENERATED_KEYS);
+		String query = "INSERT INTO " + DbContract.quizzes.TABLE_NAME + " ( " + DbContract.quizzes.COLUMN_NAME_QUIZ_NAME
+				+ " , " + DbContract.quizzes.COLUMN_NAME_ISREARRANGABLE + " , "
+				+ DbContract.quizzes.COLUMN_NAME_ISPRACTICABLE + " , " + DbContract.quizzes.COLUMN_NAME_DESCRIPTION
+				+ " , " + DbContract.quizzes.COLUMN_NAME_CATEGORY_ID + " ) values( ? , ? , ? , ? , ? )";
+
+		PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		stm.setString(1, quiz.getName());
 		stm.setBoolean(2, quiz.isRearrangable());
 		stm.setBoolean(3, quiz.isPracticable());
+		stm.setString(4, quiz.getDescription());
+		stm.setInt(5, selectCategory(quiz.getCategory(), connection));
 		stm.executeUpdate();
 		int lastQuizId = 0;
 		ResultSet rs = stm.getGeneratedKeys();
@@ -164,6 +283,8 @@ public class QuizDao {
 		return lastQuizId;
 	}
 
+	// -------- part of the program responsible for pulling quiz from DB
+
 	/**
 	 * pulls and returns quiz object from database
 	 * 
@@ -171,10 +292,11 @@ public class QuizDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	/*
 	public Quiz getQuiz(int quizId) throws SQLException {
+
 		try (Connection connection = createConnection()) {
-			Quiz currentQuiz = selectQuizFromDatabase(connection, quizId);
+			Quiz currentQuiz = selectQuizFromDatabase(connection, quizId);// check
+			addTagsToQuiz(currentQuiz, connection, quizId);// check
 			addQuestionsToQuiz(currentQuiz, connection, quizId);
 			return currentQuiz;
 		} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
@@ -182,7 +304,27 @@ public class QuizDao {
 		}
 		return null;
 	}
-*/
+
+	/**
+	 * pulls data from database representing tags of the given quiz
+	 * 
+	 * @param currentQuiz
+	 * @param connection
+	 * @param quizId
+	 * @throws SQLException
+	 */
+	private void addTagsToQuiz(Quiz currentQuiz, Connection connection, int quizId) throws SQLException {
+		String query = "SELECT * FROM " + DbContract.quizTags.TABLE_NAME + " WHERE "
+				+ DbContract.quizTags.COLUMN_NAME_QUIZ_ID + " = ?";
+		PreparedStatement stm = connection.prepareStatement(query);
+		stm.setInt(1, quizId);
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			currentQuiz.addTag(rs.getString(DbContract.quizTags.COLUMN_NAME_TAG_NAME));
+		}
+
+	}
+
 	/**
 	 * pulls questions by quiz id and adds them to quiz object
 	 * 
@@ -191,86 +333,219 @@ public class QuizDao {
 	 * @param quizId
 	 * @throws SQLException
 	 */
-	/*
 	private void addQuestionsToQuiz(Quiz currentQuiz, Connection connection, int quizId) throws SQLException {
-		String selectQuestionsQuery = "SELECT * FROM " + DbContract.Questions.TABLE_NAME + " WHERE "
+		String query = "SELECT * FROM " + DbContract.Questions.TABLE_NAME + " WHERE "
 				+ DbContract.Questions.COLUMN_NAME_QUIZ_ID + " = ?";
-		PreparedStatement stm = connection.prepareStatement(selectQuestionsQuery);
+		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, quizId);
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
-			int type = rs.getInt(DbContract.Questions.COLUMN_NAME_QUESTION_TYPE);
+			int typeId = rs.getInt(DbContract.Questions.COLUMN_NAME_QUESTION_TYPE);
 			int questionId = rs.getInt(DbContract.Questions.COLUMN_NAME_QUESTION_ID);
-			try {
-				// create desired Question object by reflection
-				Class<?> cl = Class.forName("db.bean.quiz.question." + QuestionTypeContract.getClassName(type));
-				Constructor<?> cons = cl.getConstructor(String.class, List.class);
-				List<Answer> currentQuestionAnswers = selectAnswers(connection, questionId);
-				Object o = cons.newInstance(rs.getString(DbContract.Questions.COLUMN_NAME_QUESTION),
-						currentQuestionAnswers);
-				currentQuiz.addQuestion((Question) o);
-			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
-					| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
-
+			Question question = new Question(typeId);
+			addOptionsToQuestion(connection, questionId, question);
+			addDetailsToQuestion(connection, questionId, question);
+			addSubquestionsToQuestion(connection, questionId, question);
+			currentQuiz.addQuestion(question);
 		}
 	}
-*/
-	
+
 	/**
-	 * pulls answers for desired question id and returns their list
+	 * pulls data from database representing subquestions of the given question
 	 * 
 	 * @param connection
 	 * @param questionId
-	 * @return
+	 * @param question
 	 * @throws SQLException
 	 */
-	/*
-	private List<Answer> selectAnswers(Connection connection, int questionId) throws SQLException {
-		String answersQuery = "SELECT * FROM " + DbContract.answers.TABLE_NAME + " WHERE "
-				+ DbContract.answers.COLUMN_NAME_QUESTION_ID + " = ?";
-		PreparedStatement answerStm = connection.prepareStatement(answersQuery);
-		answerStm.setInt(1, questionId);
-		ResultSet rs = answerStm.executeQuery();
-		List<Answer> currentQuestionAnswers = new ArrayList<>();
+	private void addSubquestionsToQuestion(Connection connection, int questionId, Question question)
+			throws SQLException {
+		String query = "SELECT * FROM " + DbContract.subquestions.TABLE_NAME + " WHERE "
+				+ DbContract.subquestions.COLUMN_NAME_QUESTION_ID + " = ?";
+		PreparedStatement stm = connection.prepareStatement(query);
+		stm.setInt(1, questionId);
+		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
-			Answer currentAnswer = new Answer(rs.getString(DbContract.Answers.COLUMN_NAME_ANSWER),
-					rs.getBoolean(DbContract.answers.COLUMN_NAME_ANSWER_TYPE));
-			currentQuestionAnswers.add(currentAnswer);
+			Subquestion subquestion = new Subquestion(
+					rs.getString(DbContract.subquestions.COLUMN_NAME_SUBQUESTION_TEXT));
+			subquestion.setSubquestionID(rs.getInt(DbContract.subquestions.COLUMN_NAME_SUBQUESTION_ID));
+			addAnswersToSubQuestion(subquestion, subquestion.getSubquestionID(), connection);
+			question.addSubquestion(subquestion);
 		}
-		return currentQuestionAnswers;
 	}
-*/
+
+	/**
+	 * pulls data from map table, which connects answer and subquestion
+	 * 
+	 * @param subquestion
+	 * @param subquestionID
+	 * @param connection
+	 * @throws SQLException
+	 */
+	private void addAnswersToSubQuestion(Subquestion subquestion, int subquestionID, Connection connection)
+			throws SQLException {
+		String query = "SELECT * FROM " + DbContract.answerSubquestionMap.TABLE_NAME + " WHERE "
+				+ DbContract.answerSubquestionMap.COLUMN_NAME_SUBQUESTION_ID + " = ?";
+		PreparedStatement stm = connection.prepareStatement(query);
+		stm.setInt(1, subquestionID);
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			int answerId = rs.getInt(DbContract.answerSubquestionMap.COLUMN_NAME_ANSWER_ID);
+			addAnswerToSubquestion(subquestion, answerId, connection);
+		}
+	}
+
+	/**
+	 * 
+	 * pulls data from database representing answers of the ginven subquestion
+	 * 
+	 * @param subquestion
+	 * @param answerId
+	 * @param connection
+	 * @throws SQLException
+	 */
+	private void addAnswerToSubquestion(Subquestion subquestion, int answerId, Connection connection)
+			throws SQLException {
+		String query = "SELECT * FROM " + DbContract.answers.TABLE_NAME + " WHERE "
+				+ DbContract.answers.COLUMN_NAME_ANSWER_ID + " = ?";
+		PreparedStatement stm = connection.prepareStatement(query);
+		stm.setInt(1, answerId);
+		ResultSet rs = stm.executeQuery();
+		List<String> answers = new ArrayList<>();
+		char parserSymbol = 0;
+		while (rs.next()) {
+			parserSymbol = rs.getString(DbContract.answers.COLUMN_NAME_PARSER_SYMBOL).charAt(0);
+			answers.add(rs.getString(DbContract.answers.COLUMN_NAME_ANSWER_TEXT));
+		}
+		Answer answer = new Answer(answers);
+		answer.setParserSymbol(parserSymbol);
+		answer.setAnswerID(answerId);
+		subquestion.addAnswer(answer);
+	}
+
+	/**
+	 * add order sensitivity, id and note to given question
+	 * 
+	 * @param connection
+	 * @param questionId
+	 * @param question
+	 * @throws SQLException
+	 */
+	private void addDetailsToQuestion(Connection connection, int questionId, Question question) throws SQLException {
+		question.setQuestionID(questionId);
+		String query = "SELECT * FROM " + DbContract.Questions.TABLE_NAME + " WHERE "
+				+ DbContract.Questions.COLUMN_NAME_QUESTION_ID + " = ?";
+		PreparedStatement stm = connection.prepareStatement(query);
+		stm.setInt(1, questionId);
+		ResultSet rs = stm.executeQuery();
+		if (rs.next()) {
+			question.setOrderSensitive(rs.getBoolean(DbContract.Questions.COLUMN_NAME_ANSWER_ORDER_SENSITIVE));
+			question.setNote(rs.getString(DbContract.Questions.COLUMN_NAME_QUESTION_NOTE));
+		}
+
+	}
+
+	/**
+	 * adds options of the question in database
+	 * 
+	 * @param connection
+	 * @param questionId
+	 * @param question
+	 * @throws SQLException
+	 */
+	private void addOptionsToQuestion(Connection connection, int questionId, Question question) throws SQLException {
+		String query = "SELECT * FROM " + DbContract.questionOptions.TABLE_NAME + " WHERE "
+				+ DbContract.questionOptions.COLUMN_NAME_QUESTION_ID + " = ?";
+		PreparedStatement stm = connection.prepareStatement(query);
+		stm.setInt(1, questionId);
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			Option option = new Option(rs.getString(DbContract.questionOptions.COLUMN_NAME_OPTION_TEXT));
+			question.addOption(option);
+		}
+	}
+
+	/**
+	 * @param typeId
+	 * @return string representing type name of the given id
+	 * @throws SQLException
+	 */
+	public String getTypeByTypeId(int typeId) throws SQLException {
+		try (Connection connection = createConnection()) {
+			String query = "SELECT * FROM " + DbContract.quiestionTypes.TABLE_NAME + " WHERE "
+					+ DbContract.quiestionTypes.COLUMN_NAME_QUESTION_TYPE_ID + " = ?";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, typeId);
+			ResultSet rs = stm.executeQuery();
+			if (rs.next()) {
+				return rs.getString(DbContract.quiestionTypes.COLUMN_NAME_QUESTION_TYPE_NAME);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
 	 * pulls quiz info from database and creates quiz object
+	 * 
 	 * @param connection
 	 * @param quizId
 	 * @return
 	 * @throws SQLException
 	 */
-	/*
 	private Quiz selectQuizFromDatabase(Connection connection, int quizId) throws SQLException {
-		String selectQuizQuery = "SELECT * FROM " + DbContract.quizzes.TABLE_NAME + " WHERE "
+		String query = "SELECT * FROM " + DbContract.quizzes.TABLE_NAME + " WHERE "
 				+ DbContract.quizzes.COLUMN_NAME_QUIZ_ID + " = ?";
-		PreparedStatement stm = connection.prepareStatement(selectQuizQuery);
+
+		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, quizId);
 		ResultSet rs = stm.executeQuery();
+
 		if (rs.next()) {
-			return new Quiz(rs.getString(DbContract.quizzes.COLUMN_NAME_QUIZ_NAME),
-					rs.getBoolean(DbContract.quizzes.COLUMN_NAME_ISPRACTICABLE),
-					rs.getBoolean(DbContract.quizzes.COLUMN_NAME_ISREARRANGABLE));
+			int categoryId = rs.getInt(DbContract.quizzes.COLUMN_NAME_CATEGORY_ID);
+			String category = selectCategoryName(categoryId);
+			String name = rs.getString(DbContract.quizzes.COLUMN_NAME_QUIZ_NAME);
+			String description = rs.getString(DbContract.quizzes.COLUMN_NAME_DESCRIPTION);
+			boolean isRearrangable = rs.getBoolean(DbContract.quizzes.COLUMN_NAME_ISREARRANGABLE);
+			boolean isPracticable = rs.getBoolean(DbContract.quizzes.COLUMN_NAME_ISPRACTICABLE);
+			Quiz quiz = new Quiz(name, category);
+			quiz.setDescription(description);
+			quiz.setPracticableMode(isPracticable);
+			quiz.setRearrangableMode(isRearrangable);
+			return quiz;
 		}
 		return null;
 	}
-*/
+
 	/**
-	 * returns hashMap including id - name pairs for all quizes
+	 * returns string representing name of category of the given id
 	 * 
+	 * @param categoryId
 	 * @return
 	 * @throws SQLException
 	 */
+	public String selectCategoryName(int categoryId) throws SQLException {
+		try (Connection connection = createConnection()) {
+			String query = "SELECT * FROM " + DbContract.categories.TABLE_NAME + " WHERE "
+					+ DbContract.categories.COLUMN_NAME_CATEGORY_ID + " = ?";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setLong(1, categoryId);
+			ResultSet rs = stm.executeQuery();
+			String categoryName = null;
+			if (rs.next()) {
+				categoryName = rs.getString(DbContract.categories.COLUMN_NAME_CATEGORY_NAME);
+			}
+			return categoryName;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
+	 * returns hashMap including id - name pairs for all quizes
+	 * 
 	 * @return
 	 * @throws SQLException
 	 */

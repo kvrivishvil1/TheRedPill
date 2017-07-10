@@ -1,9 +1,11 @@
 package db.bean.quiz;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import db.bean.quiz.Question;
+import db.dao.QuizDao;
 
 public class Quiz {
 	private String name;
@@ -24,14 +26,16 @@ public class Quiz {
 
 	/**
 	 * Sets the name of the quiz
-	 * @param name of the quiz
+	 * 
+	 * @param name
+	 *            of the quiz
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * Returns the name of  the quiz
+	 * Returns the name of the quiz
 	 * 
 	 * @return The name of quiz
 	 */
@@ -42,7 +46,8 @@ public class Quiz {
 	/**
 	 * Sets quiz questions are rearrangeable or not
 	 * 
-	 * @param true if it is rearrange, false otherwise
+	 * @param true
+	 *            if it is rearrange, false otherwise
 	 */
 	public void setRearrangableMode(boolean isRearrangable) {
 		this.isRearrangable = isRearrangable;
@@ -60,7 +65,8 @@ public class Quiz {
 	/**
 	 * Sets quiz questions are rearrangeable or not
 	 * 
-	 * @param true if it is practicable, false otherwise.
+	 * @param true
+	 *            if it is practicable, false otherwise.
 	 */
 	public void setPracticableMode(boolean isPracticable) {
 		this.isPracticable = isPracticable;
@@ -106,7 +112,8 @@ public class Quiz {
 	/**
 	 * Sets description for the quiz
 	 * 
-	 * @param description, The text of the quiz description
+	 * @param description,
+	 *            The text of the quiz description
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -124,7 +131,8 @@ public class Quiz {
 	/**
 	 * Sets the time limit for the quiz
 	 * 
-	 * @param timeLimit Time which should be the limit for the quiz
+	 * @param timeLimit
+	 *            Time which should be the limit for the quiz
 	 */
 	public void setTimeLimit(long timeLimit) {
 		this.timeLimit = timeLimit;
@@ -142,7 +150,8 @@ public class Quiz {
 	/**
 	 * Sets category information for the quiz
 	 * 
-	 * @param category The name of the quiz category
+	 * @param category
+	 *            The name of the quiz category
 	 */
 	public void setCategory(String category) {
 		this.category = category;
@@ -160,16 +169,20 @@ public class Quiz {
 	/**
 	 * Adds tag for the quiz's tags
 	 * 
-	 * @param tag The name of the tag which should be added
+	 * @param tag
+	 *            The name of the tag which should be added
 	 */
 	public void addTag(String tag) {
 		tags.add(tag);
 	}
+
 	/**
 	 * Removes tag from the quiz's tags
-	 * @param tag The name of the tag which should be removed
+	 * 
+	 * @param tag
+	 *            The name of the tag which should be removed
 	 */
-	public void removeTag(String tag){
+	public void removeTag(String tag) {
 		tags.remove(tag);
 	}
 
