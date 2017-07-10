@@ -245,3 +245,12 @@ values
     ('MultiAnswerQuestion'),
     ('MultipleChoiceMultipleAnswerQuestion'),
     ('MatchingQuestion');
+
+    
+CREATE TABLE Admin_notifications(
+	note_id INT NOT NULL AUTO_INCREMENT,
+	note_header TEXT NOT NULL,
+	note TEXT NOT NULL,
+	CONSTRAINT admin_notifications_pk PRIMARY KEY (note_id)
+);
+

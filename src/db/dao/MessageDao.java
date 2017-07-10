@@ -20,6 +20,7 @@ public class MessageDao {
 	private static String password = MyDbInfo.MYSQL_PASSWORD;
 	private static String server = MyDbInfo.MYSQL_DATABASE_SERVER;
 	private static String database = MyDbInfo.MYSQL_DATABASE_NAME;
+	public static String CONTEXT_ATTRIBUTE_NAME = "messageDataAccess";
 
 	public MessageDao() {
 		try {
@@ -152,4 +153,24 @@ public class MessageDao {
 		return result;
 	}
 
+	public void addAdministationNote(String header, String note) throws SQLException {
+		try (Connection connection = createConnection()) {
+			String query = "INSERT INTO " + DbContract.AdminNotifications.TABLE_NAME + " ( "
+					+ DbContract.AdminNotifications.COLUMN_NAME_NOTE_HEADER + " , "
+					+ DbContract.AdminNotifications.COLUMN_NAME_NOTE + " ) values ( ? , ? )";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setString(1, header);
+			stm.setString(2, note);
+			stm.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Connection createConnection() throws ClassNotFoundException, SQLException {
+		Connection connection = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+		Statement stm = connection.createStatement();
+		stm.executeQuery("USE " + database);
+		return connection;
+	}
 }

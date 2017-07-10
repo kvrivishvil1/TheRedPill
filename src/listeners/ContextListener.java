@@ -4,6 +4,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import db.dao.MessageDao;
+import db.dao.QuizDao;
 import db.dao.UserDao;
 
 /**
@@ -13,6 +15,8 @@ import db.dao.UserDao;
 @WebListener
 public class ContextListener implements ServletContextListener {
 	UserDao userDataAccess;
+	QuizDao quizDataAccess;
+	MessageDao messageDataAccess;
 
 	/**
 	 * Default constructor.
@@ -34,6 +38,10 @@ public class ContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		userDataAccess = new UserDao();
 		arg0.getServletContext().setAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME, userDataAccess);
+		quizDataAccess = new QuizDao();
+		arg0.getServletContext().setAttribute(QuizDao.CONTEXT_ATTRIBUTE_NAME, quizDataAccess);
+		messageDataAccess = new MessageDao();
+		arg0.getServletContext().setAttribute(MessageDao.CONTEXT_ATTRIBUTE_NAME, messageDataAccess);
 	}
 
 }

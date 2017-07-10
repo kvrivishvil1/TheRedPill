@@ -23,7 +23,8 @@ public class QuizDao {
 	private static final String account = MyDbInfo.MYSQL_USERNAME;
 	private static final String password = MyDbInfo.MYSQL_PASSWORD;
 	private static final String server = MyDbInfo.MYSQL_DATABASE_SERVER;
-
+	public static final String CONTEXT_ATTRIBUTE_NAME = "quizDataAccess";
+	
 	public QuizDao() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -549,9 +550,9 @@ public class QuizDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Map<Integer, String> getAllQuizzes() throws SQLException {
+	public HashMap<Integer, String> getAllQuizzes() throws SQLException {
 		try (Connection connection = createConnection()) {
-			Map<Integer, String> quizes = new HashMap<>();
+			HashMap<Integer, String> quizes = new HashMap<>();
 			String query = "SELECT " + DbContract.quizzes.COLUMN_NAME_QUIZ_ID + " , "
 					+ DbContract.quizzes.COLUMN_NAME_QUIZ_NAME + " FROM " + DbContract.quizzes.TABLE_NAME;
 			PreparedStatement stm = connection.prepareStatement(query);
@@ -567,4 +568,18 @@ public class QuizDao {
 		}
 		return null;
 	}
+	public long getNumQuizes() throws SQLException {
+		try (Connection connection = createConnection()) {
+			String query = "SELECT * FROM " + DbContract.quizzes.TABLE_NAME;
+			PreparedStatement stm = connection.prepareStatement(query);
+			ResultSet rs = stm.executeQuery();
+			rs.last();
+			return rs.getRow();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	
 }

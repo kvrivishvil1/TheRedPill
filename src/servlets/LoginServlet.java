@@ -40,10 +40,18 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		String encryptedPassword = PasswordEncryptor.encrypt(password);
 		try {
+
+			// if administrator is signing in
+			if (password.equals("tamuna123") && userName.equals("admin")) {
+				request.getSession().setAttribute("username", userName);
+				response.getWriter().print("{ 'success' : true, 'location' : 'administration.jsp' }");
+				return;
+			}
 			if (!userDataAccess.usernameIsAvailable(userName)) {
 				Account currentlySigningIn = userDataAccess.getAccount(userName);
+
 				if (currentlySigningIn.getPassword().equals(encryptedPassword)) {
-					saveLoginInfo(request, response,currentlySigningIn);
+					saveLoginInfo(request, response, currentlySigningIn);
 					request.getSession().setAttribute("username", userName);
 					response.getWriter().print("{ 'success' : true, 'location' : 'profile.jsp' }");
 				} else {
@@ -64,7 +72,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 	}
 
 	private void saveLoginInfo(HttpServletRequest request, HttpServletResponse response, Account currentAccount)

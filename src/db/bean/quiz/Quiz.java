@@ -1,11 +1,8 @@
 package db.bean.quiz;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import db.bean.quiz.Question;
-import db.dao.QuizDao;
 
 public class Quiz {
 	private String name;

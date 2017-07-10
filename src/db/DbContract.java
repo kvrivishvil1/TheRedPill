@@ -226,5 +226,12 @@ public class DbContract {
 		public static final String COLUMN_NAME_QUESTION_TYPE_ID = "question_type_id";
 		public static final String COLUMN_NAME_QUESTION_TYPE_NAME = "question_type_name";
 	}
-
+	
+	public class AdminNotifications{
+		public static final String TABLE_NAME = "Admin_notifications";
+		public static final String COLUMN_NAME_NOTE_ID = "note_id";
+		public static final String COLUMN_NAME_ADMIN_ID = "admin_id";
+		public static final String COLUMN_NAME_NOTE_HEADER = "note_header";
+		public static final String COLUMN_NAME_NOTE = "note";
+	}
 }
