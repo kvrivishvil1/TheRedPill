@@ -45,7 +45,7 @@ CREATE TABLE friends (
     CONSTRAINT friends_pk PRIMARY KEY (friend_id),
     CONSTRAINT friends_fk1 FOREIGN KEY (account_first)
         REFERENCES accounts (account_id),
-    CONSTRAINT freinds_fk2 FOREIGN KEY (account_second)
+    CONSTRAINT friends_fk2 FOREIGN KEY (account_second)
         REFERENCES accounts (account_id)
 );
 
@@ -87,7 +87,7 @@ CREATE TABLE quizzes (
     quiz_name VARCHAR(100) NOT NULL,
     is_rearrangable BOOLEAN NOT NULL,
     is_practicable BOOLEAN NOT NULL,
-    Description TEXT NOT NULL,
+    description TEXT NOT NULL,
     category_id INT NOT NULL,
     CONSTRAINT quizzes_pk PRIMARY KEY (quiz_id)
 );
@@ -247,7 +247,7 @@ values
     ('MatchingQuestion');
 
     
-CREATE TABLE Admin_notifications(
+CREATE TABLE admin_notifications(
 	note_id INT NOT NULL AUTO_INCREMENT,
 	note_header TEXT NOT NULL,
 	note TEXT NOT NULL,

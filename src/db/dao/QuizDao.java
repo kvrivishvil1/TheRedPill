@@ -94,8 +94,8 @@ public class QuizDao {
 	 * @throws SQLException
 	 */
 	private void addTagsToQuizInDatabase(Connection connection, Quiz quiz, int lastQuizId) throws SQLException {
-		String query = "INSERT INTO " + DbContract.quizTags.TABLE_NAME + " ( " + DbContract.quizTags.COLUMN_NAME_QUIZ_ID
-				+ " , " + DbContract.quizTags.COLUMN_NAME_TAG_NAME + " ) VALUES ( ? , ? )";
+		String query = "INSERT INTO " + DbContract.quizTagsTable.TABLE_NAME + " ( " + DbContract.quizTagsTable.COLUMN_NAME_QUIZ_ID
+				+ " , " + DbContract.quizTagsTable.COLUMN_NAME_TAG_NAME + " ) VALUES ( ? , ? )";
 
 		List<String> tags = quiz.getTags();
 		for (String tag : tags) {
@@ -115,13 +115,13 @@ public class QuizDao {
 	 * @throws SQLException
 	 */
 	private int selectCategory(String string, Connection connection) throws SQLException {
-		String query = "SELECT * FROM " + DbContract.categories.TABLE_NAME + " WHERE "
-				+ DbContract.categories.COLUMN_NAME_CATEGORY_NAME + " LIKE ?";
+		String query = "SELECT * FROM " + DbContract.categoriesTable.TABLE_NAME + " WHERE "
+				+ DbContract.categoriesTable.COLUMN_NAME_CATEGORY_NAME + " LIKE ?";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setString(1, string);
 		ResultSet rs = stm.executeQuery();
 		if (rs.next()) {
-			return rs.getInt(DbContract.categories.COLUMN_NAME_CATEGORY_ID);
+			return rs.getInt(DbContract.categoriesTable.COLUMN_NAME_CATEGORY_ID);
 		}
 		return 0;
 	}
@@ -136,9 +136,9 @@ public class QuizDao {
 	 */
 	private void addOptionToDatabase(Connection connection, Option currentOption, int lastQuestionId)
 			throws SQLException {
-		String query = "INSERT INTO " + DbContract.questionOptions.TABLE_NAME + " ( "
-				+ DbContract.questionOptions.COLUMN_NAME_QUESTION_ID + " , "
-				+ DbContract.questionOptions.COLUMN_NAME_OPTION_TEXT + " ) VALUES( ? , ? )";
+		String query = "INSERT INTO " + DbContract.questionOptionsTable.TABLE_NAME + " ( "
+				+ DbContract.questionOptionsTable.COLUMN_NAME_QUESTION_ID + " , "
+				+ DbContract.questionOptionsTable.COLUMN_NAME_OPTION_TEXT + " ) VALUES( ? , ? )";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, lastQuestionId);
 		stm.setString(2, currentOption.getOption());
@@ -159,9 +159,9 @@ public class QuizDao {
 	private void addAnswerToDatabase(Connection connection, Answer currentAnswer, int lastSubquestionId)
 			throws SQLException {
 		int lastAnswerId = addPairInAnswerSubquestionMap(connection, lastSubquestionId);
-		String query = "INSERT INTO " + DbContract.answers.TABLE_NAME + " ( " + DbContract.answers.COLUMN_NAME_ANSWER_ID
-				+ " , " + DbContract.answers.COLUMN_NAME_ANSWER_TEXT + " , "
-				+ DbContract.answers.COLUMN_NAME_PARSER_SYMBOL + " ) values ( ? , ? , ? )";
+		String query = "INSERT INTO " + DbContract.answersTable.TABLE_NAME + " ( " + DbContract.answersTable.COLUMN_NAME_ANSWER_ID
+				+ " , " + DbContract.answersTable.COLUMN_NAME_ANSWER_TEXT + " , "
+				+ DbContract.answersTable.COLUMN_NAME_PARSER_SYMBOL + " ) values ( ? , ? , ? )";
 		for (String answerText : currentAnswer.getAnswers()) {
 			PreparedStatement stm = connection.prepareStatement(query);
 			stm.setInt(1, lastAnswerId);
@@ -181,8 +181,8 @@ public class QuizDao {
 	 * @throws SQLException
 	 */
 	private int addPairInAnswerSubquestionMap(Connection connection, int lastSubquestionId) throws SQLException {
-		String query = "INSERT INTO " + DbContract.answerSubquestionMap.TABLE_NAME + " ( "
-				+ DbContract.answerSubquestionMap.COLUMN_NAME_SUBQUESTION_ID + " ) VALUES (?)";
+		String query = "INSERT INTO " + DbContract.answerSubquestionMapTable.TABLE_NAME + " ( "
+				+ DbContract.answerSubquestionMapTable.COLUMN_NAME_SUBQUESTION_ID + " ) VALUES (?)";
 		PreparedStatement mappingStm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		mappingStm.setInt(1, lastSubquestionId);
 		mappingStm.executeUpdate();
@@ -205,9 +205,9 @@ public class QuizDao {
 	 */
 	private int addSubquestionToDatabase(Connection connection, Subquestion currentSubquestion, int lastQuestionId)
 			throws SQLException {
-		String query = "INSERT INTO " + DbContract.subquestions.TABLE_NAME + "( "
-				+ DbContract.subquestions.COLUMN_NAME_QUESTION_ID + " , " + ""
-				+ DbContract.subquestions.COLUMN_NAME_SUBQUESTION_TEXT + ") VALUES (? , ?)";
+		String query = "INSERT INTO " + DbContract.subquestionsTable.TABLE_NAME + "( "
+				+ DbContract.subquestionsTable.COLUMN_NAME_QUESTION_ID + " , " + ""
+				+ DbContract.subquestionsTable.COLUMN_NAME_SUBQUESTION_TEXT + ") VALUES (? , ?)";
 		PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		stm.setInt(1, lastQuestionId);
 		stm.setString(2, currentSubquestion.getQuestion());
@@ -235,10 +235,10 @@ public class QuizDao {
 	 */
 	private int addQuestionToDatabase(Connection connection, Question currentQuestion, int lastQuizId)
 			throws SQLException {
-		String query = "INSERT INTO " + DbContract.Questions.TABLE_NAME + " ( "
-				+ DbContract.Questions.COLUMN_NAME_QUIZ_ID + " , " + DbContract.Questions.COLUMN_NAME_QUESTION_TYPE
-				+ " , " + DbContract.Questions.COLUMN_NAME_QUESTION_NOTE + " , "
-				+ DbContract.Questions.COLUMN_NAME_ANSWER_ORDER_SENSITIVE + " ) values ( ? , ? , ? , ? )";
+		String query = "INSERT INTO " + DbContract.questionsTable.TABLE_NAME + " ( "
+				+ DbContract.questionsTable.COLUMN_NAME_QUIZ_ID + " , " + DbContract.questionsTable.COLUMN_NAME_QUESTION_TYPE
+				+ " , " + DbContract.questionsTable.COLUMN_NAME_QUESTION_NOTE + " , "
+				+ DbContract.questionsTable.COLUMN_NAME_ANSWER_ORDER_SENSITIVE + " ) values ( ? , ? , ? , ? )";
 		PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		stm.setInt(1, lastQuizId);
 		stm.setInt(2, currentQuestion.getQuestionType());
@@ -264,10 +264,10 @@ public class QuizDao {
 	 * @throws SQLException
 	 */
 	private int addQuizToDatabase(Connection connection, Quiz quiz) throws SQLException {
-		String query = "INSERT INTO " + DbContract.quizzes.TABLE_NAME + " ( " + DbContract.quizzes.COLUMN_NAME_QUIZ_NAME
-				+ " , " + DbContract.quizzes.COLUMN_NAME_ISREARRANGABLE + " , "
-				+ DbContract.quizzes.COLUMN_NAME_ISPRACTICABLE + " , " + DbContract.quizzes.COLUMN_NAME_DESCRIPTION
-				+ " , " + DbContract.quizzes.COLUMN_NAME_CATEGORY_ID + " ) values( ? , ? , ? , ? , ? )";
+		String query = "INSERT INTO " + DbContract.quizzesTable.TABLE_NAME + " ( " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME
+				+ " , " + DbContract.quizzesTable.COLUMN_NAME_ISREARRANGABLE + " , "
+				+ DbContract.quizzesTable.COLUMN_NAME_ISPRACTICABLE + " , " + DbContract.quizzesTable.COLUMN_NAME_DESCRIPTION
+				+ " , " + DbContract.quizzesTable.COLUMN_NAME_CATEGORY_ID + " ) values( ? , ? , ? , ? , ? )";
 
 		PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		stm.setString(1, quiz.getName());
@@ -315,13 +315,13 @@ public class QuizDao {
 	 * @throws SQLException
 	 */
 	private void addTagsToQuiz(Quiz currentQuiz, Connection connection, int quizId) throws SQLException {
-		String query = "SELECT * FROM " + DbContract.quizTags.TABLE_NAME + " WHERE "
-				+ DbContract.quizTags.COLUMN_NAME_QUIZ_ID + " = ?";
+		String query = "SELECT * FROM " + DbContract.quizTagsTable.TABLE_NAME + " WHERE "
+				+ DbContract.quizTagsTable.COLUMN_NAME_QUIZ_ID + " = ?";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, quizId);
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
-			currentQuiz.addTag(rs.getString(DbContract.quizTags.COLUMN_NAME_TAG_NAME));
+			currentQuiz.addTag(rs.getString(DbContract.quizTagsTable.COLUMN_NAME_TAG_NAME));
 		}
 
 	}
@@ -335,14 +335,14 @@ public class QuizDao {
 	 * @throws SQLException
 	 */
 	private void addQuestionsToQuiz(Quiz currentQuiz, Connection connection, int quizId) throws SQLException {
-		String query = "SELECT * FROM " + DbContract.Questions.TABLE_NAME + " WHERE "
-				+ DbContract.Questions.COLUMN_NAME_QUIZ_ID + " = ?";
+		String query = "SELECT * FROM " + DbContract.questionsTable.TABLE_NAME + " WHERE "
+				+ DbContract.questionsTable.COLUMN_NAME_QUIZ_ID + " = ?";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, quizId);
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
-			int typeId = rs.getInt(DbContract.Questions.COLUMN_NAME_QUESTION_TYPE);
-			int questionId = rs.getInt(DbContract.Questions.COLUMN_NAME_QUESTION_ID);
+			int typeId = rs.getInt(DbContract.questionsTable.COLUMN_NAME_QUESTION_TYPE);
+			int questionId = rs.getInt(DbContract.questionsTable.COLUMN_NAME_QUESTION_ID);
 			Question question = new Question(typeId);
 			addOptionsToQuestion(connection, questionId, question);
 			addDetailsToQuestion(connection, questionId, question);
@@ -361,15 +361,15 @@ public class QuizDao {
 	 */
 	private void addSubquestionsToQuestion(Connection connection, int questionId, Question question)
 			throws SQLException {
-		String query = "SELECT * FROM " + DbContract.subquestions.TABLE_NAME + " WHERE "
-				+ DbContract.subquestions.COLUMN_NAME_QUESTION_ID + " = ?";
+		String query = "SELECT * FROM " + DbContract.subquestionsTable.TABLE_NAME + " WHERE "
+				+ DbContract.subquestionsTable.COLUMN_NAME_QUESTION_ID + " = ?";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, questionId);
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			Subquestion subquestion = new Subquestion(
-					rs.getString(DbContract.subquestions.COLUMN_NAME_SUBQUESTION_TEXT));
-			subquestion.setSubquestionID(rs.getInt(DbContract.subquestions.COLUMN_NAME_SUBQUESTION_ID));
+					rs.getString(DbContract.subquestionsTable.COLUMN_NAME_SUBQUESTION_TEXT));
+			subquestion.setSubquestionID(rs.getInt(DbContract.subquestionsTable.COLUMN_NAME_SUBQUESTION_ID));
 			addAnswersToSubQuestion(subquestion, subquestion.getSubquestionID(), connection);
 			question.addSubquestion(subquestion);
 		}
@@ -385,13 +385,13 @@ public class QuizDao {
 	 */
 	private void addAnswersToSubQuestion(Subquestion subquestion, int subquestionID, Connection connection)
 			throws SQLException {
-		String query = "SELECT * FROM " + DbContract.answerSubquestionMap.TABLE_NAME + " WHERE "
-				+ DbContract.answerSubquestionMap.COLUMN_NAME_SUBQUESTION_ID + " = ?";
+		String query = "SELECT * FROM " + DbContract.answerSubquestionMapTable.TABLE_NAME + " WHERE "
+				+ DbContract.answerSubquestionMapTable.COLUMN_NAME_SUBQUESTION_ID + " = ?";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, subquestionID);
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
-			int answerId = rs.getInt(DbContract.answerSubquestionMap.COLUMN_NAME_ANSWER_ID);
+			int answerId = rs.getInt(DbContract.answerSubquestionMapTable.COLUMN_NAME_ANSWER_ID);
 			addAnswerToSubquestion(subquestion, answerId, connection);
 		}
 	}
@@ -407,16 +407,16 @@ public class QuizDao {
 	 */
 	private void addAnswerToSubquestion(Subquestion subquestion, int answerId, Connection connection)
 			throws SQLException {
-		String query = "SELECT * FROM " + DbContract.answers.TABLE_NAME + " WHERE "
-				+ DbContract.answers.COLUMN_NAME_ANSWER_ID + " = ?";
+		String query = "SELECT * FROM " + DbContract.answersTable.TABLE_NAME + " WHERE "
+				+ DbContract.answersTable.COLUMN_NAME_ANSWER_ID + " = ?";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, answerId);
 		ResultSet rs = stm.executeQuery();
 		List<String> answers = new ArrayList<>();
 		char parserSymbol = 0;
 		while (rs.next()) {
-			parserSymbol = rs.getString(DbContract.answers.COLUMN_NAME_PARSER_SYMBOL).charAt(0);
-			answers.add(rs.getString(DbContract.answers.COLUMN_NAME_ANSWER_TEXT));
+			parserSymbol = rs.getString(DbContract.answersTable.COLUMN_NAME_PARSER_SYMBOL).charAt(0);
+			answers.add(rs.getString(DbContract.answersTable.COLUMN_NAME_ANSWER_TEXT));
 		}
 		Answer answer = new Answer(answers);
 		answer.setParserSymbol(parserSymbol);
@@ -434,14 +434,14 @@ public class QuizDao {
 	 */
 	private void addDetailsToQuestion(Connection connection, int questionId, Question question) throws SQLException {
 		question.setQuestionID(questionId);
-		String query = "SELECT * FROM " + DbContract.Questions.TABLE_NAME + " WHERE "
-				+ DbContract.Questions.COLUMN_NAME_QUESTION_ID + " = ?";
+		String query = "SELECT * FROM " + DbContract.questionsTable.TABLE_NAME + " WHERE "
+				+ DbContract.questionsTable.COLUMN_NAME_QUESTION_ID + " = ?";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, questionId);
 		ResultSet rs = stm.executeQuery();
 		if (rs.next()) {
-			question.setOrderSensitive(rs.getBoolean(DbContract.Questions.COLUMN_NAME_ANSWER_ORDER_SENSITIVE));
-			question.setNote(rs.getString(DbContract.Questions.COLUMN_NAME_QUESTION_NOTE));
+			question.setOrderSensitive(rs.getBoolean(DbContract.questionsTable.COLUMN_NAME_ANSWER_ORDER_SENSITIVE));
+			question.setNote(rs.getString(DbContract.questionsTable.COLUMN_NAME_QUESTION_NOTE));
 		}
 
 	}
@@ -455,13 +455,13 @@ public class QuizDao {
 	 * @throws SQLException
 	 */
 	private void addOptionsToQuestion(Connection connection, int questionId, Question question) throws SQLException {
-		String query = "SELECT * FROM " + DbContract.questionOptions.TABLE_NAME + " WHERE "
-				+ DbContract.questionOptions.COLUMN_NAME_QUESTION_ID + " = ?";
+		String query = "SELECT * FROM " + DbContract.questionOptionsTable.TABLE_NAME + " WHERE "
+				+ DbContract.questionOptionsTable.COLUMN_NAME_QUESTION_ID + " = ?";
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, questionId);
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
-			Option option = new Option(rs.getString(DbContract.questionOptions.COLUMN_NAME_OPTION_TEXT));
+			Option option = new Option(rs.getString(DbContract.questionOptionsTable.COLUMN_NAME_OPTION_TEXT));
 			question.addOption(option);
 		}
 	}
@@ -473,13 +473,13 @@ public class QuizDao {
 	 */
 	public String getTypeByTypeId(int typeId) throws SQLException {
 		try (Connection connection = createConnection()) {
-			String query = "SELECT * FROM " + DbContract.quiestionTypes.TABLE_NAME + " WHERE "
-					+ DbContract.quiestionTypes.COLUMN_NAME_QUESTION_TYPE_ID + " = ?";
+			String query = "SELECT * FROM " + DbContract.questionTypesTable.TABLE_NAME + " WHERE "
+					+ DbContract.questionTypesTable.COLUMN_NAME_QUESTION_TYPE_ID + " = ?";
 			PreparedStatement stm = connection.prepareStatement(query);
 			stm.setInt(1, typeId);
 			ResultSet rs = stm.executeQuery();
 			if (rs.next()) {
-				return rs.getString(DbContract.quiestionTypes.COLUMN_NAME_QUESTION_TYPE_NAME);
+				return rs.getString(DbContract.questionTypesTable.COLUMN_NAME_QUESTION_TYPE_NAME);
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -496,20 +496,20 @@ public class QuizDao {
 	 * @throws SQLException
 	 */
 	private Quiz selectQuizFromDatabase(Connection connection, int quizId) throws SQLException {
-		String query = "SELECT * FROM " + DbContract.quizzes.TABLE_NAME + " WHERE "
-				+ DbContract.quizzes.COLUMN_NAME_QUIZ_ID + " = ?";
+		String query = "SELECT * FROM " + DbContract.quizzesTable.TABLE_NAME + " WHERE "
+				+ DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " = ?";
 
 		PreparedStatement stm = connection.prepareStatement(query);
 		stm.setInt(1, quizId);
 		ResultSet rs = stm.executeQuery();
 
 		if (rs.next()) {
-			int categoryId = rs.getInt(DbContract.quizzes.COLUMN_NAME_CATEGORY_ID);
+			int categoryId = rs.getInt(DbContract.quizzesTable.COLUMN_NAME_CATEGORY_ID);
 			String category = selectCategoryName(categoryId);
-			String name = rs.getString(DbContract.quizzes.COLUMN_NAME_QUIZ_NAME);
-			String description = rs.getString(DbContract.quizzes.COLUMN_NAME_DESCRIPTION);
-			boolean isRearrangable = rs.getBoolean(DbContract.quizzes.COLUMN_NAME_ISREARRANGABLE);
-			boolean isPracticable = rs.getBoolean(DbContract.quizzes.COLUMN_NAME_ISPRACTICABLE);
+			String name = rs.getString(DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME);
+			String description = rs.getString(DbContract.quizzesTable.COLUMN_NAME_DESCRIPTION);
+			boolean isRearrangable = rs.getBoolean(DbContract.quizzesTable.COLUMN_NAME_ISREARRANGABLE);
+			boolean isPracticable = rs.getBoolean(DbContract.quizzesTable.COLUMN_NAME_ISPRACTICABLE);
 			Quiz quiz = new Quiz(name, category);
 			quiz.setDescription(description);
 			quiz.setPracticableMode(isPracticable);
@@ -528,14 +528,14 @@ public class QuizDao {
 	 */
 	public String selectCategoryName(int categoryId) throws SQLException {
 		try (Connection connection = createConnection()) {
-			String query = "SELECT * FROM " + DbContract.categories.TABLE_NAME + " WHERE "
-					+ DbContract.categories.COLUMN_NAME_CATEGORY_ID + " = ?";
+			String query = "SELECT * FROM " + DbContract.categoriesTable.TABLE_NAME + " WHERE "
+					+ DbContract.categoriesTable.COLUMN_NAME_CATEGORY_ID + " = ?";
 			PreparedStatement stm = connection.prepareStatement(query);
 			stm.setLong(1, categoryId);
 			ResultSet rs = stm.executeQuery();
 			String categoryName = null;
 			if (rs.next()) {
-				categoryName = rs.getString(DbContract.categories.COLUMN_NAME_CATEGORY_NAME);
+				categoryName = rs.getString(DbContract.categoriesTable.COLUMN_NAME_CATEGORY_NAME);
 			}
 			return categoryName;
 		} catch (ClassNotFoundException e) {
@@ -553,13 +553,13 @@ public class QuizDao {
 	public HashMap<Integer, String> getAllQuizzes() throws SQLException {
 		try (Connection connection = createConnection()) {
 			HashMap<Integer, String> quizes = new HashMap<>();
-			String query = "SELECT " + DbContract.quizzes.COLUMN_NAME_QUIZ_ID + " , "
-					+ DbContract.quizzes.COLUMN_NAME_QUIZ_NAME + " FROM " + DbContract.quizzes.TABLE_NAME;
+			String query = "SELECT " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " , "
+					+ DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME + " FROM " + DbContract.quizzesTable.TABLE_NAME;
 			PreparedStatement stm = connection.prepareStatement(query);
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
-				int id = rs.getInt(DbContract.quizzes.COLUMN_NAME_QUIZ_ID);
-				String name = rs.getString(DbContract.quizzes.COLUMN_NAME_QUIZ_NAME);
+				int id = rs.getInt(DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID);
+				String name = rs.getString(DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME);
 				quizes.put(id, name);
 			}
 			return quizes;
@@ -570,7 +570,7 @@ public class QuizDao {
 	}
 	public long getNumQuizes() throws SQLException {
 		try (Connection connection = createConnection()) {
-			String query = "SELECT * FROM " + DbContract.quizzes.TABLE_NAME;
+			String query = "SELECT * FROM " + DbContract.quizzesTable.TABLE_NAME;
 			PreparedStatement stm = connection.prepareStatement(query);
 			ResultSet rs = stm.executeQuery();
 			rs.last();

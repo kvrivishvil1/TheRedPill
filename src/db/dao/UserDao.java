@@ -55,8 +55,8 @@ public class UserDao {
 			ResultSet rs = stm.executeQuery();
 			rs.last();
 			if (rs.getRow() != 0) {
-				return new Account((String) rs.getObject(DbContract.AccountsTable.COLUMN_NAME_USERNAME),
-						(String) rs.getObject(DbContract.AccountsTable.COLUMN_NAME_PASSWORD));
+				return new Account((String) rs.getObject(DbContract.accountsTable.COLUMN_NAME_USERNAME),
+						(String) rs.getObject(DbContract.accountsTable.COLUMN_NAME_PASSWORD));
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -66,15 +66,15 @@ public class UserDao {
 
 	public ArrayList<String> getAllUsernames() {
 		ArrayList<String> allUsers = new ArrayList<>();
-		String query = "Select " + DbContract.AccountsTable.COLUMN_NAME_USERNAME + " From "
-				+ DbContract.AccountsTable.TABLE_NAME;
+		String query = "Select " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " From "
+				+ DbContract.accountsTable.TABLE_NAME;
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
 				Statement stmt = con.createStatement()) {
 			stmt.executeQuery("USE " + database);
 			try (PreparedStatement ps = con.prepareStatement(query)) {
 				try (ResultSet rs = ps.executeQuery()) {
 					while (rs.next()) {
-						allUsers.add(rs.getString(DbContract.AccountsTable.COLUMN_NAME_USERNAME));
+						allUsers.add(rs.getString(DbContract.accountsTable.COLUMN_NAME_USERNAME));
 					}
 				}
 			}
@@ -141,8 +141,8 @@ public class UserDao {
 	}
 
 	private String generateQueryForAccount() {
-		return "SELECT *, COUNT(1) as count FROM " + DbContract.AccountsTable.TABLE_NAME + " WHERE "
-				+ DbContract.AccountsTable.COLUMN_NAME_USERNAME + " like " + "?";
+		return "SELECT *, COUNT(1) as count FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE "
+				+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " like " + "?";
 	}
 
 	private String generateQueryForPerson() {
@@ -248,9 +248,9 @@ public class UserDao {
 				Statement stmt = con.createStatement()) {
 			stmt.executeQuery("USE " + database);
 
-			String sql = "INSERT INTO " + DbContract.AccountsTable.TABLE_NAME + " ("
-					+ DbContract.AccountsTable.COLUMN_NAME_USERNAME + ", "
-					+ DbContract.AccountsTable.COLUMN_NAME_PASSWORD + ") VALUES (?, ?);";
+			String sql = "INSERT INTO " + DbContract.accountsTable.TABLE_NAME + " ("
+					+ DbContract.accountsTable.COLUMN_NAME_USERNAME + ", "
+					+ DbContract.accountsTable.COLUMN_NAME_PASSWORD + ") VALUES (?, ?);";
 
 			try (PreparedStatement st = con.prepareStatement(sql)) {
 				st.setString(1, account.getUserName());
@@ -322,15 +322,15 @@ public class UserDao {
 	 * @throws SQLException
 	 */
 	private int getAccountId(Account account, Connection connection) throws SQLException {
-		String sql = "SELECT " + DbContract.AccountsTable.COLUMN_NAME_ID + " FROM "
-				+ DbContract.AccountsTable.TABLE_NAME + " WHERE " + DbContract.AccountsTable.COLUMN_NAME_USERNAME
+		String sql = "SELECT " + DbContract.accountsTable.COLUMN_NAME_ID + " FROM "
+				+ DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.accountsTable.COLUMN_NAME_USERNAME
 				+ " like " + "?";
 		PreparedStatement st = connection.prepareStatement(sql);
 		st.setString(1, account.getUserName());
 		ResultSet rs = st.executeQuery();
 		int accountId = -1;
 		if (rs.next())
-			accountId = rs.getInt(DbContract.AccountsTable.COLUMN_NAME_ID);
+			accountId = rs.getInt(DbContract.accountsTable.COLUMN_NAME_ID);
 		return accountId;
 	}
 
@@ -423,8 +423,8 @@ public class UserDao {
 	 * @throws SQLException
 	 */
 	private void deleteUserAccount(int AccountID) throws SQLException {
-		String query = "DELETE FROM " + DbContract.AccountsTable.TABLE_NAME + " WHERE "
-				+ DbContract.AccountsTable.COLUMN_NAME_ID + " = ?";
+		String query = "DELETE FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE "
+				+ DbContract.accountsTable.COLUMN_NAME_ID + " = ?";
 		try (Connection connection = createConnection()) {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, AccountID);
@@ -542,7 +542,7 @@ public class UserDao {
 
 	public long getNumUsers() throws SQLException {
 		try (Connection connection = createConnection()) {
-			String query = "SELECT * FROM " + DbContract.AccountsTable.TABLE_NAME;
+			String query = "SELECT * FROM " + DbContract.accountsTable.TABLE_NAME;
 			PreparedStatement stm = connection.prepareStatement(query);
 			ResultSet rs = stm.executeQuery();
 			rs.last();
@@ -562,8 +562,8 @@ public class UserDao {
 	 * @throws SQLException
 	 */
 	public ArrayList<String> searchUser(String searchedWord) throws SQLException {
-		String query = "SELECT " + DbContract.AccountsTable.COLUMN_NAME_USERNAME + " FROM "
-				+ DbContract.AccountsTable.TABLE_NAME + " WHERE " + DbContract.AccountsTable.COLUMN_NAME_USERNAME
+		String query = "SELECT " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " FROM "
+				+ DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.accountsTable.COLUMN_NAME_USERNAME
 				+ " LIKE ?";
 		try (Connection connection = createConnection()) {
 			ArrayList<String> result = new ArrayList<>();
@@ -571,7 +571,7 @@ public class UserDao {
 			stm.setString(1, searchedWord + "%");
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
-				result.add(rs.getString(DbContract.AccountsTable.COLUMN_NAME_USERNAME));
+				result.add(rs.getString(DbContract.accountsTable.COLUMN_NAME_USERNAME));
 			}
 			return result;
 		} catch (ClassNotFoundException e) {

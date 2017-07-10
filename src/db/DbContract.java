@@ -34,7 +34,7 @@ public class DbContract {
 	/**
 	 * @author tamar static class to have name agreements for Accounts table
 	 */
-	public class AccountsTable {
+	public class accountsTable {
 		public static final String TABLE_NAME = "accounts";
 		public static final String COLUMN_NAME_ID = "account_id";
 		public static final String COLUMN_NAME_USERNAME = "account_user_name";
@@ -57,20 +57,20 @@ public class DbContract {
 	/**
 	 * @author tamar static class to have name agreements for Quizes table
 	 */
-	public class quizzes {
+	public class quizzesTable {
 		public static final String TABLE_NAME = "quizzes";
 		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
 		public static final String COLUMN_NAME_QUIZ_NAME = "quiz_name";
 		public static final String COLUMN_NAME_ISREARRANGABLE = "is_rearrangable";
 		public static final String COLUMN_NAME_ISPRACTICABLE = "is_practicable";
-		public static final String COLUMN_NAME_DESCRIPTION = "Description";
+		public static final String COLUMN_NAME_DESCRIPTION = "description";
 		public static final String COLUMN_NAME_CATEGORY_ID = "category_id";
 	}
 
 	/**
 	 * @author tamar static class to have name agreements for Questions table
 	 */
-	public class Questions {
+	public class questionsTable {
 		public static final String TABLE_NAME = "questions";
 		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
 		public static final String COLUMN_NAME_QUESTION_ID = "question_id";
@@ -83,7 +83,7 @@ public class DbContract {
 	 * 
 	 * @author Mariami static class to have name agreements for answers table
 	 */
-	public class answers {
+	public class answersTable {
 		public static final String TABLE_NAME = "answers";
 		public static final String COLUMN_NAME_ANSWER_ID = "answer_id";
 		public static final String COLUMN_NAME_ANSWER_TEXT = "answer_text";
@@ -95,7 +95,7 @@ public class DbContract {
 	 * @author Mariami static class to have name agreements for subquestions
 	 *         table
 	 */
-	public class subquestions {
+	public class subquestionsTable {
 		public static final String TABLE_NAME = "subquestions";
 		public static final String COLUMN_NAME_SUBQUESTION_ID = "subquestion_id";
 		public static final String COLUMN_NAME_QUESTION_ID = "question_id";
@@ -107,7 +107,7 @@ public class DbContract {
 	 * @author Mariami static class to have name agreements for answer and
 	 *         subquestion map table
 	 */
-	public class answerSubquestionMap {
+	public class answerSubquestionMapTable {
 		public static final String TABLE_NAME = "answer_subquestion_map";
 		public static final String COLUMN_NAME_ANSWER_ID = "answer_id";
 		public static final String COLUMN_NAME_SUBQUESTION_ID = "subquestion_id";
@@ -117,7 +117,7 @@ public class DbContract {
 	 * 
 	 * @author Mariami static class to have name agreements for categories table
 	 */
-	public class categories {
+	public class categoriesTable {
 		public static final String TABLE_NAME = "categories";
 		public static final String COLUMN_NAME_CATEGORY_ID = "category_id";
 		public static final String COLUMN_NAME_CATEGORY_NAME = "category_name";
@@ -128,7 +128,7 @@ public class DbContract {
 	 * 
 	 * @author Mariami static class to have name agreements for challenges table
 	 */
-	public class challenges {
+	public class challengesTable {
 		public static final String TABLE_NAME = "challenges";
 		public static final String COLUMN_NAME_CHALLENGE_ID = "challenge_id";
 		public static final String COLUMN_NAME_QUIZ_CHALLENGED = "quiz_challenged";
@@ -142,9 +142,9 @@ public class DbContract {
 	 * 
 	 * @author Mariami static class to have name agreements for friends table
 	 */
-	public class freinds {
+	public class friendsTable {
 		public static final String TABLE_NAME = "friends";
-		public static final String COLUMN_NAME_FIREND_ID = "frined_id";
+		public static final String COLUMN_NAME_FIREND_ID = "friend_id";
 		public static final String COLUMN_NAME_ACCOUNT_FIRST = "account_first";
 		public static final String COLUMN_NAME_ACCOUNT_SECOND = "account_second";
 	}
@@ -154,7 +154,7 @@ public class DbContract {
 	 * @author Mariami static class to have name agreements for question's
 	 *         options table
 	 */
-	public class questionOptions {
+	public class questionOptionsTable {
 		public static final String TABLE_NAME = "question_options";
 		public static final String COLUMN_NAME_OPTION_ID = "option_id";
 		public static final String COLUMN_NAME_QUESTION_ID = "question_id";
@@ -166,7 +166,7 @@ public class DbContract {
 	 * @author Mariami static class to have name agreements for quiz attempts
 	 *         table
 	 */
-	public class quizAttempts {
+	public class quizAttemptsTable {
 		public static final String TABLE_NAME = "quiz_attempts";
 		public static final String COLUMN_NAME_ATTEMPT_ID = "attempt_id";
 		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
@@ -181,7 +181,7 @@ public class DbContract {
 	 * @author Mariami static class to have name agreements for quiz reports
 	 *         table
 	 */
-	public class quizReports {
+	public class quizReportsTable {
 		public static final String TABLE_NAME = "quiz_reports";
 		public static final String COLUMN_NAME_REPORT_ID = "report_id";
 		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
@@ -196,7 +196,7 @@ public class DbContract {
 	 * @author Mariami static class to have name agreements for quiz reviews
 	 *         table
 	 */
-	public class quizReviews {
+	public class quizReviewsTable {
 		public static final String TABLE_NAME = "quiz_reviews";
 		public static final String COLUMN_NAME_REVIEW_ID = "review_id";
 		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
@@ -210,7 +210,7 @@ public class DbContract {
 	 * 
 	 * @author Mariami static class to have name agreements for quiz tag table
 	 */
-	public class quizTags {
+	public class quizTagsTable {
 		public static final String TABLE_NAME = "quiz_tags";
 		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
 		public static final String COLUMN_NAME_TAG_NAME = "tag_name";
@@ -221,14 +221,14 @@ public class DbContract {
 	 * @author Mariami static class to have name agreements for question types
 	 *         table
 	 */
-	public class quiestionTypes {
+	public class questionTypesTable {
 		public static final String TABLE_NAME = "question_types";
 		public static final String COLUMN_NAME_QUESTION_TYPE_ID = "question_type_id";
 		public static final String COLUMN_NAME_QUESTION_TYPE_NAME = "question_type_name";
 	}
 	
-	public class AdminNotifications{
-		public static final String TABLE_NAME = "Admin_notifications";
+	public class adminNotificationsTable{
+		public static final String TABLE_NAME = "admin_notifications";
 		public static final String COLUMN_NAME_NOTE_ID = "note_id";
 		public static final String COLUMN_NAME_ADMIN_ID = "admin_id";
 		public static final String COLUMN_NAME_NOTE_HEADER = "note_header";
