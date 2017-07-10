@@ -96,17 +96,17 @@ public class UserDao {
 			ResultSet rs = stm.executeQuery();
 			rs.last();
 			if (rs.getRow() != 0) {
-				String gender = (String) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_GENDER);
+				String gender = (String) rs.getObject(DbContract.personsTable.COLUMN_NAME_GENDER);
 				Gender curGender;
-				if (gender.equals(DbContract.PersonsTable.ENUM_MALE)) {
+				if (gender.equals(DbContract.personsTable.ENUM_MALE)) {
 					curGender = Gender.MALE;
 				} else {
 					curGender = Gender.FEMALE;
 				}
-				return new Person((String) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_FIRSTNAME),
-						(String) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_LASTNAME), 
-						(String)rs.getObject(DbContract.PersonsTable.COLUMN_NAME_EMAIL), curGender,
-						(Date) rs.getObject(DbContract.PersonsTable.COLUMN_NAME_BIRTHDATE));
+				return new Person((String) rs.getObject(DbContract.personsTable.COLUMN_NAME_FIRSTNAME),
+						(String) rs.getObject(DbContract.personsTable.COLUMN_NAME_LASTNAME), 
+						(String)rs.getObject(DbContract.personsTable.COLUMN_NAME_EMAIL), curGender,
+						(Date) rs.getObject(DbContract.personsTable.COLUMN_NAME_BIRTHDATE));
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -145,17 +145,17 @@ public class UserDao {
 	}
 
 	private String generateQueryForPerson() {
-		return "SELECT * FROM " + DbContract.PersonsTable.TABLE_NAME + " WHERE " + DbContract.PersonsTable.TABLE_NAME
-				+ "." + DbContract.PersonsTable.COLUMN_NAME_PERSON_ID + " = (SELECT "
-				+ DbContract.PersonAccountMapTable.TABLE_NAME + "."
-				+ DbContract.PersonAccountMapTable.COLUMN_NAME_PERSON_ID + " FROM "
-				+ DbContract.PersonAccountMapTable.TABLE_NAME + " WHERE " + DbContract.PersonAccountMapTable.TABLE_NAME
-				+ "." + DbContract.PersonAccountMapTable.COLUMN_NAME_ACCOUNT_ID + " = ?)";
+		return "SELECT * FROM " + DbContract.personsTable.TABLE_NAME + " WHERE " + DbContract.personsTable.TABLE_NAME
+				+ "." + DbContract.personsTable.COLUMN_NAME_PERSON_ID + " = (SELECT "
+				+ DbContract.personAccountMapTable.TABLE_NAME + "."
+				+ DbContract.personAccountMapTable.COLUMN_NAME_PERSON_ID + " FROM "
+				+ DbContract.personAccountMapTable.TABLE_NAME + " WHERE " + DbContract.personAccountMapTable.TABLE_NAME
+				+ "." + DbContract.personAccountMapTable.COLUMN_NAME_ACCOUNT_ID + " = ?)";
 	}
 	
 	private String generateQueryForPerson1() {
-		return "SELECT *, COUNT(1) as count FROM " + DbContract.PersonsTable.TABLE_NAME + " WHERE "
-				+ DbContract.PersonsTable.COLUMN_NAME_EMAIL + " like " + "?";
+		return "SELECT *, COUNT(1) as count FROM " + DbContract.personsTable.TABLE_NAME + " WHERE "
+				+ DbContract.personsTable.COLUMN_NAME_EMAIL + " like " + "?";
 	}
 	
 	/**
@@ -212,12 +212,12 @@ public class UserDao {
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, UserDao.account, UserDao.password);
 				Statement stmt = con.createStatement()) {
 			stmt.executeQuery("USE " + database);
-			String sql = "INSERT INTO " + DbContract.PersonsTable.TABLE_NAME + "("
-					+ DbContract.PersonsTable.COLUMN_NAME_FIRSTNAME + ", "
-					+ DbContract.PersonsTable.COLUMN_NAME_LASTNAME + ", " 
-					+ DbContract.PersonsTable.COLUMN_NAME_EMAIL + ", "
-					+ DbContract.PersonsTable.COLUMN_NAME_GENDER + ", " 
-					+ DbContract.PersonsTable.COLUMN_NAME_BIRTHDATE + ")" + 
+			String sql = "INSERT INTO " + DbContract.personsTable.TABLE_NAME + "("
+					+ DbContract.personsTable.COLUMN_NAME_FIRSTNAME + ", "
+					+ DbContract.personsTable.COLUMN_NAME_LASTNAME + ", " 
+					+ DbContract.personsTable.COLUMN_NAME_EMAIL + ", "
+					+ DbContract.personsTable.COLUMN_NAME_GENDER + ", " 
+					+ DbContract.personsTable.COLUMN_NAME_BIRTHDATE + ")" + 
 					" values (?, ?, ?, ?, ?);";
 			
 			PreparedStatement st = con.prepareStatement(sql);
@@ -266,9 +266,9 @@ public class UserDao {
 			stmt.executeQuery("USE " + database);
 			int personId = getPersonId(person, con);
 			int accountId = getAccountId(account, con);
-			String sql = "INSERT INTO " + DbContract.PersonAccountMapTable.TABLE_NAME + " ("
-					+ DbContract.PersonAccountMapTable.COLUMN_NAME_ACCOUNT_ID + ", "
-					+ DbContract.PersonAccountMapTable.COLUMN_NAME_PERSON_ID + ") VALUES (?, ?);";
+			String sql = "INSERT INTO " + DbContract.personAccountMapTable.TABLE_NAME + " ("
+					+ DbContract.personAccountMapTable.COLUMN_NAME_ACCOUNT_ID + ", "
+					+ DbContract.personAccountMapTable.COLUMN_NAME_PERSON_ID + ") VALUES (?, ?);";
 			
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setInt(1, accountId);
@@ -288,15 +288,15 @@ public class UserDao {
 	 * @throws SQLException
 	 */
 	private int getPersonId(Person person, Connection connection) throws SQLException{
-		String sql = "SELECT " + DbContract.PersonsTable.COLUMN_NAME_PERSON_ID + " FROM " + 
-		DbContract.PersonsTable.TABLE_NAME + " WHERE " + DbContract.PersonsTable.COLUMN_NAME_EMAIL + 
+		String sql = "SELECT " + DbContract.personsTable.COLUMN_NAME_PERSON_ID + " FROM " + 
+		DbContract.personsTable.TABLE_NAME + " WHERE " + DbContract.personsTable.COLUMN_NAME_EMAIL + 
 		" like " + "?";
 		PreparedStatement st = connection.prepareStatement(sql);
 		st.setString(1, person.getEmail());
 		ResultSet rs = st.executeQuery();
 		int personId = -1;
 		if(rs.next())
-			personId = rs.getInt(DbContract.PersonsTable.COLUMN_NAME_PERSON_ID);
+			personId = rs.getInt(DbContract.personsTable.COLUMN_NAME_PERSON_ID);
 		return personId;
 	}
 	
@@ -330,4 +330,192 @@ public class UserDao {
 		addAccount(account);
 		addUser(person, account);
 	}
+	
+	
+	
+/**
+ * Deletes user person and account in database based on user name 
+ * @param username
+ */
+	public void deleteUser(String username){
+		try {
+			int AccountID =getUserIdByUserName(username);
+			int personID = getPersonIdByUserID(AccountID);
+			deleteUserChallenges(AccountID);
+			deleteUserMessages(AccountID);
+			deleteUserFreindships(AccountID);
+			deleteUserConnectionToPersonalInfo(AccountID);
+			deleteUserAccount(AccountID);
+			deleteUserPersonalInfo(personID);
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+	/**
+	 * Returns the person id number based on its account id number
+	 * @param AccountID The aid number of the account
+	 * @return The id number of the person
+	 * @throws SQLException
+	 */
+	public int getPersonIdByUserID(int AccountID) throws SQLException{
+		String query = "SELECT "+ DbContract.personsTable.COLUMN_NAME_PERSON_ID+ " FROM " 
+			+ DbContract.personAccountMapTable.TABLE_NAME +" WHERE " 	
+				+ DbContract.personAccountMapTable.COLUMN_NAME_ACCOUNT_ID +  " = ?";
+		try (Connection connection = createConnection()) {
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, AccountID);
+			ResultSet rs = statement.executeQuery();
+			rs.last();
+			int result = rs.getInt("person_id");
+			statement.close();
+			return result;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return -1;		
+	}
+	
+	
+
+	
+	/**
+	 * Deletes user personal information from database based on its id number
+	 * @param personID The id number of person
+	 * @throws SQLException
+	 */
+	private void deleteUserPersonalInfo(int personID) throws SQLException {
+		String query = "DELETE FROM " + DbContract.personsTable.TABLE_NAME + " WHERE "
+				+ DbContract.personsTable.COLUMN_NAME_PERSON_ID+ " = ?";
+		try(Connection connection =  createConnection()){
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, personID);
+			statement.executeUpdate();
+			statement.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+ 
+	/**
+	 * Deletes user account from database based on its id number of account
+	 * @param AccountID The id number of account
+	 * @throws SQLException
+	 */
+	private void deleteUserAccount(int AccountID) throws SQLException {
+		String query = "DELETE FROM "+ DbContract.AccountsTable.TABLE_NAME + " WHERE " 
+				+ DbContract.AccountsTable.COLUMN_NAME_ID + " = ?";
+		try(Connection connection =  createConnection()){
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, AccountID);
+			statement.executeUpdate();
+			statement.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	/**
+	 * Deletes connection between user personal information and account information
+	 * @param AccountID The id number of account
+	 * @throws SQLException
+	 */
+	private void deleteUserConnectionToPersonalInfo(int AccountID) throws SQLException {
+		String query = "DELETE FROM " + DbContract.personAccountMapTable.TABLE_NAME +  " WHERE "
+				+ DbContract.personAccountMapTable.COLUMN_NAME_ACCOUNT_ID + " = ?";
+		try(Connection connection =  createConnection()){
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, AccountID);
+			statement.executeUpdate();
+			statement.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	/**
+	 * Deletes friendship connection between given user and other users
+	 * @param AccountID The id number of account
+	 * @throws SQLException
+	 */
+	private void deleteUserFreindships(int AccountID) throws SQLException {
+		String queryForAccountFirst = "DELETE FROM " + DbContract.freinds.TABLE_NAME + 
+				" WHERE " + DbContract.freinds.COLUMN_NAME_ACCOUNT_FIRST + " = ?";
+		String queyForAccountSecond = "DELETE FROM " +DbContract.freinds.TABLE_NAME+
+				" WHERE " + DbContract.freinds.COLUMN_NAME_ACCOUNT_SECOND + " = ?";
+		try(Connection connection =  createConnection()){
+			PreparedStatement statementForAccountFirst = connection.prepareStatement(queryForAccountFirst);
+			PreparedStatement statementForAccountSecond = connection.prepareStatement(queyForAccountSecond);
+			statementForAccountFirst.setInt(1, AccountID);
+			statementForAccountSecond.setInt(1, AccountID);
+			statementForAccountFirst.executeUpdate();
+			statementForAccountSecond.executeUpdate();
+			statementForAccountFirst.close();
+			statementForAccountSecond.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	/**
+	 * Deletes user's sent messages and user's received messages based on its account id information
+	 * @param AccountID The id number of account
+	 * @throws SQLException
+	 */
+	private void deleteUserMessages(int AccountID) throws SQLException {
+		String queryForSendMessagess  = "DELETE FROM " + DbContract.messagesTable.TABLE_NAME + 
+				" WHERE " + DbContract.messagesTable.COLUMN_NAME_SENDER_ID + " = ?";
+		String queyForRecievedMessages = "DELETE FROM " + DbContract.messagesTable.TABLE_NAME+ 
+				" WHERE " + DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + " = ?";
+		try(Connection connection =  createConnection()){
+			PreparedStatement statementForSendMessagess = connection.prepareStatement(queryForSendMessagess);
+			PreparedStatement statementForRecievedChallenges = connection.prepareStatement(queyForRecievedMessages);
+			statementForSendMessagess.setInt(1, AccountID);
+			statementForRecievedChallenges.setInt(1, AccountID);
+			statementForSendMessagess.executeUpdate();
+			statementForRecievedChallenges.executeUpdate();
+			statementForSendMessagess.close();
+			statementForRecievedChallenges.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	
+	/**
+	 * Deletes user's sent challenges and user's received challenges based on its account id information
+	 * @param AccountID The id number of account
+	 * @throws SQLException
+	 */
+	private void deleteUserChallenges(int AccountID) throws  SQLException {
+		String queryForSendChallenges  = "DELETE FROM " + DbContract.challenges.TABLE_NAME
+				+ " WHERE " + DbContract.challenges.COLUMN_NAME_SENDER_ID+ " = ?";
+		String queyForRecievedChallenges = "DELETE FROM " + DbContract.challenges.TABLE_NAME
+				+ " WHERE " + DbContract.challenges.COLUMN_NAME_RECIEVER_ID + " = ?";
+		try(Connection connection =  createConnection()){
+			PreparedStatement statementForSendChallenges = connection.prepareStatement(queryForSendChallenges);
+			PreparedStatement statementForRecievedChallenges = connection.prepareStatement(queyForRecievedChallenges);
+			statementForSendChallenges.setInt(1, AccountID);
+			statementForRecievedChallenges.setInt(1, AccountID);
+			statementForSendChallenges.executeUpdate();
+			statementForRecievedChallenges.executeUpdate();
+			statementForSendChallenges.close();
+			statementForRecievedChallenges.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	
 }
+	

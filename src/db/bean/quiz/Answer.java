@@ -1,34 +1,77 @@
 package db.bean.quiz;
 
+import java.util.List;
+
 public class Answer {
-	private String answer;
-	private boolean isCorrect;
-	
+
+	private List<String> answers;
+	private int answerID;
+	private char parserSymbol;
+
 	/**
 	 * Constructor for Answer object
-	 * @param answer The answer's text
-	 * @param isCorrect
+	 * 
+	 * @param answers
+	 *            The list of answers
+	 * 
 	 */
-	public Answer(String answer, boolean isCorrect){
-		this.answer = answer;
-		this.isCorrect = isCorrect;
+	public Answer(List<String> answers) {
+		this.answers = answers;
+	}
+
+	/**
+	 * Returns the list of the answers
+	 * 
+	 * @return The list of the answers
+	 */
+	public List<String> getAnswers() {
+		return answers;
 	}
 	
+
 	/**
-	 * Returns the text of the answer
-	 * @return The answer's text
-	 */
-	public String getAnswer(){
-		return answer;
-	}
-	
-	/**
-	 * Returns whether answer is correct or not
+	 * Returns whether the answer is correct or not
+	 * 
 	 * @return true if it is correct, false otherwise.
 	 */
-	public boolean isCorrect(){
-		return isCorrect;
+	public boolean isCorrect(String answer) {
+		return true;
+	}
+
+	/**
+	 * Set the id of the answer 
+	 * @param answerID answer's id
+	 */
+	public void setAnswerID( int answerID){
+		this.answerID = answerID;
 	}
 	
 	
+	/**
+	 * Returns the id of the answer 
+	 * 
+	 * @return answer's id
+	 */
+	public int getAnswerID() {
+		return answerID;
+	}
+	
+	
+	/**
+	 * Sets the parser symbol of the answer
+	 * @param parserSymbol, the symbol used to parse answers
+	 */
+	public void setParserSymbol(char parserSymbol){
+		this.parserSymbol = parserSymbol;
+	}
+	
+	
+	/**
+	 * Returns the parser symbol of the answer
+	 * @return parser Symbol, the symbol used to parse answers
+	 */
+	public char getParserSymbol(){
+		return parserSymbol;
+	}
+
 }

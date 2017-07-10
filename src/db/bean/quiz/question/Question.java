@@ -1,25 +1,126 @@
 package db.bean.quiz.question;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import db.bean.quiz.Answer;
+public class Question {
 
-public abstract class Question {
+	private String note;
+	private List<Subquestion> subquestions;
+	private List<Option> options;
+	private int type;
+	private int questionID;
+
 	/**
-	 * Returns the question's text
-	 * @return The question's text
+	 * Constructor for the Question object
+	 * @param type of the question
 	 */
-	public abstract String getQuestion();
+	public Question(int type){
+		this.type = type;
+		subquestions =  new ArrayList<Subquestion>();
+		options =  new ArrayList<Option>();
+	}
 	
 	/**
-	 * Returns the list of the question's answers
-	 * @return The list of the answers
+	 * Set the note for the question
+	 * @param note 
 	 */
-	public abstract List<Answer> getAnswers();
+	public void setNote(String note){
+		this.note = note;	
+	}
+	
+	/**
+	 * Returns the question's additional information
+	 * 
+	 * @return The question's additional information
+	 */
+	public String getNote() {
+		return note;
+	}
+
+	
+	/**
+	 * Adds subquestion to the question
+	 * 
+	 * @param subquestion which should be added
+	 */
+	public void addSubquestion(Subquestion subquestion) {
+		subquestions.add(subquestion);
+	} 
+	
+	/**
+	 * Removes subquestion from the question
+	 * @param subquestion which should be removed
+	 */
+	public void removeSubquestion(Subquestion subquestion){
+		subquestions.remove(subquestion);
+	}
+	
+	/**
+	 * Returns the list of the question's subquestions
+	 * 
+	 * @return The list of the subquestions
+	 */
+	public List<Subquestion> getSubquestions() {
+		return subquestions;
+	}
+
+	/**
+	 * Adds option to the question
+	 * @param option which should be added
+	 */
+	public void addOption(Option option){
+		options.add(option);
+	}
+	
+	/**
+	 * Removes option from the question
+	 * @param option which should be removed
+	 */
+	public void removeOption(Option option){
+		options.remove(option);
+	}
+	
+	/**
+	 * Returns the list of the answer options of the question
+	 * 
+	 * @return The list of the options
+	 */
+	public List<Option> getOptions() {
+		return options;
+	}
+
+	/**
+	 * Sets the type of the question
+	 * @param type of the question
+	 */
+	public void setQuestionType(int type){
+		this.type = type;
+	}
 	
 	/**
 	 * Returns the type of the question
+	 * 
 	 * @return The type of the question
 	 */
-	public abstract int getQuestionType();
+	public int getQuestionType() {
+		return type;
+	}
+
+	/**
+	 * Set the id for the question
+	 * @param questionID id of the question
+	 */
+	public void setQuestionID(int questionID){
+		this.questionID = questionID;
+	}
+	
+	/**
+	 * Returns the id of the question in database
+	 * 
+	 * @return The ID of the question
+	 */
+	public int getQuestionID() {
+		return questionID;
+	}
 }

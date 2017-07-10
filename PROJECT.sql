@@ -1,137 +1,253 @@
 create database Quiz_Database;
 use Quiz_Database;
 
-CREATE TABLE Persons (
+
+CREATE TABLE persons (
     person_id INT NOT NULL AUTO_INCREMENT,
     person_first_name VARCHAR(50) NOT NULL,
     person_last_name VARCHAR(50) NOT NULL,
     person_gender ENUM('male', 'female') NOT NULL,
     person_birthdate DATETIME NOT NULL,
     person_email VARCHAR(100) NOT NULL,
-    CONSTRAINT Persons_pk PRIMARY KEY (person_id),
-    CONSTRAINT Persons_uk UNIQUE (person_email)
+    CONSTRAINT persons_pk PRIMARY KEY (person_id),
+    CONSTRAINT persons_uk UNIQUE (person_email)
 );
 
-CREATE TABLE Accounts (
+
+
+CREATE TABLE accounts (
     account_id INT NOT NULL AUTO_INCREMENT,
     account_user_name VARCHAR(50) NOT NULL,
     account_password VARCHAR(50) NOT NULL,
-    CONSTRAINT Accounts_pk PRIMARY KEY (account_id),
-    CONSTRAINT Accounts_uk UNIQUE (account_user_name)
+    account_status ENUM('user', 'admin') NOT NULL,
+    CONSTRAINT accounts_pk PRIMARY KEY (account_id),
+    CONSTRAINT accounts_uk UNIQUE (account_user_name)
 );
+
+
 
 CREATE TABLE person_account_map (
     person_id INT NOT NULL,
     account_id INT NOT NULL,
     CONSTRAINT map_fk1 FOREIGN KEY (person_id)
-        REFERENCES Persons (person_id),
+        REFERENCES persons (person_id),
     CONSTRAINT map_fk2 FOREIGN KEY (account_id)
-        REFERENCES Accounts (account_id)
+        REFERENCES accounts (account_id)
 );
 
-CREATE TABLE Friends (
+
+
+CREATE TABLE friends (
     friend_id INT NOT NULL AUTO_INCREMENT,
     account_first INT NOT NULL,
     account_second INT NOT NULL,
-    CONSTRAINT Friends_pk PRIMARY KEY (friend_id),
-    CONSTRAINT Friends_fk1 FOREIGN KEY (account_first)
-        REFERENCES Accounts (account_id),
-    CONSTRAINT Freinds_fk2 FOREIGN KEY (account_second)
-        REFERENCES Accounts (account_id)
+    CONSTRAINT friends_pk PRIMARY KEY (friend_id),
+    CONSTRAINT friends_fk1 FOREIGN KEY (account_first)
+        REFERENCES accounts (account_id),
+    CONSTRAINT freinds_fk2 FOREIGN KEY (account_second)
+        REFERENCES accounts (account_id)
 );
 
-CREATE TABLE Messages (
+
+
+CREATE TABLE messages (
     message_id INT NOT NULL AUTO_INCREMENT,
     sender_id INT NOT NULL,
     reciever_id INT NOT NULL,
-    message_text text NOT NULL,
+    message_text TEXT NOT NULL,
     time_sent DATETIME NOT NULL,
-    CONSTRAINT Messages_pk PRIMARY KEY (message_id),
-    CONSTRAINT Messages_fk1 FOREIGN KEY (sender_id)
-        REFERENCES Accounts (account_id),
-    CONSTRAINT Messages_fk2 FOREIGN KEY (reciever_id)
-        REFERENCES Accounts (account_id)
+    CONSTRAINT messages_pk PRIMARY KEY (message_id),
+    CONSTRAINT messages_fk1 FOREIGN KEY (sender_id)
+        REFERENCES accounts (account_id),
+    CONSTRAINT messages_fk2 FOREIGN KEY (reciever_id)
+        REFERENCES accounts (account_id)
 );
 
-CREATE TABLE Challenges (
+
+
+
+CREATE TABLE challenges (
     challenge_id INT NOT NULL AUTO_INCREMENT,
     quiz_challenged VARCHAR(50) NOT NULL,
     sender_id INT NOT NULL,
     reciever_id INT NOT NULL,
     score_challenged INT NOT NULL,
     time_sent DATETIME NOT NULL,
-    CONSTRAINT Challenges_pk PRIMARY KEY (challenge_id),
-    CONSTRAINT Challenges_fk1 FOREIGN KEY (sender_id)
-        REFERENCES Accounts (account_id),
-    CONSTRAINT Challenges_fk2 FOREIGN KEY (reciever_id)
-        REFERENCES Accounts (account_id)
+    CONSTRAINT challenges_pk PRIMARY KEY (challenge_id),
+    CONSTRAINT challenges_fk1 FOREIGN KEY (sender_id)
+        REFERENCES accounts (account_id),
+    CONSTRAINT challenges_fk2 FOREIGN KEY (reciever_id)
+        REFERENCES accounts (account_id)
 );
 
-CREATE TABLE Quizes (
+
+
+
+CREATE TABLE quizzes (
     quiz_id INT NOT NULL AUTO_INCREMENT,
     quiz_name VARCHAR(100) NOT NULL,
     is_rearrangable BOOLEAN NOT NULL,
     is_practicable BOOLEAN NOT NULL,
-    CONSTRAINT Quizes_pk PRIMARY KEY (quiz_id),
-    CONSTRAINT Quizes_uk UNIQUE (quiz_name)
+    Description TEXT NOT NULL,
+    CONSTRAINT quizzes_pk PRIMARY KEY (quiz_id),
+    CONSTRAINT quizzes_uk UNIQUE (quiz_name)
 );
 
-CREATE TABLE Question_type (
+
+
+CREATE TABLE question_types (
     question_type_id INT NOT NULL AUTO_INCREMENT,
     question_type_name VARCHAR(50) NOT NULL,
-    CONSTRAINT Question_type_pk PRIMARY KEY (question_type_id),
-    CONSTRAINT Question_type_uk UNIQUE (question_type_name)
+    CONSTRAINT question_type_pk PRIMARY KEY (question_type_id),
+    CONSTRAINT question_type_uk UNIQUE (question_type_name)
 );
 
-insert into Question_type (queestion_type_name) values
-('Question_Response'),
-('Fill in the Blank'),
-('Multiple Choice'),
-('Picture-Respnse Questions'),
-('Multi-Answer Questions'),
-('Multiple Choice with Multiple Answer');
 
-CREATE TABLE Questions (
+
+
+CREATE TABLE questions (
     question_id INT NOT NULL AUTO_INCREMENT,
     quiz_id INT NOT NULL,
     question_type_id INT NOT NULL,
-    question TEXT NOT NULL,
-    CONSTRAINT Questions_pk PRIMARY KEY (question_id),
-    CONSTRAINT Question_fk1 FOREIGN KEY (quiz_id)
-        REFERENCES Quizes (quiz_id),
-    CONSTRAINT Question_fk2 FOREIGN KEY (question_type_id)
-        REFERENCES Question_type (question_type_id)
+    question_note TEXT NOT NULL,
+    CONSTRAINT questions_pk PRIMARY KEY (question_id),
+    CONSTRAINT questions_fk1 FOREIGN KEY (quiz_id)
+        REFERENCES quizzes (quiz_id),
+    CONSTRAINT questions_fk2 FOREIGN KEY (question_type_id)
+        REFERENCES question_types (question_type_id)
 );
 
-CREATE TABLE Answers (
-    answer_id INT NOT NULL AUTO_INCREMENT,
+
+
+CREATE TABLE subquestions (
+    subquestion_id INT NOT NULL AUTO_INCREMENT,
     question_id INT NOT NULL,
-    answer_type BOOLEAN NOT NULL,
-    answer TEXT NOT NULL,
-    CONSTRAINT Answers_pk PRIMARY KEY (answer_id),
-    CONSTRAINT Answers_fk1 FOREIGN KEY (question_id)
-        REFERENCES Questions (question_id)
+    subqeuestion_text TEXT NOT NULL,
+    CONSTRAINT subquestions_pk PRIMARY KEY (subquestion_id),
+    CONSTRAINT subquestions_fk FOREIGN KEY (question_id)
+        REFERENCES questions (question_id)
 );
 
-CREATE TABLE Matching_question (
-    matching_question_id INT NOT NULL AUTO_INCREMENT,
+
+
+CREATE TABLE answer_subquestion_map (
+    answer_id INT NOT NULL AUTO_INCREMENT,
+    subquestion_id INT NOT NULL,
+    CONSTRAINT answer_subquestion_map_pk PRIMARY KEY (answer_id),
+    CONSTRAINT answer_subquestion_map_fk2 FOREIGN KEY (subquestion_id)
+        REFERENCES subquestions (subquestion_id)
+);
+
+
+
+CREATE TABLE answers (
+    answer_id INT NOT NULL,
+    answer_text TEXT NOT NULL,
+    parser_symbol CHAR NOT NULL,
+    CONSTRAINT answers_pk PRIMARY KEY (answer_id),
+    CONSTRAINT answers_fk FOREIGN KEY (answer_id)
+        REFERENCES answer_subquestion_map (answer_id)
+);
+
+
+
+CREATE TABLE question_options (
+    option_id INT NOT NULL AUTO_INCREMENT,
+    quiestion_id INT NOT NULL,
+    option_text TEXT NOT NULL,
+    CONSTRAINT question_options_pk PRIMARY KEY (option_id),
+    CONSTRAINT question_options_fk FOREIGN KEY (quiestion_id)
+        REFERENCES questions (question_id)
+);
+
+
+
+CREATE TABLE quiz_attempts (
+    attempt_id INT NOT NULL AUTO_INCREMENT,
     quiz_id INT NOT NULL,
-    matching_question TEXT NOT NULL,
-    CONSTRAINT Matching_pk PRIMARY KEY (matching_id),
-    CONSTRAINT Matching_question_fk1 FOREIGN KEY (quiz_id)
-        REFERENCES Quiz (quiz_id)
+    account_id INT NOT NULL,
+    score INT NOT NULL,
+    start_time DATETIME NOT NULL,
+    finish_time DATETIME NOT NULL,
+    CONSTRAINT quiz_attempts_pk PRIMARY KEY (attempt_id),
+    CONSTRAINT quiz_attempts_fk1 FOREIGN KEY (quiz_id)
+        REFERENCES quizzes (quiz_id),
+    CONSTRAINT quiz_attempts_fk2 FOREIGN KEY (account_id)
+        REFERENCES accounts (account_id)
 );
 
-CREATE TABLE Matching_answer (
-    matching_answer_id INT NOT NULL AUTO_INCREMENT,
-    matching_question_id INT NOT NULL,
-    matching_answer TEXT NOT NULL,
-    matching_answers_order TEXT NOT NULL,
-    CONSTRAINT Matching_answer_pk PRIMARY KEY (matching_answer_id),
-    CONSTRAINT Matching_answer_fk1 FOREIGN KEY (matching_question_id)
-        REFERENCES Matching_question (matching_question_id)
+
+
+CREATE TABLE categories (
+    category_id INT NOT NULL AUTO_INCREMENT,
+    category_name VARCHAR(50) NOT NULL,
+    category_image_url VARCHAR(100) NOT NULL,
+    CONSTRAINT categories_pk PRIMARY KEY (category_id),
+    CONSTRAINT categories_uk1 UNIQUE (category_name)
 );
 
+
+
+CREATE TABLE quiz_category_map (
+    quiz_id INT NOT NULL,
+    category_id INT NOT NULL,
+    CONSTRAINT quiz_category_map_fk1 FOREIGN KEY (quiz_id)
+        REFERENCES quizzes (quiz_id),
+    CONSTRAINT quiz_category_map_fk2 FOREIGN KEY (category_id)
+        REFERENCES categories (category_id)
+);
+
+
+
+CREATE TABLE quiz_tags (
+    quiz_id INT NOT NULL,
+    tag_name VARCHAR(50) NOT NULL,
+    CONSTRAINT quiz_tag_fk1 FOREIGN KEY (quiz_id)
+        REFERENCES quizzes (quiz_id)
+);
+
+
+
+CREATE TABLE quiz_reviews (
+    review_id INT NOT NULL,
+    quiz_id INT NOT NULL,
+    account_id INT NOT NULL,
+    star INT NOT NULL,
+    review_text TEXT NOT NULL,
+    review_date DATETIME NOT NULL,
+    CONSTRAINT quiz_reviews_pk PRIMARY KEY (review_id),
+    CONSTRAINT quiz_reviews_fk1 FOREIGN KEY (quiz_id)
+        REFERENCES quizzes (quiz_id),
+    CONSTRAINT quiz_reviews_fk2 FOREIGN KEY (account_id)
+        REFERENCES accounts (account_id)
+);
+
+
+
+CREATE TABLE quiz_reports (
+    report_id INT NOT NULL AUTO_INCREMENT,
+    quiz_id INT NOT NULL,
+    account_id INT NOT NULL,
+    report_text TEXT NOT NULL,
+    report_date DATETIME NOT NULL,
+    CONSTRAINT quiz_reports_pk PRIMARY KEY (report_id),
+    CONSTRAINT quiz_reports_fk1 FOREIGN KEY (quiz_id)
+        REFERENCES quizzes (quiz_id),
+    CONSTRAINT quiz_report_fk2 FOREIGN KEY (account_id)
+        REFERENCES accounts (account_id)
+);
+
+
+
+
+insert into categories
+ (category_name, category_image_url)
+values
+ ('Mathematics','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg'),
+ ('Computer Science','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg'),
+ ('History','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg'),
+ ('Biology','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg'),
+ ('Chemistry','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg');
 
 
 
