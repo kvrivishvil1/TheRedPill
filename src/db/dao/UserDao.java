@@ -6,20 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.apache.catalina.tribes.group.AbsoluteOrder.AbsoluteComparator;
-
 import db.DbContract;
+import db.DbContract.accountsTable;
 import db.MyDbInfo;
 import db.bean.Account;
-import db.bean.Note;
 import db.bean.Person;
 import db.bean.Person.Gender;
-import db.bean.User;
 
 public class UserDao {
 	public static final String CONTEXT_ATTRIBUTE_NAME = "userDataAccess";
@@ -67,11 +62,13 @@ public class UserDao {
 	public ArrayList<String> getAllUsernames() {
 		ArrayList<String> allUsers = new ArrayList<>();
 		String query = "Select " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " From "
-				+ DbContract.accountsTable.TABLE_NAME;
+				+ DbContract.accountsTable.TABLE_NAME+ " WHERE "+accountsTable.COLUMN_NAME_STATUS+" = ?";
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
 				Statement stmt = con.createStatement()) {
+			
 			stmt.executeQuery("USE " + database);
 			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, 1);
 				try (ResultSet rs = ps.executeQuery()) {
 					while (rs.next()) {
 						allUsers.add(rs.getString(DbContract.accountsTable.COLUMN_NAME_USERNAME));
@@ -124,7 +121,6 @@ public class UserDao {
 	 * @throws SQLException
 	 */
 	public int getUserIdByUserName(String username) throws SQLException {
-		System.out.println("username " + username);
 		String query = "SELECT account_id FROM Accounts WHERE account_user_name = ?";
 
 		try (Connection connection = createConnection()) {
@@ -196,11 +192,9 @@ public class UserDao {
 			stmt.executeQuery("USE " + database);
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setString(1, compare);
-			System.out.println(st.toString());
 			ResultSet rs = st.executeQuery();
 			rs.next();
 			if (rs.getInt("count") != 0) {
-				System.out.println(rs.getRow());
 				return false;
 			}
 		} catch (SQLException e) {
@@ -281,7 +275,6 @@ public class UserDao {
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setInt(1, accountId);
 			st.setInt(2, personId);
-			System.out.println(st.toString());
 			st.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -466,10 +459,10 @@ public class UserDao {
 	 * @throws SQLException
 	 */
 	private void deleteUserFreindships(int AccountID) throws SQLException {
-		String queryForAccountFirst = "DELETE FROM " + DbContract.freinds.TABLE_NAME + " WHERE "
-				+ DbContract.freinds.COLUMN_NAME_ACCOUNT_FIRST + " = ?";
-		String queyForAccountSecond = "DELETE FROM " + DbContract.freinds.TABLE_NAME + " WHERE "
-				+ DbContract.freinds.COLUMN_NAME_ACCOUNT_SECOND + " = ?";
+		String queryForAccountFirst = "DELETE FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE "
+				+ DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + " = ?";
+		String queyForAccountSecond = "DELETE FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE "
+				+ DbContract.friendsTable.COLUMN_NAME_ACCOUNT_SECOND + " = ?";
 		try (Connection connection = createConnection()) {
 			PreparedStatement statementForAccountFirst = connection.prepareStatement(queryForAccountFirst);
 			PreparedStatement statementForAccountSecond = connection.prepareStatement(queyForAccountSecond);
@@ -522,10 +515,10 @@ public class UserDao {
 	 * @throws SQLException
 	 */
 	private void deleteUserChallenges(int AccountID) throws SQLException {
-		String queryForSendChallenges = "DELETE FROM " + DbContract.challenges.TABLE_NAME + " WHERE "
-				+ DbContract.challenges.COLUMN_NAME_SENDER_ID + " = ?";
-		String queyForRecievedChallenges = "DELETE FROM " + DbContract.challenges.TABLE_NAME + " WHERE "
-				+ DbContract.challenges.COLUMN_NAME_RECIEVER_ID + " = ?";
+		String queryForSendChallenges = "DELETE FROM " + DbContract.challengesTable.TABLE_NAME + " WHERE "
+				+ DbContract.challengesTable.COLUMN_NAME_SENDER_ID + " = ?";
+		String queyForRecievedChallenges = "DELETE FROM " + DbContract.challengesTable.TABLE_NAME + " WHERE "
+				+ DbContract.challengesTable.COLUMN_NAME_RECIEVER_ID + " = ?";
 		try (Connection connection = createConnection()) {
 			PreparedStatement statementForSendChallenges = connection.prepareStatement(queryForSendChallenges);
 			PreparedStatement statementForRecievedChallenges = connection.prepareStatement(queyForRecievedChallenges);
@@ -542,8 +535,9 @@ public class UserDao {
 
 	public long getNumUsers() throws SQLException {
 		try (Connection connection = createConnection()) {
-			String query = "SELECT * FROM " + DbContract.accountsTable.TABLE_NAME;
+			String query = "SELECT * FROM " + DbContract.accountsTable.TABLE_NAME+" WHERE "+DbContract.accountsTable.COLUMN_NAME_STATUS +" = ?";
 			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, 1);
 			ResultSet rs = stm.executeQuery();
 			rs.last();
 			return rs.getRow();
@@ -578,6 +572,28 @@ public class UserDao {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public boolean isAdmin(String userName, String password) {
+		try (Connection connection = createConnection()) {
+			String query = "SELECT * FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE "
+					+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " LIKE ?";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setString(1, userName);
+			ResultSet rs = stm.executeQuery();
+			if (rs.next()) {
+				if (rs.getInt(DbContract.accountsTable.COLUMN_NAME_STATUS) == 2) {
+					String correctPassword = rs.getString(DbContract.accountsTable.COLUMN_NAME_PASSWORD);
+					return correctPassword.equals(password);
+				}
+				return false;
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+
 	}
 
 }

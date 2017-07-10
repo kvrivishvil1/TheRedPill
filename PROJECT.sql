@@ -16,15 +16,33 @@ CREATE TABLE persons (
 
 
 
+
+
 CREATE TABLE accounts (
     account_id INT NOT NULL AUTO_INCREMENT,
     account_user_name VARCHAR(50) NOT NULL,
     account_password VARCHAR(50) NOT NULL,
-    account_status ENUM('user', 'admin') NOT NULL,
+    account_status INT NOT NULL,
     CONSTRAINT accounts_pk PRIMARY KEY (account_id),
     CONSTRAINT accounts_uk UNIQUE (account_user_name)
 );
 
+CREATE TABLE account_status(
+	status_id INT NOT NULL AUTO_INCREMENT,
+	status_name VARCHAR(10) NOT NULL,
+     CONSTRAINT accounts_pk PRIMARY KEY (status_id)
+);
+
+INSERT INTO account_status
+	(status_name)
+VALUES
+	('user'),
+	('admin');
+
+INSERT INTO accounts
+	(account_user_name, account_password, account_status)
+VALUES
+	('admin','8c599c4256f1dcf620614c8fc87ff4ab91c348e1',2);
 
 
 CREATE TABLE person_account_map (
@@ -45,7 +63,7 @@ CREATE TABLE friends (
     CONSTRAINT friends_pk PRIMARY KEY (friend_id),
     CONSTRAINT friends_fk1 FOREIGN KEY (account_first)
         REFERENCES accounts (account_id),
-    CONSTRAINT friends_fk2 FOREIGN KEY (account_second)
+    CONSTRAINT freinds_fk2 FOREIGN KEY (account_second)
         REFERENCES accounts (account_id)
 );
 
@@ -87,7 +105,7 @@ CREATE TABLE quizzes (
     quiz_name VARCHAR(100) NOT NULL,
     is_rearrangable BOOLEAN NOT NULL,
     is_practicable BOOLEAN NOT NULL,
-    description TEXT NOT NULL,
+    Description TEXT NOT NULL,
     category_id INT NOT NULL,
     CONSTRAINT quizzes_pk PRIMARY KEY (quiz_id)
 );
@@ -247,7 +265,7 @@ values
     ('MatchingQuestion');
 
     
-CREATE TABLE admin_notifications(
+CREATE TABLE Admin_notifications(
 	note_id INT NOT NULL AUTO_INCREMENT,
 	note_header TEXT NOT NULL,
 	note TEXT NOT NULL,

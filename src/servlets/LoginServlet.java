@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
 		try {
 
 			// if administrator is signing in
-			if (password.equals("tamuna123") && userName.equals("admin")) {
+			if (userDataAccess.isAdmin(userName, encryptedPassword)) {
 				request.getSession().setAttribute("username", userName);
 				response.getWriter().print("{ 'success' : true, 'location' : 'administration.jsp' }");
 				return;
