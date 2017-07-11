@@ -568,6 +568,7 @@ public class QuizDao {
 		}
 		return null;
 	}
+	
 	public long getNumQuizes() throws SQLException {
 		try (Connection connection = createConnection()) {
 			String query = "SELECT * FROM " + DbContract.quizzesTable.TABLE_NAME;
@@ -580,7 +581,6 @@ public class QuizDao {
 		}
 		return 0;
 	}
-	
 	/**
 	 * Returns the list of category names found in database
 	 * @return The list of category names
@@ -603,4 +603,151 @@ public class QuizDao {
 		}
 		return result;
 	}	
+
+	/**
+	 * Deletes whole quiz with its helper tables from database
+	 * @param quizID
+	 */
+	public void deleteQuiz(int quizID) {
+		try (Connection connection = createConnection()) {
+			String use = "use quiz_database";
+			PreparedStatement stm = connection.prepareStatement(use);
+			stm.execute(use);
+		} catch (SQLException | ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}	
+		
+		deleteQuizAttempts(quizID);
+		deleteQuizReport(quizID);
+		deleteQuizReviews(quizID);
+		deleteQuizTags(quizID);
+		deleteQuestionOptions(quizID);
+		deleteAnswers(quizID);
+		deleteAnswerSubquestionsMaps(quizID);
+		deleteSubquestions(quizID);
+		deleteQuestions(quizID);
+		deleteOnlyQuiz(quizID);	
+	}
+	
+	/**
+	 * Deletes quiz from database
+	 * @param quizID
+	 */
+	public void deleteOnlyQuiz(int quizID) {
+		String query = "DELETE FROM " + DbContract.quizzesTable.TABLE_NAME + " WHERE " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + "=?";
+		executeUpdateWithQuizID(quizID, query);
+	}
+	
+	/**
+	 * Deletes all subquestions from database for questions of current quiz
+	 * @param quizID
+	 */
+	public void deleteSubquestions(int quizID) {
+		String query = "DELETE FROM " + DbContract.subquestionsTable.TABLE_NAME + " WHERE " 
+								+ DbContract.subquestionsTable.COLUMN_NAME_QUESTION_ID + " IN "
+			+ "(SELECT " + DbContract.questionsTable.COLUMN_NAME_QUESTION_ID + " FROM " + DbContract.questionsTable.TABLE_NAME + " WHERE "
+								+ DbContract.questionsTable.COLUMN_NAME_QUIZ_ID + "=?)";
+		executeUpdateWithQuizID(quizID, query);
+	}
+
+	/**
+	 * Deletes all deleteAnswerSubquestionsMaps from database for questions of current quiz
+	 * @param quizID
+	 */
+	public void deleteAnswerSubquestionsMaps(int quizID) {
+		String query = "Delete FROM " + DbContract.answerSubquestionMapTable.TABLE_NAME +  " WHERE "
+															+ DbContract.answerSubquestionMapTable.COLUMN_NAME_SUBQUESTION_ID + " IN " 
+				+ "(SELECT " + DbContract.subquestionsTable.COLUMN_NAME_SUBQUESTION_ID + " FROM " + DbContract.subquestionsTable.TABLE_NAME + " WHERE " 
+															+ DbContract.subquestionsTable.COLUMN_NAME_QUESTION_ID + " IN "
+				+ "(SELECT " + DbContract.questionsTable.COLUMN_NAME_QUESTION_ID + " FROM " + DbContract.questionsTable.TABLE_NAME + " WHERE "
+															+ DbContract.questionsTable.COLUMN_NAME_QUIZ_ID + "=?))";
+		
+		executeUpdateWithQuizID(quizID, query);
+	}
+
+	/**
+	 * Deletes all answers from database for questions of current quiz
+	 * @param quizID
+	 */
+	public void deleteAnswers(int quizID) {
+		String query = "DELETE FROM " + DbContract.answersTable.TABLE_NAME + " WHERE " + DbContract.answersTable.COLUMN_NAME_ANSWER_ID + " IN " 
+			+ "(SELECT " + DbContract.answerSubquestionMapTable.COLUMN_NAME_ANSWER_ID + " FROM " + DbContract.answerSubquestionMapTable.TABLE_NAME +  " WHERE "
+														+ DbContract.answerSubquestionMapTable.COLUMN_NAME_SUBQUESTION_ID + " IN " 
+			+ "(SELECT " + DbContract.subquestionsTable.COLUMN_NAME_SUBQUESTION_ID + " FROM " + DbContract.subquestionsTable.TABLE_NAME + " WHERE " 
+														+ DbContract.subquestionsTable.COLUMN_NAME_QUESTION_ID + " IN "
+			+ "(SELECT " + DbContract.questionsTable.COLUMN_NAME_QUESTION_ID + " FROM " + DbContract.questionsTable.TABLE_NAME + " WHERE "
+					+ DbContract.questionsTable.COLUMN_NAME_QUIZ_ID + "=?)))";
+		executeUpdateWithQuizID(quizID, query);
+	}
+	
+	/**
+	 * Deletes all question options from database for questions of current quiz
+	 * @param quizID
+	 */
+	public void deleteQuestionOptions(int quizID) {
+		String query = "DELETE FROM " + DbContract.questionOptionsTable.TABLE_NAME + " WHERE " + DbContract.questionOptionsTable.COLUMN_NAME_QUESTION_ID + " IN " 
+				+ "(SELECT " + DbContract.questionsTable.COLUMN_NAME_QUESTION_ID + " FROM " + DbContract.questionsTable.TABLE_NAME + " WHERE " + 
+						DbContract.questionsTable.COLUMN_NAME_QUIZ_ID + "=?)";
+		executeUpdateWithQuizID(quizID, query);
+	}
+	
+	/**
+	 * Deletes all questions from database for current quiz
+	 * @param quizID
+	 */
+	public void deleteQuestions(int quizID) {
+		String query = "DELETE FROM " + DbContract.questionsTable.TABLE_NAME + " WHERE " + DbContract.questionsTable.COLUMN_NAME_QUIZ_ID + "=?";
+		executeUpdateWithQuizID(quizID, query);
+	}
+	
+	/**
+	 * Deletes all quiz attempts from database for current quiz
+	 * @param quizID
+	 */
+	public void deleteQuizAttempts(int quizID) {
+		String query = "DELETE FROM " + DbContract.quizAttemptsTable.TABLE_NAME + " WHERE " + DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID + "=?";
+		executeUpdateWithQuizID(quizID, query);
+	}
+	
+	/**
+	 * Deletes all quiz tags from database for current quiz
+	 * @param quizID
+	 */
+	public void deleteQuizTags(int quizID) {
+		String query = "DELETE FROM " + DbContract.quizTagsTable.TABLE_NAME + " WHERE " + DbContract.quizTagsTable.COLUMN_NAME_QUIZ_ID + "=?";
+		executeUpdateWithQuizID(quizID, query);
+	}
+	
+	/**
+	 * Deletes all quiz reviews from database for current quiz
+	 * @param quizID
+	 */
+	public void deleteQuizReviews(int quizID) {
+		String query = "DELETE FROM " + DbContract.quizReviewsTable.TABLE_NAME + " WHERE " + DbContract.quizReviewsTable.COLUMN_NAME_QUIZ_ID + "=?";
+		executeUpdateWithQuizID(quizID, query);
+	}
+	
+	/**
+	 * Deletes all quiz reports from database for current quiz
+	 * @param quizID 
+	 */
+	public void deleteQuizReport(int quizID) {
+		String query = "DELETE FROM " + DbContract.quizReportsTable.TABLE_NAME + " WHERE " + DbContract.quizReportsTable.COLUMN_NAME_QUIZ_ID + "=?";
+		executeUpdateWithQuizID(quizID, query);
+	}
+	
+	/**
+	 * Executes referenced query with QuizID setted
+	 * @param quizID
+	 * @param query
+	 */
+	public void executeUpdateWithQuizID(int quizID, String query) {
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			stm.executeUpdate();
+		} catch (SQLException | ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}	
+	}
 }
