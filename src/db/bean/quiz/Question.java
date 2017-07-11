@@ -11,6 +11,7 @@ public class Question {
 	private int type;
 	private int questionID;
 	private boolean isOrderSensitive;
+	private long timeLimit;
 
 	/**
 	 * Constructor for the Question object
@@ -23,6 +24,7 @@ public class Question {
 		subquestions = new ArrayList<Subquestion>();
 		options = new ArrayList<Option>();
 		isOrderSensitive = false;
+		timeLimit = -1;
 	}
 
 	/**
@@ -157,5 +159,25 @@ public class Question {
 	 */
 	public int getQuestionID() {
 		return questionID;
+	}
+	
+	/**
+	 * Sets the time limit for the question
+	 * 
+	 * @param timeLimit
+	 *            Time which should be the limit for the question
+	 */
+	public void setTimeLimit(long timeLimit) {
+		this.timeLimit = timeLimit;
+	}
+
+	/**
+	 * Returns the time limit of the question. If no limit is set, by default it
+	 * returns -1.
+	 * 
+	 * @return Time which is the limit for the question
+	 */
+	public long getTimeLimit() {
+		return timeLimit;
 	}
 }

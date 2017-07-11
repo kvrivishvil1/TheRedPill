@@ -19,6 +19,7 @@ public class Quiz {
 		this.category = category;
 		tags = new ArrayList<String>();
 		questions = new ArrayList<Question>();
+		timeLimit = -1;
 	}
 
 	/**
@@ -44,7 +45,7 @@ public class Quiz {
 	 * Sets quiz questions are rearrangeable or not
 	 * 
 	 * @param true
-	 *            if it is rearrange, false otherwise
+	 *            if it is rearrangable, false otherwise
 	 */
 	public void setRearrangableMode(boolean isRearrangable) {
 		this.isRearrangable = isRearrangable;
@@ -60,7 +61,7 @@ public class Quiz {
 	}
 
 	/**
-	 * Sets quiz questions are rearrangeable or not
+	 * Sets if quiz can be taken on practice mode or not
 	 * 
 	 * @param true
 	 *            if it is practicable, false otherwise.
@@ -136,7 +137,8 @@ public class Quiz {
 	}
 
 	/**
-	 * Return the time limit of the quiz
+	 * Return the time limit of the quiz. If no limit is set, by default it
+	 * returns -1.
 	 * 
 	 * @return Time which is the limit for the quiz
 	 */

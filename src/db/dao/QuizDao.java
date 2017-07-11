@@ -581,5 +581,26 @@ public class QuizDao {
 		return 0;
 	}
 	
-	
+	/**
+	 * Returns the list of category names found in database
+	 * @return The list of category names
+	 */
+	public List<String> getAllCategoryNames(){
+		List<String> result = new ArrayList<String>();
+		String query = "SELECT " + DbContract.categoriesTable.COLUMN_NAME_CATEGORY_NAME + " FROM " + DbContract.categoriesTable.TABLE_NAME;
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						result.add(rs.getString(DbContract.categoriesTable.COLUMN_NAME_CATEGORY_NAME));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}	
 }
