@@ -35,4 +35,19 @@ public class StringParser {
 		}
 		return result;
 	}
+	
+	/**
+	 * Parses string with one symbol and returns it's list
+	 * @param parserSymbol which should be used for parsing
+	 * @param stringToParse which should be parsed
+	 * @return The list of the parsed string
+	 */
+	public static ArrayList<String> parseStringBy(char parserSymbol, String stringToParse) {
+		ArrayList<String> result = new ArrayList<String>();
+		String[] parsedList = stringToParse.split(Character.toString(parserSymbol));
+		for(int i = 0; i < parsedList.length; i++){
+			result.add(parsedList[i]);
+		}
+		return result;
+	}
 }

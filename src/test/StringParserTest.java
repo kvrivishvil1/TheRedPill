@@ -120,4 +120,14 @@ public class StringParserTest {
 		assertEquals(tagList.size(), 2);
 	}
 
+
+	@Test
+	public void testParserWithSymbol(){
+		String test = "This/Is/Test";
+		ArrayList<String> tagList = StringParser.parseStringBy('/', test);
+		assertEquals(tagList.get(0), "This");
+		assertEquals(tagList.get(1), "Is");
+		assertEquals(tagList.get(2), "Test");
+		assertEquals(tagList.size(), 3);
+	}
 }
