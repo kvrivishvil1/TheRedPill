@@ -25,7 +25,6 @@ public class NoteServlet extends HttpServlet {
 	 */
 	public NoteServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -65,6 +64,10 @@ public class NoteServlet extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}else if(request.getParameter("type").equals("promotion")){
+			UserDao userDataAccess = (UserDao) request.getServletContext().getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
+			String userToPromote = request.getParameter("username");
+			userDataAccess.promoteAdmin(userToPromote);
 		}
 
 	}

@@ -62,13 +62,12 @@ public class UserDao {
 	public ArrayList<String> getAllUsernames() {
 		ArrayList<String> allUsers = new ArrayList<>();
 		String query = "Select " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " From "
-				+ DbContract.accountsTable.TABLE_NAME+ " WHERE "+accountsTable.COLUMN_NAME_STATUS+" = ?";
+				+ DbContract.accountsTable.TABLE_NAME;
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
 				Statement stmt = con.createStatement()) {
-			
+
 			stmt.executeQuery("USE " + database);
 			try (PreparedStatement ps = con.prepareStatement(query)) {
-				ps.setInt(1, 1);
 				try (ResultSet rs = ps.executeQuery()) {
 					while (rs.next()) {
 						allUsers.add(rs.getString(DbContract.accountsTable.COLUMN_NAME_USERNAME));
@@ -244,7 +243,8 @@ public class UserDao {
 
 			String sql = "INSERT INTO " + DbContract.accountsTable.TABLE_NAME + " ("
 					+ DbContract.accountsTable.COLUMN_NAME_USERNAME + ", "
-					+ DbContract.accountsTable.COLUMN_NAME_PASSWORD + ") VALUES (?, ?);";
+					+ DbContract.accountsTable.COLUMN_NAME_PASSWORD + ", " + DbContract.accountsTable.COLUMN_NAME_STATUS
+					+ ") VALUES (?, ?, 1);";
 
 			try (PreparedStatement st = con.prepareStatement(sql)) {
 				st.setString(1, account.getUserName());
@@ -535,9 +535,8 @@ public class UserDao {
 
 	public long getNumUsers() throws SQLException {
 		try (Connection connection = createConnection()) {
-			String query = "SELECT * FROM " + DbContract.accountsTable.TABLE_NAME+" WHERE "+DbContract.accountsTable.COLUMN_NAME_STATUS +" = ?";
+			String query = "SELECT * FROM " + DbContract.accountsTable.TABLE_NAME;
 			PreparedStatement stm = connection.prepareStatement(query);
-			stm.setInt(1, 1);
 			ResultSet rs = stm.executeQuery();
 			rs.last();
 			return rs.getRow();
@@ -573,6 +572,7 @@ public class UserDao {
 		}
 		return null;
 	}
+
 	public boolean isAdmin(String userName, String password) {
 		try (Connection connection = createConnection()) {
 			String query = "SELECT * FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE "
@@ -587,13 +587,24 @@ public class UserDao {
 				}
 				return false;
 			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
 
+	}
+
+	public void promoteAdmin(String userName) {
+		try (Connection connection = createConnection()) {
+			String query = "UPDATE " + DbContract.accountsTable.TABLE_NAME + " SET "
+					+ DbContract.accountsTable.COLUMN_NAME_STATUS + " = 2  WHERE "
+					+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " = ?";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setString(1, userName);
+			stm.executeUpdate();
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

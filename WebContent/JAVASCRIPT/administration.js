@@ -31,23 +31,25 @@ var validateNote = function(fieldElem) {
 	}
 };
 /**
- * function connects to the servlet removes account from database 
+ * function connects to the servlet removes account from database
  */
 var removeAccount = function(buttonElem) {
 
 	var usernameToDelete = $(buttonElem).parent().siblings(":first").children(
 			":first").text();
-	$.ajax({
-		url : "NoteServlet",
-		type : "get",
-		data : {
-			type : "deletion",
-			username : usernameToDelete
-		},
-		success : function(response) {
-			location.reload();
-		}
-	});
+	if (confirm("Delete User: " + usernameToDelete + " ?") == true) {
+		$.ajax({
+			url : "NoteServlet",
+			type : "get",
+			data : {
+				type : "deletion",
+				username : usernameToDelete
+			},
+			success : function(response) {
+				location.reload();
+			}
+		});
+	}
 
 };
 /**
@@ -56,7 +58,19 @@ var removeAccount = function(buttonElem) {
 var promoteAdmin = function(buttonElem) {
 	var usernameToPromote = $(buttonElem).parent().siblings(":first").children(
 			":first").text();
-	alert(usernameToPromote);
+	if (confirm("Promote User: " + usernameToPromote + " As Administrator?") == true) {
+		$.ajax({
+			url : "NoteServlet",
+			type : "get",
+			data : {
+				type : "promotion",
+				username : usernameToPromote
+			},
+			success : function(response) {
+				location.reload();
+			}
+		});
+	}
 
 };
 /**
@@ -96,9 +110,7 @@ var searchUser = function() {
 				});
 	}
 }
-/**
- * 
- */
+
 $(document).ready(function() {
 	$("#note-form").hide();
 	$(".details").hide();
