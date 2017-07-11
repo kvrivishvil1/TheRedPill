@@ -43,26 +43,22 @@ function emailFilled() {
 	if(email == "") {
 		$('.email-check').html("Email field must be filled");
 	} else {
-		var validator = require('validator');
-		console.log(validator.isEmail(email));
-		if(validator.isEmail(email)) {
-			$.ajax({
-				url: "RegisterServlet",
-				type: "get",
-				data: {
-					type: "email",
-					email: email
-				},
-				success: function(data){
-					if(data == "true") {
-						$('.email-check').html("");
-					} else {
-						$('.email-check').html("User with this email is allready registered");
-					}
+		$.ajax({
+			url: "RegisterServlet",
+			type: "get",
+			data: {
+				type: "email",
+				email: email
+			},
+			success: function(data){
+				if(data == "true") {
+					$('.email-check').html("");
+				} else {
+					$('.email-check').html("User with this email is allready registered");
 				}
-				
-			});
-		}
+			}
+			
+		});
 	}
 }
 
@@ -172,11 +168,48 @@ function correctDate() {
 	}
 }
 
+
+//function lastValidation() {
+//	var username = $('.user-name').val();			
+//	$.ajax({
+//		url: "RegisterServlet",
+//		type: "get",
+//		data: {
+//			type: "username",
+//			userName: username
+//		},
+//		success: function(data){
+//			if(data == "true") {
+//				$.ajax({
+//					url: "RegisterServlet",
+//					type: "get",
+//					data: {
+//						type: "email",
+//						email: email
+//					},
+//					success: function(data){
+//						if(data == "true") {
+//
+//						} else {
+//							$('.email-check').html("User with this email is allready registered");
+//						}
+//					}
+//					
+//				});
+//			} else {
+//				$('.username-check').html("User with this username is allready registered");
+//			}
+//		}
+//			
+//	});
+//}
+
 function validate() {
 	if($('.user-name').val() == "" || $('.first-name').val() == "" || $('.last-name').val() == "" ||
 			$('.password').val() == "" || $('.password-confirm').val() == "" || $('.email').val() == ""){ 
 		alert("Fill every field");
 	} else {
+		//lastValidation();
 		document.getElementsById("registration").action="RegisterServlet" 
 		document.getElementsById("registration").submit();
 	}
