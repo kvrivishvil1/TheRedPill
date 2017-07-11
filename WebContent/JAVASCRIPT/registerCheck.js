@@ -1,31 +1,36 @@
-function firstLastFilled() {
-	if(document.getElementsByClassName("first-name")[0].value==""||
-			document.getElementsByClassName("last-name")[0].value=="") {
-		document.getElementsByClassName("name-check")[0].innerHTML = "Both fields must be filled";
-		
-	} else if (document.getElementsByClassName("first-name")[0].value!="" &&
-			document.getElementsByClassName("last-name")[0].value!="") {
-		document.getElementsByClassName("name-check")[0].innerHTML = "";
+function firstNameFilled() {
+	if($('.first-name').val() == "") {
+		$('.first-name-check').html("Fill first name field");
+	} else {
+		$('.first-name-check').html("");
+	}
+}
+
+function lastNameFilled() {
+	if($('.last-name').val() == "") {
+		$('.last-name-check').html("Fill last name field");
+	} else {
+		$('.last-name-check').html("");
 	}
 }
 
 function usernameFilled() {
-	if(document.getElementsByClassName("user-name")[0].value=="") {
-		document.getElementsByClassName("username-check")[0].innerHTML = "Username field must be filled";
+	var username = $('.user-name').val();
+	if(username == "") {
+		$('.username-check').html("Username field must be filled");
 	} else {
-		var nm = $('.user-name').val();
 		$.ajax({
 			url: "RegisterServlet",
 			type: "get",
 			data: {
 				type: "username",
-				userName: nm
+				userName: username
 			},
 			success: function(data){
 				if(data == "true") {
-					document.getElementsByClassName("username-check")[0].innerHTML = "";
+					$('.username-check').html("");
 				} else {
-					document.getElementsByClassName("username-check")[0].innerHTML = "User with this username is allready registered";
+					$('.username-check').html("User with this username is allready registered");
 				}
 			}
 			
@@ -34,37 +39,82 @@ function usernameFilled() {
 }
 
 function emailFilled() {
-	if(document.getElementsByClassName("email")[0].value=="") {
-		document.getElementsByClassName("email-check")[0].innerHTML = "Email field must be filled";
+	var email = $('.email').val();
+	if(email == "") {
+		$('.email-check').html("Email field must be filled");
 	} else {
-		$.ajax({
-			url: "RegisterServlet",
-			type: "get",
-			data: {
-				type: "email",
-				email: $('.email').val()
-			},
-			success: function(data){
-				if(data == "true") {
-					document.getElementsByClassName("email-check")[0].innerHTML = "";
-				} else {
-					document.getElementsByClassName("email-check")[0].innerHTML = "User with this email is allready registered";
+		var validator = require('validator');
+		console.log(validator.isEmail(email));
+		if(validator.isEmail(email)) {
+			$.ajax({
+				url: "RegisterServlet",
+				type: "get",
+				data: {
+					type: "email",
+					email: email
+				},
+				success: function(data){
+					if(data == "true") {
+						$('.email-check').html("");
+					} else {
+						$('.email-check').html("User with this email is allready registered");
+					}
 				}
-			}
-			
-		});
+				
+			});
+		}
+	}
+}
+
+function passwordValidate() {
+	console.log("soso");
+	var upLetters= new RegExp('[A-Z]');
+	var lowLetters= new RegExp('[a-z]');
+	var nums = new RegExp('[0-9]');
+	var password = $('.password').val();
+	console.log(upLetters);
+	console.log(lowLetters);
+	console.log(nums);
+	if(!(password.match(upLetters) && password.match(lowLetters) && password.match(nums) && password.length >= 6)) {
+		$('.confirm-check').html("password must contain lower and uppercase letters, numbers and must contain at least 6 characters");
 	}
 }
 
 function passwordFilled() {
-	if(document.getElementsByClassName("password")[0].value=="" ||
-			document.getElementsByClassName("password-confirm")[0].value=="") {
-		document.getElementsByClassName("password-check")[0].innerHTML = "Both fields must be filled";
-	} else if(document.getElementsByClassName("password")[0].value !==
-			document.getElementsByClassName("password-confirm")[0].value) {
-		document.getElementsByClassName("password-check")[0].innerHTML = "Passwords doesn't match each other";
+	if($('.password').val() == "") {
+		$('.password-check').html("this field must be filled");
 	} else {
-		document.getElementsByClassName("password-check")[0].innerHTML = "";
+		$('.password-check').html("");
+		$('.confirm-check').html("");
+		if($('.password-confirm') != "") {
+			if($('.password').val() == $('.password-confirm').val()) {
+				console.log("ae");
+				passwordValidate();
+			} else {
+				$('.confirm-check').html("Passwords must match each other");
+			}
+		} else {
+			$('.confirm-check').html("this field must be filled");
+		}
+	}
+}
+
+function confirmFilled() {
+	if($('.password-confirm').val() == "") {
+		$('.confirm-check').html("this field must be filled");
+	} else {
+		$('.password-check').html("");
+		$('.confirm-check').html("");
+		if($('.password') != "") {
+			if($('.password').val() == $('.password-confirm').val()) {
+				console.log("oe")
+				passwordValidate();
+			} else {
+				$('.confirm-check').html("Passwords must match each other");
+			}
+		} else {
+			$('.password-check').html("this field must be filled");
+		}
 	}
 }
 
@@ -123,15 +173,8 @@ function correctDate() {
 }
 
 function validate() {
-	if(document.getElementsByClassName("day")[0].value == ""
-			|| document.getElementsByClassName("user-name")[0].value == ""
-			|| document.getElementsByClassName("first-name")[0].value == "" 
-			|| document.getElementsByClassName("last-name")[0].value == ""
-			|| document.getElementsByClassName("password")[0].value == ""
-			|| document.getElementsByClassName("password-confirm")[0].value == "" 
-			|| document.getElementsByClassName("year")[0].selectedIndex == 0 
-			|| document.getElementsByClassName("month")[0].selectedIndex == 0
-		) {
+	if($('.user-name').val() == "" || $('.first-name').val() == "" || $('.last-name').val() == "" ||
+			$('.password').val() == "" || $('.password-confirm').val() == "" || $('.email').val() == ""){ 
 		alert("Fill every field");
 	} else {
 		document.getElementsById("registration").action="RegisterServlet" 

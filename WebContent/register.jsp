@@ -20,11 +20,12 @@
 				<div class="">
 					<div class="formTitle">Name</div>
 					<input type="text" name="firstname" class="first-name input-field"
-						onfocusout="firstLastFilled()" placeholder="First name"> <input
+						onfocusout="firstNameFilled()" placeholder="First name"> <input
 						type="text" name="lastname" class="last-name input-field"
-						onfocusout="firstLastFilled()" placeholder="Last name">
+						onfocusout="lastNameFilled()" placeholder="Last name">
 
-					<div class="name-check alert"></div>
+					<div class="first-name-check alert"></div>
+					<div class="last-name-check alert"></div>
 				</div>
 				<div class="form-line">
 					<div class="formTitle">Choose your username</div>
@@ -36,9 +37,10 @@
 					<div class="formTitle">Create password</div>
 					<input type="password" name="password" class="password input-field"
 						onfocusout="passwordFilled()" placeholder="Password"> 
-					<input type="password" name="conpassword" class="password-confirm input-field" 
-						onfocusout="passwordFilled()" placeholder="Confirm">
 					<div class="password-check alert"></div>
+					<input type="password" name="conpassword" class="password-confirm input-field" 
+						onfocusout="confirmFilled()" placeholder="Confirm">
+					<div class="confirm-check alert"></div>
 				</div>
 				<div class="form-line">
 					<div class="formTitle">Enter your email</div>
