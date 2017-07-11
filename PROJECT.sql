@@ -14,10 +14,6 @@ CREATE TABLE persons (
     CONSTRAINT persons_uk UNIQUE (person_email)
 );
 
-
-
-
-
 CREATE TABLE accounts (
     account_id INT NOT NULL AUTO_INCREMENT,
     account_user_name VARCHAR(50) NOT NULL,
@@ -44,7 +40,6 @@ INSERT INTO accounts
 VALUES
 	('admin','8c599c4256f1dcf620614c8fc87ff4ab91c348e1',2);
 
-
 CREATE TABLE person_account_map (
     person_id INT NOT NULL,
     account_id INT NOT NULL,
@@ -53,8 +48,6 @@ CREATE TABLE person_account_map (
     CONSTRAINT map_fk2 FOREIGN KEY (account_id)
         REFERENCES accounts (account_id)
 );
-
-
 
 CREATE TABLE friends (
     friend_id INT NOT NULL AUTO_INCREMENT,
@@ -67,7 +60,17 @@ CREATE TABLE friends (
         REFERENCES accounts (account_id)
 );
 
-
+CREATE TABLE friend_requests (
+    friend_request_id INT NOT NULL AUTO_INCREMENT,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    time_sent DATETIME NOT NULL,
+    constraint friend_requests_pk primary key (friend_request_id),
+    CONSTRAINT friend_requests_fk1 FOREIGN KEY (sender_id)
+        REFERENCES accounts (account_id),
+    CONSTRAINT friend_requests_fk2 FOREIGN KEY (receiver_id)
+        REFERENCES accounts (account_id)
+);
 
 CREATE TABLE messages (
     message_id INT NOT NULL AUTO_INCREMENT,
@@ -81,9 +84,6 @@ CREATE TABLE messages (
     CONSTRAINT messages_fk2 FOREIGN KEY (reciever_id)
         REFERENCES accounts (account_id)
 );
-
-
-
 
 CREATE TABLE challenges (
     challenge_id INT NOT NULL AUTO_INCREMENT,
@@ -99,7 +99,6 @@ CREATE TABLE challenges (
         REFERENCES accounts (account_id)
 );
 
-
 CREATE TABLE quizzes (
     quiz_id INT NOT NULL AUTO_INCREMENT,
     quiz_name VARCHAR(100) NOT NULL,
@@ -110,17 +109,12 @@ CREATE TABLE quizzes (
     CONSTRAINT quizzes_pk PRIMARY KEY (quiz_id)
 );
 
-
-
 CREATE TABLE question_types (
     question_type_id INT NOT NULL AUTO_INCREMENT,
     question_type_name VARCHAR(50) NOT NULL,
     CONSTRAINT question_type_pk PRIMARY KEY (question_type_id),
     CONSTRAINT question_type_uk UNIQUE (question_type_name)
 );
-
-
-
 
 CREATE TABLE questions (
     question_id INT NOT NULL AUTO_INCREMENT,
@@ -135,8 +129,6 @@ CREATE TABLE questions (
         REFERENCES question_types (question_type_id)
 );
 
-
-
 CREATE TABLE subquestions (
     subquestion_id INT NOT NULL AUTO_INCREMENT,
     question_id INT NOT NULL,
@@ -146,7 +138,6 @@ CREATE TABLE subquestions (
         REFERENCES questions (question_id)
 );
 
-
 CREATE TABLE answer_subquestion_map (
     answer_id INT NOT NULL AUTO_INCREMENT,
     subquestion_id INT NOT NULL,
@@ -154,8 +145,6 @@ CREATE TABLE answer_subquestion_map (
     CONSTRAINT answer_subquestion_map_fk2 FOREIGN KEY (subquestion_id)
         REFERENCES subquestions (subquestion_id)
 );
-
-
 
 CREATE TABLE answers (
     answer_id INT NOT NULL,
@@ -165,8 +154,6 @@ CREATE TABLE answers (
         REFERENCES answer_subquestion_map (answer_id)
 );
 
-
-
 CREATE TABLE question_options (
     option_id INT NOT NULL AUTO_INCREMENT,
     question_id INT NOT NULL,
@@ -175,8 +162,6 @@ CREATE TABLE question_options (
     CONSTRAINT question_options_fk FOREIGN KEY (question_id)
         REFERENCES questions (question_id)
 );
-
-
 
 CREATE TABLE quiz_attempts (
     attempt_id INT NOT NULL AUTO_INCREMENT,
@@ -192,8 +177,6 @@ CREATE TABLE quiz_attempts (
         REFERENCES accounts (account_id)
 );
 
-
-
 CREATE TABLE categories (
     category_id INT NOT NULL AUTO_INCREMENT,
     category_name VARCHAR(50) NOT NULL,
@@ -201,7 +184,6 @@ CREATE TABLE categories (
     CONSTRAINT categories_pk PRIMARY KEY (category_id),
     CONSTRAINT categories_uk1 UNIQUE (category_name)
 );
-
 
 CREATE TABLE quiz_tags (
 	tag_id INT NOT NULL AUTO_INCREMENT,
@@ -211,8 +193,6 @@ CREATE TABLE quiz_tags (
     CONSTRAINT quiz_tag_fk1 FOREIGN KEY (quiz_id)
         REFERENCES quizzes (quiz_id)
 );
-
-
 
 CREATE TABLE quiz_reviews (
     review_id INT NOT NULL,
@@ -228,8 +208,6 @@ CREATE TABLE quiz_reviews (
         REFERENCES accounts (account_id)
 );
 
-
-
 CREATE TABLE quiz_reports (
     report_id INT NOT NULL AUTO_INCREMENT,
     quiz_id INT NOT NULL,
@@ -242,7 +220,6 @@ CREATE TABLE quiz_reports (
     CONSTRAINT quiz_report_fk2 FOREIGN KEY (account_id)
         REFERENCES accounts (account_id)
 );
-
 
 insert into categories
  (category_name, category_image_url)
@@ -264,7 +241,6 @@ values
     ('MultipleChoiceMultipleAnswerQuestion'),
     ('MatchingQuestion');
 
-    
 CREATE TABLE Admin_notifications(
 	note_id INT NOT NULL AUTO_INCREMENT,
 	note_header TEXT NOT NULL,

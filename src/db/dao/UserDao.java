@@ -606,5 +606,55 @@ public class UserDao {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * @param userID gets all usernames of users who sent friend request to current user
+	 * @return arrayList of usernames
+	 */
+	public ArrayList<String> getAllUsernamesFromFriendRequestsForUser(int userID) {
+		ArrayList<String> result = new ArrayList<>();
+		try (Connection connection = createConnection()) {
+			String query = "Select " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE " 
+														+ DbContract.accountsTable.COLUMN_NAME_ID + " IN " + 
+					"(SELECT " + DbContract.friendRequestTable.COLUMN_NAME_SENDER_ID + " FROM " + DbContract.friendRequestTable.TABLE_NAME + " WHERE " 
+														+ DbContract.friendRequestTable.COLUMN_NAME_RECEIVER_ID + "=?)";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, userID);
+			ResultSet rs = stm.executeQuery();
+			while(rs.next()) {
+				result.add(rs.getString(1));
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * @param userIDgets all usernames of friends for current user 
+	 * @return arrayList of usernames
+	 */
+	public ArrayList<String> getAllFriendsForUser(int userID) {
+		ArrayList<String> result = new ArrayList<>();
+		try (Connection connection = createConnection()) {
+			String query = "Select " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE " 
+								+ DbContract.accountsTable.COLUMN_NAME_ID + " IN "
+					+ "(SELECT " + DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + " FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE " 
+														+ DbContract.friendsTable.COLUMN_NAME_ACCOUNT_SECOND + "=?) OR " 
+								+ DbContract.accountsTable.COLUMN_NAME_ID + " IN "
+					+ "(SELECT " + DbContract.friendsTable.COLUMN_NAME_ACCOUNT_SECOND + " FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE " 
+														+ DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + "=?)";	
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, userID);
+			stm.setInt(2, userID);
+			ResultSet rs = stm.executeQuery();
+			while(rs.next()) {
+				result.add(rs.getString(1));
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 }

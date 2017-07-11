@@ -53,6 +53,17 @@ public class DbContract {
 		public static final String COLUMN_NAME_PERSON_ID = "person_id";
 		public static final String COLUMN_NAME_ACCOUNT_ID = "account_id";
 	}
+	
+	/**
+	 * @author soso static class to have name agreements for friend request table
+	 */
+	public class friendRequestTable {
+		public static final String TABLE_NAME = "friend_requests";
+		public static final String COLUMN_NAME_FRIEND_REQUEST_ID = "friend_request_id";
+		public static final String COLUMN_NAME_SENDER_ID = "sender_id";
+		public static final String COLUMN_NAME_RECEIVER_ID = "receiver_id";
+		public static final String COLUMN_NAME_TIME_SENT = "time_sent";
+	}
 
 	/**
 	 * @author tamar static class to have name agreements for Quizes table
