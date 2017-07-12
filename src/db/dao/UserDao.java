@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+
+import org.junit.Test;
 
 import db.DbContract;
 import db.DbContract.accountsTable;
@@ -346,19 +349,37 @@ public class UserDao {
 	 */
 	public void deleteUser(String username) {
 		try {
-			int AccountID = getUserIdByUserName(username);
-			int personID = getPersonIdByUserID(AccountID);
-			deleteUserChallenges(AccountID);
-			deleteUserMessages(AccountID);
-			deleteUserFreindships(AccountID);
-			deleteUserConnectionToPersonalInfo(AccountID);
-			deleteUserAccount(AccountID);
+			int accountID = getUserIdByUserName(username);
+			int personID = getPersonIdByUserID(accountID);
+			deleteUserChallenges(accountID);
+			deleteUserMessages(accountID);
+			deleteUserFreindships(accountID);
+			deleteUserConnectionToPersonalInfo(accountID);
+			deleteUserAccount(accountID);
 			deleteUserPersonalInfo(personID);
+			deleteFriendRequests(accountID);
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
 
+	}
+
+	/**
+	 * deletes all requests where sender or receiver is current user
+	 * @param accountID
+	 */
+	private void deleteFriendRequests(int accountID) {
+		String query = "DELETE FROM " + DbContract.friendRequestTable.TABLE_NAME + " WHERE " + DbContract.friendRequestTable.COLUMN_NAME_SENDER_ID + "=? OR "
+														+ DbContract.friendRequestTable.COLUMN_NAME_RECEIVER_ID + "=?";
+		try (Connection connection = createConnection()) {
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, accountID);
+			statement.setInt(2, accountID);
+			statement.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -384,7 +405,6 @@ public class UserDao {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
 		return -1;
 	}
 
@@ -415,12 +435,12 @@ public class UserDao {
 	 *            The id number of account
 	 * @throws SQLException
 	 */
-	private void deleteUserAccount(int AccountID) throws SQLException {
+	private void deleteUserAccount(int accountID) throws SQLException {
 		String query = "DELETE FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE "
 				+ DbContract.accountsTable.COLUMN_NAME_ID + " = ?";
 		try (Connection connection = createConnection()) {
 			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setInt(1, AccountID);
+			statement.setInt(1, accountID);
 			statement.executeUpdate();
 			statement.close();
 		} catch (ClassNotFoundException e) {
@@ -437,12 +457,12 @@ public class UserDao {
 	 *            The id number of account
 	 * @throws SQLException
 	 */
-	private void deleteUserConnectionToPersonalInfo(int AccountID) throws SQLException {
+	private void deleteUserConnectionToPersonalInfo(int accountID) throws SQLException {
 		String query = "DELETE FROM " + DbContract.personAccountMapTable.TABLE_NAME + " WHERE "
 				+ DbContract.personAccountMapTable.COLUMN_NAME_ACCOUNT_ID + " = ?";
 		try (Connection connection = createConnection()) {
 			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setInt(1, AccountID);
+			statement.setInt(1, accountID);
 			statement.executeUpdate();
 			statement.close();
 		} catch (ClassNotFoundException e) {
@@ -458,7 +478,7 @@ public class UserDao {
 	 *            The id number of account
 	 * @throws SQLException
 	 */
-	private void deleteUserFreindships(int AccountID) throws SQLException {
+	private void deleteUserFreindships(int accountID) throws SQLException {
 		String queryForAccountFirst = "DELETE FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE "
 				+ DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + " = ?";
 		String queyForAccountSecond = "DELETE FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE "
@@ -466,8 +486,8 @@ public class UserDao {
 		try (Connection connection = createConnection()) {
 			PreparedStatement statementForAccountFirst = connection.prepareStatement(queryForAccountFirst);
 			PreparedStatement statementForAccountSecond = connection.prepareStatement(queyForAccountSecond);
-			statementForAccountFirst.setInt(1, AccountID);
-			statementForAccountSecond.setInt(1, AccountID);
+			statementForAccountFirst.setInt(1, accountID);
+			statementForAccountSecond.setInt(1, accountID);
 			statementForAccountFirst.executeUpdate();
 			statementForAccountSecond.executeUpdate();
 			statementForAccountFirst.close();
@@ -486,7 +506,7 @@ public class UserDao {
 	 *            The id number of account
 	 * @throws SQLException
 	 */
-	private void deleteUserMessages(int AccountID) throws SQLException {
+	private void deleteUserMessages(int accountID) throws SQLException {
 		String queryForSendMessagess = "DELETE FROM " + DbContract.messagesTable.TABLE_NAME + " WHERE "
 				+ DbContract.messagesTable.COLUMN_NAME_SENDER_ID + " = ?";
 		String queyForRecievedMessages = "DELETE FROM " + DbContract.messagesTable.TABLE_NAME + " WHERE "
@@ -494,8 +514,8 @@ public class UserDao {
 		try (Connection connection = createConnection()) {
 			PreparedStatement statementForSendMessagess = connection.prepareStatement(queryForSendMessagess);
 			PreparedStatement statementForRecievedChallenges = connection.prepareStatement(queyForRecievedMessages);
-			statementForSendMessagess.setInt(1, AccountID);
-			statementForRecievedChallenges.setInt(1, AccountID);
+			statementForSendMessagess.setInt(1, accountID);
+			statementForRecievedChallenges.setInt(1, accountID);
 			statementForSendMessagess.executeUpdate();
 			statementForRecievedChallenges.executeUpdate();
 			statementForSendMessagess.close();
@@ -514,7 +534,7 @@ public class UserDao {
 	 *            The id number of account
 	 * @throws SQLException
 	 */
-	private void deleteUserChallenges(int AccountID) throws SQLException {
+	private void deleteUserChallenges(int accountID) throws SQLException {
 		String queryForSendChallenges = "DELETE FROM " + DbContract.challengesTable.TABLE_NAME + " WHERE "
 				+ DbContract.challengesTable.COLUMN_NAME_SENDER_ID + " = ?";
 		String queyForRecievedChallenges = "DELETE FROM " + DbContract.challengesTable.TABLE_NAME + " WHERE "
@@ -522,8 +542,8 @@ public class UserDao {
 		try (Connection connection = createConnection()) {
 			PreparedStatement statementForSendChallenges = connection.prepareStatement(queryForSendChallenges);
 			PreparedStatement statementForRecievedChallenges = connection.prepareStatement(queyForRecievedChallenges);
-			statementForSendChallenges.setInt(1, AccountID);
-			statementForRecievedChallenges.setInt(1, AccountID);
+			statementForSendChallenges.setInt(1, accountID);
+			statementForRecievedChallenges.setInt(1, accountID);
 			statementForSendChallenges.executeUpdate();
 			statementForRecievedChallenges.executeUpdate();
 			statementForSendChallenges.close();
@@ -607,22 +627,39 @@ public class UserDao {
 		}
 	}
 	
+	@Test
+	public void t () {
+		UserDao d = new UserDao();
+		System.out.println(d.getAllFriendsForUser(2));
+	}
+	
 	/**
 	 * @param userID gets all usernames of users who sent friend request to current user
 	 * @return arrayList of usernames
 	 */
-	public ArrayList<String> getAllUsernamesFromFriendRequestsForUser(int userID) {
-		ArrayList<String> result = new ArrayList<>();
+	public HashMap<String, String> getAllUsernamesFromFriendRequestsForUser(int userID) {
+		HashMap<String, String> result = new HashMap<>();
 		try (Connection connection = createConnection()) {
-			String query = "Select " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE " 
-														+ DbContract.accountsTable.COLUMN_NAME_ID + " IN " + 
-					"(SELECT " + DbContract.friendRequestTable.COLUMN_NAME_SENDER_ID + " FROM " + DbContract.friendRequestTable.TABLE_NAME + " WHERE " 
-														+ DbContract.friendRequestTable.COLUMN_NAME_RECEIVER_ID + "=?)";
+			String query = "SELECT " + DbContract.accountsTable.COLUMN_NAME_USERNAME + ", " + DbContract.personsTable.COLUMN_NAME_FIRSTNAME + ", " 
+														+ DbContract.personsTable.COLUMN_NAME_LASTNAME + " FROM "
+						+ "(SELECT " + DbContract.accountsTable.COLUMN_NAME_USERNAME + ", " + DbContract.accountsTable.COLUMN_NAME_ID +  " FROM " 
+														+ DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.accountsTable.COLUMN_NAME_ID + " IN "
+						+ "(SELECT " + DbContract.friendRequestTable.COLUMN_NAME_SENDER_ID + " FROM " + DbContract.friendRequestTable.TABLE_NAME + " WHERE "
+														+ DbContract.friendRequestTable.COLUMN_NAME_RECEIVER_ID + "=?)) as a " 
+						+ "INNER JOIN "
+						+ DbContract.personAccountMapTable.TABLE_NAME + " pam "
+						+ "ON pam." + DbContract.personAccountMapTable.COLUMN_NAME_ACCOUNT_ID + " = a." + DbContract.accountsTable.COLUMN_NAME_ID + " "
+						+ "INNER JOIN "
+						+ DbContract.personsTable.TABLE_NAME +  " p "
+						+ "ON p." + DbContract.personsTable.COLUMN_NAME_PERSON_ID + " = pam." + DbContract.personAccountMapTable.COLUMN_NAME_PERSON_ID + ";";
 			PreparedStatement stm = connection.prepareStatement(query);
 			stm.setInt(1, userID);
 			ResultSet rs = stm.executeQuery();
 			while(rs.next()) {
-				result.add(rs.getString(1));
+				String username = rs.getString(1);
+				String firstName = rs.getString(2);
+				String lastName = rs.getString(3);
+				result.put(username, firstName + " " + lastName);
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -634,22 +671,35 @@ public class UserDao {
 	 * @param userIDgets all usernames of friends for current user 
 	 * @return arrayList of usernames
 	 */
-	public ArrayList<String> getAllFriendsForUser(int userID) {
-		ArrayList<String> result = new ArrayList<>();
-		try (Connection connection = createConnection()) {
-			String query = "Select " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE " 
+	public HashMap<String, String> getAllFriendsForUser(int userID) {
+		HashMap<String, String> result = new HashMap<>();
+		try (Connection connection = createConnection()) {	
+			String query = "SELECT " + DbContract.accountsTable.COLUMN_NAME_USERNAME + ", " + DbContract.personsTable.COLUMN_NAME_FIRSTNAME + ", " 
+													+ DbContract.personsTable.COLUMN_NAME_LASTNAME + " FROM "
+						+ "(Select " + DbContract.accountsTable.COLUMN_NAME_USERNAME + ", " + DbContract.accountsTable.COLUMN_NAME_ID + " FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE " 
 								+ DbContract.accountsTable.COLUMN_NAME_ID + " IN "
-					+ "(SELECT " + DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + " FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE " 
+						+ "(SELECT " + DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + " FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE " 
 														+ DbContract.friendsTable.COLUMN_NAME_ACCOUNT_SECOND + "=?) OR " 
 								+ DbContract.accountsTable.COLUMN_NAME_ID + " IN "
-					+ "(SELECT " + DbContract.friendsTable.COLUMN_NAME_ACCOUNT_SECOND + " FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE " 
-														+ DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + "=?)";	
+						+ "(SELECT " + DbContract.friendsTable.COLUMN_NAME_ACCOUNT_SECOND + " FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE " 
+														+ DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + "=?)) as a " 
+						+ "INNER JOIN "
+						+ DbContract.personAccountMapTable.TABLE_NAME + " pam "
+						+ "ON pam." + DbContract.personAccountMapTable.COLUMN_NAME_ACCOUNT_ID + " = a." + DbContract.accountsTable.COLUMN_NAME_ID + " "
+						+ "INNER JOIN "
+						+ DbContract.personsTable.TABLE_NAME +  " p "
+						+ "ON p." + DbContract.personsTable.COLUMN_NAME_PERSON_ID + " = pam." + DbContract.personAccountMapTable.COLUMN_NAME_PERSON_ID + ";";
+			
 			PreparedStatement stm = connection.prepareStatement(query);
+			System.out.println(query);
 			stm.setInt(1, userID);
 			stm.setInt(2, userID);
 			ResultSet rs = stm.executeQuery();
 			while(rs.next()) {
-				result.add(rs.getString(1));
+				String username = rs.getString(1);
+				String firstName = rs.getString(2);
+				String lastName = rs.getString(3);
+				result.put(username, firstName + " " + lastName);
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
