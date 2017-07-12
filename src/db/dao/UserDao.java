@@ -129,9 +129,10 @@ public class UserDao {
 			PreparedStatement stm = connection.prepareStatement(query);
 			stm.setString(1, username);
 			ResultSet rs = stm.executeQuery();
-			rs.last();
-			int result = rs.getInt("account_id");
-			return result;
+			if(rs.next()) {
+				int result = rs.getInt("account_id");
+				return result;
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -261,7 +262,6 @@ public class UserDao {
 
 	/**
 	 * maps person and account to each other and adds in database
-	 * 
 	 * @param person
 	 * @param account
 	 */
@@ -357,19 +357,17 @@ public class UserDao {
 			deleteUserConnectionToPersonalInfo(accountID);
 			deleteUserAccount(accountID);
 			deleteUserPersonalInfo(personID);
-			deleteFriendRequests(accountID);
+			deleteAllFriendRequestsForUser(accountID);
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
 	 * deletes all requests where sender or receiver is current user
 	 * @param accountID
 	 */
-	private void deleteFriendRequests(int accountID) {
+	private void deleteAllFriendRequestsForUser(int accountID) {
 		String query = "DELETE FROM " + DbContract.friendRequestTable.TABLE_NAME + " WHERE " + DbContract.friendRequestTable.COLUMN_NAME_SENDER_ID + "=? OR "
 														+ DbContract.friendRequestTable.COLUMN_NAME_RECEIVER_ID + "=?";
 		try (Connection connection = createConnection()) {
@@ -627,12 +625,6 @@ public class UserDao {
 		}
 	}
 	
-	@Test
-	public void t () {
-		UserDao d = new UserDao();
-		System.out.println(d.getAllFriendsForUser(2));
-	}
-	
 	/**
 	 * @param userID gets all usernames of users who sent friend request to current user
 	 * @return arrayList of usernames
@@ -706,5 +698,47 @@ public class UserDao {
 		}
 		return result;
 	}
-
+	
+	/**
+	 * adds friendship between those users in database
+	 * @param first
+	 * @param second
+	 */
+	public void addFriendshipInDatabase(String sender, String receiver) {
+		DeleteFriendRequestFromDatabase(sender, receiver);
+		String query = "INSERT INTO " + DbContract.friendsTable.TABLE_NAME + "(" + DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + ", " 
+				+ DbContract.friendsTable.COLUMN_NAME_ACCOUNT_SECOND + ")"
+				+ " VALUES (?, ?);";
+		int firstID;
+		int secondID;
+		try {
+			firstID = getUserIdByUserName(sender);
+			secondID = getUserIdByUserName(receiver);
+			Connection connection = createConnection();
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, firstID);
+			stm.setInt(2, secondID);
+			stm.executeUpdate();
+		} catch (SQLException | ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public void DeleteFriendRequestFromDatabase(String sender, String receiver) {
+		String query = "DELETE FROM " + DbContract.friendRequestTable.TABLE_NAME + " WHERE " + DbContract.friendRequestTable.COLUMN_NAME_SENDER_ID + "=? AND "
+												+ DbContract.friendRequestTable.COLUMN_NAME_RECEIVER_ID + "=?;";
+		int senderID;
+		int receiverID;
+		try {
+			senderID = getUserIdByUserName(sender);
+			receiverID = getUserIdByUserName(receiver);
+			Connection connection = createConnection();
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, senderID);
+			stm.setInt(2, receiverID);
+			stm.executeUpdate();
+		} catch (SQLException | ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+	}
 }
