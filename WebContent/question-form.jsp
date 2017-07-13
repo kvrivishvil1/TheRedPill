@@ -99,8 +99,10 @@ textarea {
 			</div>
 		</div>
 
+
 		<div id="2" style="display: none;">
 			<div class="parsing">
+			
 				<label> Symbol for parsing: <select name="parsing">
 						<option value="">Select</option>
 						<option value="/">/</option>
@@ -108,6 +110,7 @@ textarea {
 						<option value="_">_</option>
 						<option value="-">-</option>
 				</select>
+				
 				</label>
 			</div>
 			<div class="question">
@@ -121,6 +124,7 @@ textarea {
 				</div>
 			</div>
 		</div>
+
 
 		<div id="3" style="display: none;">
 			<div class="question">

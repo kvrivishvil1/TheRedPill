@@ -1,0 +1,30 @@
+@CHARSET "ISO-8859-1";
+
+
+
+html {
+	width: 100%;
+	height: 100%;
+}
+
+
+body {
+	width: 100%;
+	height: 100%;
+	background-color: #DDC5A2;
+}
+
+
+.form-inline{
+	display: inline-block;
+}
+
+
+#question-form{
+	text-align: center;
+}
+
+
+#question-note{
+	display: none;
+}
