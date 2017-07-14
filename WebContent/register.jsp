@@ -20,8 +20,8 @@
 				<div class="">
 					<div class="formTitle">Name</div>
 					<input type="text" name="firstname" class="first-name input-field"
-						onfocusout="firstNameFilled()" placeholder="First name"> <input
-						type="text" name="lastname" class="last-name input-field"
+						onfocusout="firstNameFilled()" placeholder="First name"> 
+					<input type="text" name="lastname" class="last-name input-field"
 						onfocusout="lastNameFilled()" placeholder="Last name">
 
 					<div class="first-name-check alert"></div>

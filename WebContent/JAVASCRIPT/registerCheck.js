@@ -206,7 +206,10 @@ function correctDate() {
 
 function validate() {
 	if($('.user-name').val() == "" || $('.first-name').val() == "" || $('.last-name').val() == "" ||
-			$('.password').val() == "" || $('.password-confirm').val() == "" || $('.email').val() == ""){ 
+			$('.password').val() == "" || $('.password-confirm').val() == "" || $('.email').val() == "" || 
+			$('.day-check').val != "" || $('.gender-check').val != "" || $('.email-check') != "" || 
+			$('.confirm-check') != "" || $('.password-check') != "" || $('.username-check').val() != "" || 
+			$('.first-name-check') != "" || $('.last-name-check') != "") { 
 		alert("Fill every field");
 	} else {
 		//lastValidation();
