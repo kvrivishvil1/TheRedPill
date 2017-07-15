@@ -3,18 +3,19 @@ package db.bean.quiz;
 import java.util.Date;
 
 public class QuizAttempt {
+	private int quizAttemptID;
 	private int quizID;
 	private int accountID;
 	private int score;
 	private Date startTime;
 	private Date finishTime;
-	
 	/**
 	 * Constructor for a quiz attempt object with the specified parameters
 	 * @param quizID 
 	 * @param accountID 
 	 */
-	public QuizAttempt(int quizID, int accountID) {
+	public QuizAttempt(int quizAttemptID, int quizID, int accountID) {
+		this.quizAttemptID = quizAttemptID;
 		this.quizID = quizID;
 		this.accountID = accountID;
 	}
