@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import achievement.Achievement;
+import achievement.Property;
 import db.DbContract;
 import db.MyDbInfo;
 import db.bean.quiz.Answer;
@@ -781,4 +784,114 @@ public class QuizDao {
 			e1.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Returns the list of all achievements that be earned
+	 * 
+	 * @return The list of all achievements
+	 */
+	public List<Achievement> getAllAchievementsExceptEarned() {
+		List<Achievement> result = new ArrayList<Achievement>();
+		String query = "SELECT " + DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_ID + ", "
+				+ DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_NAME + " FROM "
+				+ DbContract.achievementsTable.TABLE_NAME + " WHERE "
+				+ DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_NAME + " NOT IN (SELECT "
+				+ DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_NAME + " FROM "
+				+ DbContract.achievementsTable.TABLE_NAME + " a, " + DbContract.accountAchievementsTable.TABLE_NAME
+				+ " aa WHERE " + "a." + DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_ID + " = " + "aa."
+				+ DbContract.accountAchievementsTable.COLUMN_NAME_ACHIEVEMENT_ID + " AND aa."
+				+ DbContract.accountAchievementsTable.COLUMN_NAME_ACCOUNT_ID + " = ?);";
+		System.out.println(query);
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						int achievementID = rs.getInt(DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_ID);
+						String name = rs.getString(DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_NAME);
+						List<Property> properties = getPropertiesByAchievementID(con, achievementID);
+						Achievement newAchievement = new Achievement(achievementID, name, properties);
+						result.add(newAchievement);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	// Finds all properties for a single achievement by ID
+	private List<Property> getPropertiesByAchievementID(Connection con, int achievementID) {
+		List<Property> properties = new ArrayList<Property>();
+		String query = "SELECT p." + DbContract.propertiesTable.COLUMN_NAME_PROPERTY_ID + ", "
+				+ DbContract.propertiesTable.COLUMN_NAME_PROPERTY_PARAMETER + ", "
+				+ DbContract.propertiesTable.COLUMN_NAME_PROPERTY_BOUND + ", "
+				+ DbContract.propertiesTable.COLUMN_NAME_PROPERTY_BOUND_TYPE + " FROM "
+				+ DbContract.propertiesTable.TABLE_NAME + " as p, " + DbContract.achievementPropertiesTable.TABLE_NAME
+				+ " as ap " + " WHERE p." + DbContract.propertiesTable.COLUMN_NAME_PROPERTY_ID + " = ap."
+				+ DbContract.achievementPropertiesTable.COLUMN_NAME_PROPERTY_ID + " AND ap."
+				+ DbContract.achievementPropertiesTable.COLUMN_NAME_ACHIEVEMENT_ID + " = ?;";
+		try (Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, achievementID);
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						Property currentProperty = generateProperty(rs);
+						properties.add(currentProperty);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return properties;
+	}
+
+	// From result set gets and analyzes data for a single property
+	private Property generateProperty(ResultSet rs) {
+		int propertyID = 0, activationBoundValue = 0;
+		String propertyParameter = "", activationBoundType = "";
+		try {
+			propertyID = rs.getInt("p." + DbContract.propertiesTable.COLUMN_NAME_PROPERTY_ID);
+			propertyParameter = rs.getString(DbContract.propertiesTable.COLUMN_NAME_PROPERTY_PARAMETER);
+			activationBoundValue = rs.getInt(DbContract.propertiesTable.COLUMN_NAME_PROPERTY_BOUND);
+			activationBoundType = rs.getString(DbContract.propertiesTable.COLUMN_NAME_PROPERTY_BOUND_TYPE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new Property(propertyID, propertyParameter, activationBoundValue, activationBoundType);
+	}
+	
+	
+	/**
+	 * Adds data about unlocked achievements for specified user.
+	 * 
+	 * @param unlockedAchievementIDs
+	 *            unlocked achievement ID's
+	 * @param accountID
+	 *            for whom the data should be updated
+	 */
+	public void addUnlockedAchievements(List<Integer> unlockedAchievementIDs, int accountID) {
+		String query = "INSERT INTO " + DbContract.accountAchievementsTable.TABLE_NAME + " ( "
+				+ DbContract.accountAchievementsTable.COLUMN_NAME_ACCOUNT_ID + ", "
+				+ DbContract.accountAchievementsTable.COLUMN_NAME_ACHIEVEMENT_ID + ") VALUES (?, ?);";
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				for (int i = 0; i < unlockedAchievementIDs.size(); i++) {
+					ps.setInt(1, accountID);
+					ps.setInt(2, unlockedAchievementIDs.get(i));
+					ps.execute();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }
