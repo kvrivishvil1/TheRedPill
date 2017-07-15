@@ -16,7 +16,7 @@
 			ServletContext cont = request.getServletContext();
 			UserDao dao = (UserDao) cont.getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
 			String username = (String)request.getSession().getAttribute("username");
-			int userID = dao.getUserIdByUserName(username);
+			int userID = dao.getUserIdByUserName("kvrivishvil1");
 			HashMap <String, String> requests = dao.getAllUsernamesFromFriendRequestsForUser(userID);
 		%>
 		<h2> Respond to Your <%= requests.size() %> Friend Requests </h2>
@@ -24,6 +24,9 @@
 			<% for(String usernm : requests.keySet()) { %>
 			<div class="request-line">
 				<form class="form-line" action="FriendRequestsServlet" method="post">
+					<div class="image-div">
+						<img alt="" src="IMG" class="profile-image">
+					</div>
 					<span class="name"><%= requests.get(usernm) %></span>
 					<div class="buttons">
 						<input type="submit" class="confirm" name="act" value="Confirm">
