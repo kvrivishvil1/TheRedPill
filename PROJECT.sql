@@ -248,3 +248,58 @@ CREATE TABLE Admin_notifications(
 	CONSTRAINT admin_notifications_pk PRIMARY KEY (note_id)
 );
 
+CREATE TABLE properties (
+    property_id INT NOT NULL AUTO_INCREMENT,
+    property_parameter VARCHAR(100) NOT NULL,
+    property_bound INT NOT NULL,
+    property_bound_type ENUM('<=', '>=', '==') NOT NULL,
+    CONSTRAINT properties_pk PRIMARY KEY (property_id)
+);
+
+CREATE TABLE achievements (
+    achievement_id INT NOT NULL AUTO_INCREMENT,
+    achievement_name VARCHAR(100) NOT NULL,
+    CONSTRAINT achievements_pk PRIMARY KEY (achievement_id)
+);
+
+CREATE TABLE achievement_properties (
+    connection_id INT NOT NULL AUTO_INCREMENT,
+    achievement_id INT NOT NULL,
+    property_id INT NOT NULL,
+    CONSTRAINT achievement_properties_pk PRIMARY KEY (connection_id),
+    CONSTRAINT achievement_properties_fk1 FOREIGN KEY (achievement_id)
+        REFERENCES achievements (achievement_id),
+    CONSTRAINT achievement_properties_fk2 FOREIGN KEY (property_id)
+        REFERENCES properties (property_id)
+);
+
+CREATE TABLE account_achievements (
+    connection_id INT NOT NULL AUTO_INCREMENT,
+    account_id INT NOT NULL,
+    achievement_id INT NOT NULL,
+    CONSTRAINT account_achievements_pk PRIMARY KEY (connection_id),
+    CONSTRAINT account_achievements_fk1 FOREIGN KEY (account_id)
+        REFERENCES accounts (account_id),
+    CONSTRAINT account_achievements_fk2 FOREIGN KEY (achievement_id)
+        REFERENCES achievements (achievement_id)
+);
+
+INSERT INTO achievement_properties(achievement_id, property_id)
+VALUES (1, 1),
+	(2, 2),
+    (3, 3),
+    (4, 4);
+    
+INSERT INTO properties(property_parameter, property_bound, property_bound_type)
+VALUES ('quiz_create', 1, '>='),
+		('quiz_create', 5, '>='),
+        ('quiz_create', 10, '>='),
+        ('quiz_take', 10, '>='),
+        ('quiz_max_score', 0, '==');
+        
+INSERT INTO achievements(achievement_name)
+VALUES ('Amateur Author'),
+		('Prolific Author'),
+        ('Prodigious Author'),
+        ('Quiz Machine'),
+        ('I am the Greatest');   

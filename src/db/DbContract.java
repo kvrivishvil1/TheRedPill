@@ -245,4 +245,52 @@ public class DbContract {
 		public static final String COLUMN_NAME_NOTE_HEADER = "note_header";
 		public static final String COLUMN_NAME_NOTE = "note";
 	}
+	
+	/**
+	 * Name agreements for properties table
+	 * @author Elene K
+	 *
+	 */
+	public static class propertiesTable {
+		public static final String TABLE_NAME = "properties";
+		public static final String COLUMN_NAME_PROPERTY_ID = "property_id";
+		public static final String COLUMN_NAME_PROPERTY_PARAMETER = "property_parameter";
+		public static final String COLUMN_NAME_PROPERTY_BOUND = "property_bound";
+		public static final String COLUMN_NAME_PROPERTY_BOUND_TYPE = "property_bound_type";
+	}
+	
+	/**
+	 * Name agreements for achievements table
+	 * @author Elene K
+	 *
+	 */
+	public static class achievementsTable {
+		public static final String TABLE_NAME = "achievements";
+		public static final String COLUMN_NAME_ACHIEVEMENT_ID = "achievement_id";
+		public static final String COLUMN_NAME_ACHIEVEMENT_NAME = "achievement_name";
+	}
+	
+	/**
+	 * Name agreements for achievements' properties table
+	 * @author Elene K
+	 *
+	 */
+	public static class achievementPropertiesTable {
+		public static final String TABLE_NAME = "achievement_properties";
+		public static final String COLUMN_NAME_ID = "connection_id";
+		public static final String COLUMN_NAME_ACHIEVEMENT_ID = "achievement_id";
+		public static final String COLUMN_NAME_PROPERTY_ID = "property_id";
+	}
+	
+	/**
+	 * Name agreements for accounts' achievements table
+	 * @author Elene K
+	 *
+	 */
+	public static class accountAchievementsTable {
+		public static final String TABLE_NAME = "account_achievements";
+		public static final String COLUMN_NAME_ID = "connection_id";
+		public static final String COLUMN_NAME_ACCOUNT_ID = "account_id";
+		public static final String COLUMN_NAME_ACHIEVEMENT_ID = "achievement_id";
+	}
 }
