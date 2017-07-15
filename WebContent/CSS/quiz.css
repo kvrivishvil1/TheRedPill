@@ -1,0 +1,56 @@
+@CHARSET "ISO-8859-1";
+
+img {
+	width: 400px;
+	height: 300px;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	background-color: #DDC5A2;
+	margin: 0 auto;
+}
+
+.question-container {
+	border-style: double;
+	padding: 10px;
+	width: 70%;
+	border-radius: 15px;
+	background: rgba(0, 0, 0, 0.1);
+	margin: 0 auto;
+	font-family: serif;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	float: none;
+}
+
+button {
+	-webkit-border-radius: 9;
+	-moz-border-radius: 9;
+	border-radius: 9px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 15px;
+	background: #b32b2b;
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+}
+
+button:hover {
+	background: #d41515;
+}
+
+#submit-area, #navigation{
+	border-style: double;
+	padding: 5px;
+	border-radius: 10px;
+	background: rgba(0, 0, 0, 0.1);
+	margin: 0 auto;
+	font-family: serif;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: center;
+	float: none;
+	width: 40%;
+}
