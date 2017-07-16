@@ -126,15 +126,7 @@ public class MessageDao {
 	 */
 	public List<Note> getRecentMessages(int userID) {
 		List<Note> result = new ArrayList<Note>();
-		String query = "SELECT " + DbContract.messagesTable.COLUMN_NAME_SENDER_ID + ", "
-				+ DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + ", " + DbContract.messagesTable.COLUMN_NAME_TEXT
-				+ ", " + DbContract.messagesTable.COLUMN_NAME_TIME + " FROM " + DbContract.messagesTable.TABLE_NAME
-				+ " WHERE " + DbContract.messagesTable.COLUMN_NAME_MESSAGE_ID + " IN (SELECT MAX("
-				+ DbContract.messagesTable.COLUMN_NAME_MESSAGE_ID + ") FROM " + DbContract.messagesTable.TABLE_NAME
-				+ " GROUP BY (CASE WHEN " + DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + " = ? THEN "
-				+ DbContract.messagesTable.COLUMN_NAME_SENDER_ID + " ELSE "
-				+ DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + " END)) ORDER BY "
-				+ DbContract.messagesTable.COLUMN_NAME_TIME + " DESC;";
+		String query = generateQueryForRecentMessages();
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
 				Statement stmt = con.createStatement()) {
 			stmt.executeQuery("USE " + database);
@@ -151,6 +143,32 @@ public class MessageDao {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	//Generates query to retrive data from database about most recent messages for user
+	//from each account
+	private String generateQueryForRecentMessages(){
+		String query = "SELECT " + DbContract.messagesTable.COLUMN_NAME_SENDER_ID + ", "
+				+ DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + ", " + DbContract.messagesTable.COLUMN_NAME_TEXT
+				+ ", " + DbContract.messagesTable.COLUMN_NAME_TIME + " FROM " + DbContract.messagesTable.TABLE_NAME
+				+ " WHERE (GREATEST(" + DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + ", "
+				+ DbContract.messagesTable.COLUMN_NAME_SENDER_ID + ") , LEAST("
+				+ DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + ", "
+				+ DbContract.messagesTable.COLUMN_NAME_SENDER_ID + "), " + DbContract.messagesTable.COLUMN_NAME_TIME
+				+ ") IN (SELECT  GREATEST(" + DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + ", "
+				+ DbContract.messagesTable.COLUMN_NAME_SENDER_ID + ") AS min_id, LEAST("
+				+ DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + ", "
+				+ DbContract.messagesTable.COLUMN_NAME_SENDER_ID + ") AS max_id,   MAX("
+				+ DbContract.messagesTable.COLUMN_NAME_TIME + ") AS time_sent FROM "
+				+ DbContract.messagesTable.TABLE_NAME + " GROUP BY min_id , max_id)  AND ("
+				+ DbContract.messagesTable.COLUMN_NAME_SENDER_ID + " = ? OR "
+				+ DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + " = ?) GROUP BY GREATEST("
+				+ DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + ", "
+				+ DbContract.messagesTable.COLUMN_NAME_SENDER_ID + ") , LEAST("
+				+ DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + ", "
+				+ DbContract.messagesTable.COLUMN_NAME_SENDER_ID + ") ORDER BY "
+				+ DbContract.messagesTable.COLUMN_NAME_TIME + " DESC;";
+		return query;
 	}
 
 	public void addAdministationNote(String header, String note) throws SQLException {
