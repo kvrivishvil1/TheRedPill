@@ -32,7 +32,6 @@ $(document).ready(function() {
 	});
         
     $(document).on('click', '.add-button', function() {
-		console.log("moved");
 		var clone = $('#question-form').find('.single-answer').last().clone();
 		var value = parseInt(clone.find('input:hidden').val())+1;
 		clone.find('input:hidden').val(value);

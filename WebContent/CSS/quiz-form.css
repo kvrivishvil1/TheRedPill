@@ -12,7 +12,7 @@ html {
 body {
 	width: 100%;
 	height: 100%;
-	background-color: #CEF0D4;
+	background-color: #DDC5A2;
 }
 
 
@@ -28,7 +28,7 @@ body {
 
 
 .title-form{
-	color: #191970; 
+	color: #B6452C; 
 	font-family: font-family:'Carme', sans-serif; 
 	font-size: 40px; 
 	font-weight: normal; 
@@ -59,18 +59,6 @@ body {
 	color:black;
 }
 
-
-
-
-.definition-from{
-	color: green;
-}
-
-
-
-.time-form{
-	color:blue;
-}
 
 
 
@@ -176,41 +164,41 @@ body {
 
 
 #yes-option-first:checked ~ .radio-option-slider{
-  background: rgba(72, 209, 204,.5);
+  background: rgba(250, 235, 215, 0.8);
   left: 3px;
 }
 
 
 
 #no-option-first:checked ~ .radio-option-slider{
-  background: rgba(72, 209, 204,.5);
+  background: rgba(250, 235, 215, 0.8);
   left: 89px;
 }
 
 
 
 #yes-option-second:checked ~ .radio-option-slider{
-  background: rgba(72, 209, 204,.5);
+  background: rgba(250, 235, 215, 0.8);
   left: 3px;
 }
 
 
 
 #no-option-second:checked ~ .radio-option-slider{
-  background: rgba(72, 209, 204,.5);
+  background: rgba(250, 235, 215, 0.8);
   left: 89px;
 }
 
 
 
 #yes-option-third:checked ~ .radio-option-slider{
-  background: rgba(72, 209, 204,.5);
+  background: rgba(250, 235, 215, 0.8);
   left: 3px;
 }
 
 
 #no-option-third:checked ~ .radio-option-slider{
-  background: rgba(72, 209, 204,.5);
+  background: rgba(250, 235, 215, 0.8);
   left: 89px;
 }
 
@@ -219,7 +207,7 @@ body {
 .select-field {
 	
 	border-radius: 8px;
-	background: rgba(0, 0, 0, 0.4);
+	background:rgba(0, 0, 0, 0.4);
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.8);
 	padding: 5px;
 	color: white;
@@ -235,7 +223,7 @@ body {
 	margin-left: 48%;
 	margin-top: 15px;
 	width: 120px;
-    background-color: hsl(240, 63%, 15%);
+    background-color:#B6452C  ;
     border: medium;
     border-radius: 10px;
     color: white;
