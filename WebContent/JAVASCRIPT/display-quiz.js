@@ -10,20 +10,20 @@ var randomizeOrder = function() {
 			type : "randomize",
 		},
 		success : function(response) {
-
+			if (response == "true") {
+				if ($("#single-page").is(":checked")) {
+					window.location = "single-page-quiz.jsp";
+				} else {
+					window.location = "multiple-page-quiz.jsp";
+				}
+			}
 		}
 	});
 }
 
 $(document).ready(function() {
-	//start displaying quiz on click
+	// start displaying quiz on click
 	$("#start-quiz").click(function() {
 		randomizeOrder();
-		//decide wheter display on single or multiple pages
-		if ($("#single-page").is(":checked")) {
-			window.location = "single-page-quiz.jsp";
-		} else {
-			window.location = "multiple-page-quiz.jsp";
-		}
 	});
 });

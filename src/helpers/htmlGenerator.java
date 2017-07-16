@@ -31,11 +31,11 @@ public class htmlGenerator {
 
 	private static String displayMultipleChoice(Question question, int questionPosition) {
 		String html = "";
-		html += "<div class = \"mult-choice\">";
 		String note = question.getNote();
 		String questionText = question.getSubquestions().get(0).getQuestion();
 		if (note.length() != 0)
 			html += "<p class = \"note\">" + note + "</p>";
+		html += "<div class = \"mult-choice\">";
 		html += "<p class = \"question-basic\"><b>" + questionText + "</b></p>";
 		html += "<div id = \"" + questionPosition + "\">";
 		for (int i = 0; i < question.getOptions().size(); i++) {
@@ -48,27 +48,28 @@ public class htmlGenerator {
 
 	private static String displayPictureResponse(Question question, int questionPosition) {
 		String html = "";
-		html += "<div class = \"pic-responce\">";
 		String imagageSrc = question.getSubquestions().get(0).getQuestion();
 		String note = question.getNote();
 		html += "<p class = \"question-note\"><b>" + note + "</b></p>";
-		html += "<img src =\"" + imagageSrc + "\" class = \"image-question\"><br>";
+		html += "<div class = \"pic-response\">";
+		html += "<img src =\"" + imagageSrc + "\" class = \"image-question\"><br><br>";
+		html += "<div id = \"" + questionPosition + "\">";
 		html += "<input type = \"text\" class = \"answer-field\"> </div></div>";
 		return html;
 	}
 
 	private static String displayMultiAnswer(Question question, int questionPosition) {
 		String html = "";
-		html += "<div class = \"mult-choice\">";
 		String note = question.getNote();
 		String questionText = question.getSubquestions().get(0).getQuestion();
 		if (note.length() != 0) {
 			html += "<p class = \"note\">" + note + "</p>";
 		}
+		html += "<div class = \"mult-answer\">";
 		html += "<p class = \"question-basic\"><b>" + questionText + "<b></p>";
 		html += "<div id = \"" + questionPosition + "\">";
 		for (int i = 0; i < question.getSubquestions().get(0).getAnswers().size(); i++) {
-			html += (i + 1) + ") <input type=\"text\" class =\"multi-answer\"/><br>";
+			html += (i + 1) + ") <input type=\"text\" class =\"multiple-answer\"/><br>";
 		}
 		html += "</div></div>";
 		return html;
@@ -76,11 +77,11 @@ public class htmlGenerator {
 
 	private static String displayMultipleChoiceMultipleAnswer(Question question, int questionPosition) {
 		String html = "";
-		html += "<div class = \"mult-choice-mult-answer\">";
 		String note = question.getNote();
 		String questionText = question.getSubquestions().get(0).getQuestion();
 		if (note.length() != 0)
 			html += "<p class = \"note\">" + note + "</p>";
+		html += "<div class = \"mult-choice-mult-answer\">";
 		html += "<p class = \"question-basic\"><b>" + questionText + "</b></p>";
 		html += "<div id = \"" + questionPosition + "\">";
 		for (int i = 0; i < question.getOptions().size(); i++) {
@@ -93,25 +94,26 @@ public class htmlGenerator {
 
 	private static String displayMatching(Question question, int questionPosition) {
 		String html = "";
-		html += "<div class = \"matching\">";
 		String note = question.getNote();
 		if (note.length() != 0)
 			html += "<p class = \"note\"><b>" + note + "<b></p>";
+		html += "<div class = \"matching\">";
+		html += "<div id = \"" + questionPosition + "\">";
 		html += "<table>";
 		for (int i = 0; i < question.getSubquestions().size(); i++) {
 			html += "<tr>";
 			html += "<td>" + question.getSubquestions().get(i).getQuestion() + "</td>";
-			html += "<td><select>";
+			html += "<td><select class = \"match-opt\">";
 			for (int j = 0; j < question.getOptions().size(); j++) {
 				html += "<option>" + question.getOptions().get(j).getOption() + "</option>";
 			}
-			html += "<select><td>";
+			html += "</select></td>";
 			html += "</tr>";
 		}
-		html += "</table></div>";
+		html += "</table></div></div>";
 		return html;
 	}
-	
+
 	public static String displaySingleQuestion(Question question, int position) {
 		int type = question.getQuestionType();
 		switch (type) {

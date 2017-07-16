@@ -13,7 +13,7 @@
 </head>
 <body>
 	<%
-		request.getSession().setAttribute("quizId", 3);//alert : temporary line 
+		request.getSession().setAttribute("quizId", 2);//alert! temporary line 
 		QuizDao dao = new QuizDao();
 		int quizId = (int) request.getSession().getAttribute("quizId");
 		Quiz quiz = dao.getQuiz(quizId);

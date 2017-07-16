@@ -8,8 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-<script src="JAVASCRIPT/display-quiz.js"></script>
 <script src="JAVASCRIPT/multiple-page.js"></script>
+<script src="JAVASCRIPT/quiz-checker.js"></script>
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <link rel="stylesheet" href="CSS/quiz.css">
 <title>Quiz</title>
@@ -33,12 +33,12 @@
 			<button id="next_question">Next Question</button>
 		</div>
 		<div id="submit-area">
-			<button id="submit">Submit answers</button>
+			<button id="submit">Submit Answers</button>
 		</div>
 		<p id="number"><%=allQuestions.size()%></p>
 	</div>
-	<script src="JAVASCRIPT/display-quiz.js"></script>
 	<script src="JAVASCRIPT/multiple-page.js"></script>
+	<script src="JAVASCRIPT/quiz-checker.js"></script>
 	<script src="https://code.jquery.com/jquery.min.js"></script>
 </body>
 </html>

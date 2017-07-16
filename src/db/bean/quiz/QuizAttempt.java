@@ -14,8 +14,7 @@ public class QuizAttempt {
 	 * @param quizID 
 	 * @param accountID 
 	 */
-	public QuizAttempt(int quizAttemptID, int quizID, int accountID) {
-		this.quizAttemptID = quizAttemptID;
+	public QuizAttempt(int quizID, int accountID) {
 		this.quizID = quizID;
 		this.accountID = accountID;
 	}
@@ -77,5 +76,13 @@ public class QuizAttempt {
 	 */
 	public Date getFinishTime() {
 		return finishTime;
+	}
+
+	public int getQuizAttemptID() {
+		return quizAttemptID;
+	}
+
+	public void setQuizAttemptID(int quizAttemptID) {
+		this.quizAttemptID = quizAttemptID;
 	}
 }
