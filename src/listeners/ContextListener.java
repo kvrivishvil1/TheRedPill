@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import Managers.AccountManager;
 import db.dao.MessageDao;
 import db.dao.QuizDao;
 import db.dao.UserDao;
@@ -17,6 +18,7 @@ public class ContextListener implements ServletContextListener {
 	UserDao userDataAccess;
 	QuizDao quizDataAccess;
 	MessageDao messageDataAccess;
+	AccountManager accountManager;
 
 	/**
 	 * Default constructor.
@@ -42,6 +44,8 @@ public class ContextListener implements ServletContextListener {
 		arg0.getServletContext().setAttribute(QuizDao.CONTEXT_ATTRIBUTE_NAME, quizDataAccess);
 		messageDataAccess = new MessageDao();
 		arg0.getServletContext().setAttribute(MessageDao.CONTEXT_ATTRIBUTE_NAME, messageDataAccess);
+		accountManager = new AccountManager(userDataAccess);
+		arg0.getServletContext().setAttribute(AccountManager.CONTEXT_ATTRIBUTE_NAME, accountManager);
 	}
 
 }

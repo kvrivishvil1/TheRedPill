@@ -1,3 +1,4 @@
+<%@page import="db.dao.QuizDao"%>
 <%@page import="db.bean.quiz.QuizAttempt"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -11,6 +12,8 @@
 
 	<%
 		QuizAttempt attempt = (QuizAttempt) request.getSession().getAttribute("attempt");
+		QuizDao dao = new QuizDao();
+		dao.addQuizAttempt(attempt);
 		out.write("<h1>you have got: " + attempt.getScore() + " points</h1>");
 		out.write("<p>Started at:"+attempt.getStartTime()+"</p>");
 		out.write("<p>Finished at:"+attempt.getFinishTime()+"</p>");

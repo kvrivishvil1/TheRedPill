@@ -10,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import Managers.AccountManager;
 import db.bean.Account;
 import db.bean.Person;
 import db.bean.Person.Gender;
@@ -33,65 +35,31 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserDao dao = (UserDao)request.getServletContext().getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
+		AccountManager mng = (AccountManager) request.getServletContext().getAttribute(AccountManager.CONTEXT_ATTRIBUTE_NAME);
 		String type = request.getParameter("type");
-		if(type.equals("email")) {
-			String email = request.getParameter("email");
-			boolean bool = dao.emailIsAvailable(email);
-			if(bool) 
-				response.getWriter().print(true);
-			else 
-				response.getWriter().print(false);
-		} else if (type.equals("username")) {
-			String username = request.getParameter("userName");
-			boolean bool = dao.usernameIsAvailable(username);
-			if(bool) 
-				response.getWriter().print(true);
-			else 
-				response.getWriter().print(false);
-		}
+		String email = request.getParameter("email");
+		String username = request.getParameter("userName");
+		if(mng.checkInDatabase(type, email, username))
+			response.getWriter().print(true);
+		else
+			response.getWriter().print(false);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		addNewUser(request, response);
-	}
-	
-	private Date getDate(HttpServletRequest request) {
-		int year = Integer.parseInt(request.getParameter("year"));
-		int month = Integer.parseInt(request.getParameter("month"));
-		int day = Integer.parseInt(request.getParameter("day"));
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		Date d = null;
-		try {
-			d = sdf.parse(""+day+"/" + month + "/" + year);
-		} catch (ParseException e) { e.printStackTrace();
-			return null;}
-		return d;
-	}
-	
-	private Gender getGender(HttpServletRequest request) {
-		String gender = request.getParameter("gender");
-		Gender g;
-		if(gender.equals("male")) g = Gender.MALE;
-		else g = Gender.FEMALE;
-		return g;
-	}
-
-	private void addNewUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserDao dao = (UserDao)request.getServletContext().getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
+		AccountManager mng = (AccountManager) request.getServletContext().getAttribute(AccountManager.CONTEXT_ATTRIBUTE_NAME);
 		String username = request.getParameter("username");
 		String password = PasswordEncryptor.encrypt(request.getParameter("password"));
 		String firstName = request.getParameter("firstname");
 		String lastName = request.getParameter("lastname");
 		String email = request.getParameter("email");
-		
-		Person person = new Person(firstName, lastName, email, getGender(request), getDate(request));
-		Account account = new Account(username, password);
-		dao.addNewUser(person, account);
+		String gender = request.getParameter("gender");
+		int year = Integer.parseInt(request.getParameter("year"));
+		int month = Integer.parseInt(request.getParameter("month"));
+		int day = Integer.parseInt(request.getParameter("day"));
+		mng.addNewUser(firstName, lastName, email, gender, year, month, day, username, password);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("index.html");
      	rd.forward(request,response);
