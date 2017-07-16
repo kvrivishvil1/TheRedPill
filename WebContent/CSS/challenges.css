@@ -1,0 +1,47 @@
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+}
+
+.content {
+	width: 960px;
+	margin: 0 auto;
+}
+
+.challenges {
+	width: 550px;
+}
+
+.challenge-line {
+	width: 100%;
+}
+
+.challenge {
+	width:100%;
+}
+
+.challenge-info {
+	float: left;
+	display: inline-block;
+}
+
+.challenge-buttons {
+	float: right;
+	display:inline-block;
+	vertical-align: middle;
+}
+
+.challenge-info-line {
+	margin-bottom: 10px;
+}
+
+.button:first-child{
+	margin-bottom:10px;
+}
+
+

@@ -16,7 +16,7 @@
 			ServletContext cont = request.getServletContext();
 			UserDao dao = (UserDao) cont.getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
 			String username = (String)request.getSession().getAttribute("username");
-			int userID = dao.getUserIdByUserName("kvrivishvil1");
+			int userID = dao.getUserIdByUserName(username);
 			HashMap <String, String> requests = dao.getAllUsernamesFromFriendRequestsForUser(userID);
 		%>
 		<h2> Respond to Your <%= requests.size() %> Friend Requests </h2>

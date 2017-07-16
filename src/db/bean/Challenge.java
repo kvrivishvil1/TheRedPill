@@ -3,8 +3,8 @@ package db.bean;
 import java.util.Date;
 
 public class Challenge extends Message {
-	private String link;
 	private int maxScore;
+	private String quizChallnged;
 	
 	/**
 	 * Constructor for a challenge object with the specified parameters
@@ -14,11 +14,11 @@ public class Challenge extends Message {
 	 * @param link The link of this challenge
 	 * @param maxScore Challenger's max score in this quiz
 	 */
-	public Challenge(int senderID, int recieverID, Date date, String link, int maxScore){
+	public Challenge(String quizChallnged, int senderID, int recieverID, Date date, int maxScore){
 		this.senderID = senderID;
 		this.recieverID = recieverID;
 		this.date = new Date(date.getTime());
-		this.link = link;
+		this.quizChallnged = quizChallnged;
 		this.maxScore = maxScore;
 	}
 
@@ -38,19 +38,14 @@ public class Challenge extends Message {
 	}
 	
 	/**
-	 * Returns the link of this challenge
-	 * @return the link
-	 */
-	public String getLink() {
-		return link;
-	}
-	
-	/**
-	 * Returns the sender's max score
 	 * @return the sender's max score
 	 */
 	public int getMaxScore() {
 		return maxScore;
+	}
+	
+	public String getQuizName() {
+		return quizChallnged;
 	}
 	
 	@Override
@@ -59,7 +54,7 @@ public class Challenge extends Message {
 		build.append("Challenge Sender: " + senderID + "\n");
 		build.append("Challenge Receiver: " + recieverID + "\n");
 		build.append("Challenge Date: " + date.toString() + "\n");
-		build.append("Challenge link: " + link + "\n");
+		build.append("Quiz name: " + quizChallnged + "\n");
 		build.append("Challenge MaxScore: " + maxScore);
 		return build.toString();
 	}

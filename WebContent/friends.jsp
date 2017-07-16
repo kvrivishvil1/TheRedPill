@@ -16,7 +16,7 @@
 		ServletContext cont = request.getServletContext();
 		UserDao dao = (UserDao) cont.getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
 		String username = (String)request.getSession().getAttribute("username");
-		int userID = dao.getUserIdByUserName("kvrivishvil1");
+		int userID = dao.getUserIdByUserName(username);
 		HashMap <String, String> friends = dao.getAllFriendsForUser(userID);
 	%>
 	<h2> You have <% friends.size();%> friends </h2>

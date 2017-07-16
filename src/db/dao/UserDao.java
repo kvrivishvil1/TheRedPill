@@ -724,6 +724,11 @@ public class UserDao {
 		}
 	}
 	
+	/**
+	 * Deletes from friend requests row which has
+	 * @param sender as sender_id
+	 * @param receiver as receiver_id
+	 */
 	public void DeleteFriendRequestFromDatabase(String sender, String receiver) {
 		String query = "DELETE FROM " + DbContract.friendRequestTable.TABLE_NAME + " WHERE " + DbContract.friendRequestTable.COLUMN_NAME_SENDER_ID + "=? AND "
 												+ DbContract.friendRequestTable.COLUMN_NAME_RECEIVER_ID + "=?;";
@@ -741,4 +746,27 @@ public class UserDao {
 			e1.printStackTrace();
 		}
 	}
+	
+	/**
+	 * gets username of account with id
+	 * @param accountID 
+	 * @return username
+	 */
+	public String getUsernameByUserId(int accountID) {
+		String query = "SELECT " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " FROM " + DbContract.accountsTable.TABLE_NAME 
+								+ " WHERE " + DbContract.accountsTable.COLUMN_NAME_ID + "= ?";
+		String username = "";
+		try {
+			Connection connection = createConnection();
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, accountID);
+			ResultSet rs = stm.executeQuery();
+			rs.next();
+			username = rs.getString(1);
+		} catch (SQLException | ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		return username;
+	}
+	
 }

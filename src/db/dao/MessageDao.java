@@ -8,10 +8,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import com.sun.org.apache.bcel.internal.generic.Select;
 
 import db.DbContract;
 import db.MyDbInfo;
+import db.bean.Challenge;
 import db.bean.Note;
 
 public class MessageDao {
@@ -190,5 +195,25 @@ public class MessageDao {
 		Statement stm = connection.createStatement();
 		stm.executeQuery("USE " + database);
 		return connection;
+	}
+	
+	/**
+	 * @return all quiz names for current account
+	 */
+	public HashSet<Challenge> getAllChallngesForUser(int receiverID) {
+		HashSet<Challenge> challenges = new HashSet<>();
+		try (Connection connection = createConnection()) {
+			String query = "SELECT " + DbContract.challengesTable.COLUMN_NAME_QUIZ_CHALLENGED + ", " + DbContract.challengesTable.COLUMN_NAME_SENDER_ID + ", " + 
+									DbContract.challengesTable.COLUMN_NAME_TIME_SENT +", " + DbContract.challengesTable.COLUMN_NAME_SCORE_CHALLENGED  + 
+									" FROM " + DbContract.challengesTable.TABLE_NAME + " WHERE " + DbContract.challengesTable.COLUMN_NAME_RECIEVER_ID + " = ?";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, receiverID); 
+			ResultSet rs = stm.executeQuery();
+			while(rs.next())
+				challenges.add(new Challenge(rs.getString(1), rs.getInt(2), receiverID, rs.getDate(3), rs.getInt(4)));
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return challenges;
 	}
 }
