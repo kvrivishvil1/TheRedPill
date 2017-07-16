@@ -18,6 +18,7 @@ import db.MyDbInfo;
 import db.bean.quiz.Answer;
 import db.bean.quiz.Option;
 import db.bean.quiz.Quiz;
+import db.bean.quiz.QuizAttempt;
 import db.bean.quiz.Subquestion;
 import db.bean.quiz.Question;
 
@@ -784,7 +785,7 @@ public class QuizDao {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Returns the list of all achievements that be earned
 	 * 
@@ -864,8 +865,7 @@ public class QuizDao {
 		}
 		return new Property(propertyID, propertyParameter, activationBoundValue, activationBoundType);
 	}
-	
-	
+
 	/**
 	 * Adds data about unlocked achievements for specified user.
 	 * 
@@ -892,6 +892,68 @@ public class QuizDao {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+	/**
+	 * searches particular quizzes by name
+	 * 
+	 * @param searchedWord
+	 * @return
+	 */
+	public ArrayList<String> searchQuizByName(String searchedWord) {
+		try (Connection connection = createConnection()) {
+			ArrayList<String> quizes = new ArrayList<>();
+			String query = "SELECT " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " , "
+					+ DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME + " FROM " + DbContract.quizzesTable.TABLE_NAME
+					+ " WHERE " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME + " LIKE ?";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setString(1, searchedWord + "%");
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				String name = rs.getString(DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME);
+				quizes.add(name);
+			}
+			return quizes;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void addQuizAttempt(QuizAttempt attempt) {
+		try (Connection connection = createConnection()) {
+			String query = "INSERT INTO " + DbContract.quizAttemptsTable.TABLE_NAME + " ("
+					+ DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID + ", "
+					+ DbContract.quizAttemptsTable.COLUMN_NAME_ACCOUNT_ID + ", "
+					+ DbContract.quizAttemptsTable.COLUMN_NAME_SCORE + ", "
+					+ DbContract.quizAttemptsTable.COLUMN_NAME_START_TIME + ", "
+					+ DbContract.quizAttemptsTable.COLUMN_NAME_FINISH_TIME + " ) VALUES (? , ?, ?, ?, ?)";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, attempt.getQuizID());
+			stm.setInt(1, attempt.getAccountID());
+			stm.setInt(1, attempt.getScore());
+			stm.setString(1, attempt.getStartTime().toString());
+			stm.setString(1, attempt.getFinishTime().toString());
+			stm.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+
+		}
+	}
+
+	public int getQuizIdByName(String quizName) {
+		try (Connection connection = createConnection()) {
+			String query = "SELECT * FROM " + DbContract.quizzesTable.TABLE_NAME + " WHERE "
+					+ DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME + " LIKE ?";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setString(1, quizName);
+			ResultSet rs = stm.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID);
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 }

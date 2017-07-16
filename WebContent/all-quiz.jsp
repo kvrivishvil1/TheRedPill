@@ -26,9 +26,9 @@
 	%>
 	<div class="container">
 		<div class="input-group">
-			<input type="text" class="form-control" placeholder="Search for Quiz">
+			<input id = "searched-quiz" type="text" class="form-control" placeholder="Search for Quiz">
 			<span class="input-group-btn">
-				<button class="btn btn-secondary" type="button">Search Quiz</button>
+				<button id="search-quiz" class="btn btn-secondary" type="button">Search Quiz</button>
 			</span>
 		</div>
 		<table>

@@ -176,7 +176,7 @@ public class MessageDao {
 		return query;
 	}
 
-	public void addAdministationNote(String header, String note) throws SQLException {
+	public void addAdministationNote(String header, String note)  {
 		try (Connection connection = createConnection()) {
 			String query = "INSERT INTO " + DbContract.adminNotificationsTable.TABLE_NAME + " ( "
 					+ DbContract.adminNotificationsTable.COLUMN_NAME_NOTE_HEADER + " , "
@@ -185,7 +185,7 @@ public class MessageDao {
 			stm.setString(1, header);
 			stm.setString(2, note);
 			stm.executeUpdate();
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}

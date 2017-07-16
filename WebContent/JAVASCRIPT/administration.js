@@ -106,11 +106,83 @@ var searchUser = function() {
 						$(".remove-account").on("click", function() {
 							removeAccount(this);
 						});
+						$(".promote-admin").on("click", function() {
+							promoteAdmin(this);
+						});
 					}
 				});
 	}
 }
+var removeQuiz = function(buttonElem) {
+	var quizToDelete = $(buttonElem).parent().siblings(":first").children(
+			":first").text();
+	if (confirm("Delete Quiz: " + quizToDelete + " ?") == true) {
+		$.ajax({
+			url : "NoteServlet",
+			type : "get",
+			data : {
+				type : "deletionQuiz",
+				quiz : quizToDelete
+			},
+			success : function(response) {
+				location.reload();
+			}
+		});
+	}
+}
 
+var searchQuiz = function(buttonElem) {
+	var searchedQuiz = $("#searched-quiz").val();
+	if (searchedQuiz.length == 0) {
+		alert("Cannot search an empty word")
+	} else {
+		$
+				.ajax({
+					url : "NoteServlet",
+					type : "get",
+					data : {
+						type : "searchQuiz",
+						quiz : searchedQuiz
+					},
+					success : function(response) {
+						$("table").empty();
+						var str = JSON.stringify(eval('(' + response + ')'));
+						var json = JSON.parse(str);
+						var html = "";
+						for (var i = 0; i < json.number; i++) {
+							html += "<tr> <td>Quiz: <p id = \"quiz-label\">"
+									+ json.array[i]
+									+ "</p></td><td><button class=\"remove-quiz\">Remove Quiz</button></td>"
+									+ "<td><button class=\"clear-quiz-info\">Clear Quiz Info</button></td></tr>";
+						}
+						$("table").html(html);
+
+						$(".remove-quiz").on("click", function() {
+							removeQuiz(this);
+						});
+						$(".clear-quiz-info").on("click", function() {
+							clearQuizInfo(this);
+						});
+					}
+				});
+	}
+}
+var clearQuizInfo = function(buttonElem) {
+	var quizToClean = $(buttonElem).parent().siblings(":first").children(
+			":first").text();
+	if (confirm("Delete Quiz: " + quizToDelete + "'s History ?") == true) {
+		$.ajax({
+			url : "NoteServlet",
+			type : "get",
+			data : {
+				type : "deletionQuizHistory",
+				quiz : quizToclean
+			},
+			success : function(response) {
+			}
+		});
+	}
+}
 $(document).ready(function() {
 	$("#note-form").hide();
 	$(".details").hide();
@@ -130,8 +202,19 @@ $(document).ready(function() {
 	$(".promote-admin").click(function() {
 		promoteAdmin(this);
 	});
-	//
+	// filter users by searched word
 	$("#search-user").click(function() {
 		searchUser();
+	});
+	$(".remove-quiz").click(function() {
+		removeQuiz(this);
+	});
+
+	$("#search-quiz").click(function() {
+		searchQuiz(this);
+	});
+
+	$(".clear-quiz-info").click(function() {
+		clearQuizInfo(this);
 	});
 });

@@ -141,7 +141,7 @@ public class UserDao {
 
 	private String generateQueryForAccount() {
 		return "SELECT *, COUNT(1) as count FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE "
-				+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " like " + "?";
+				+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " LIKE " + "?";
 	}
 
 	private String generateQueryForPerson() {
@@ -572,7 +572,7 @@ public class UserDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<String> searchUser(String searchedWord) throws SQLException {
+	public ArrayList<String> searchUser(String searchedWord)  {
 		String query = "SELECT " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " FROM "
 				+ DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.accountsTable.COLUMN_NAME_USERNAME
 				+ " LIKE ?";
@@ -585,7 +585,7 @@ public class UserDao {
 				result.add(rs.getString(DbContract.accountsTable.COLUMN_NAME_USERNAME));
 			}
 			return result;
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
