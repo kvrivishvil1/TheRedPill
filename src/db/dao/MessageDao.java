@@ -34,6 +34,13 @@ public class MessageDao {
 			e.printStackTrace();
 		}
 	}
+	
+	private Connection createConnection() throws ClassNotFoundException, SQLException {
+		Connection connection = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+		Statement stm = connection.createStatement();
+		stm.executeQuery("USE " + database);
+		return connection;
+	}
 
 	/**
 	 * Finds full conversation between two users by their id.
@@ -75,8 +82,10 @@ public class MessageDao {
 		return result;
 	}
 
-	/*
+	/**
 	 * Gets ResultSet and takes first Note type object from it.
+	 * @param rs
+	 * @return first Note type object
 	 */
 	private Note generateNote(ResultSet rs) {
 		int senderID = 0, recieverID = 0;
@@ -95,10 +104,8 @@ public class MessageDao {
 	}
 
 	/**
-	 * Adds new note into database
-	 * 
-	 * @param note
-	 *            note that should be added
+	 * Adds new note into database 
+	 * @param note note that should be added
 	 */
 	public boolean addNote(Note note) {
 		boolean result = false;
@@ -124,9 +131,7 @@ public class MessageDao {
 
 	/**
 	 * Looks for current user's recent messages, finds most recent ones
-	 * 
-	 * @param userID
-	 *            current user
+	 * @param userID current user
 	 * @return list of the recent messages
 	 */
 	public List<Note> getRecentMessages(int userID) {
@@ -150,8 +155,11 @@ public class MessageDao {
 		return result;
 	}
 	
-	//Generates query to retrive data from database about most recent messages for user
-	//from each account
+	/**
+	 * Generates query to retrieve data from database about 
+	 * most recent messages for user from each account
+	 * @return query
+	 */
 	private String generateQueryForRecentMessages(){
 		String query = "SELECT " + DbContract.messagesTable.COLUMN_NAME_SENDER_ID + ", "
 				+ DbContract.messagesTable.COLUMN_NAME_RECIEVER_ID + ", " + DbContract.messagesTable.COLUMN_NAME_TEXT
@@ -176,6 +184,11 @@ public class MessageDao {
 		return query;
 	}
 
+	/**
+	 * Adds notification written by administrator in database
+	 * @param header
+	 * @param note
+	 */
 	public void addAdministationNote(String header, String note)  {
 		try (Connection connection = createConnection()) {
 			String query = "INSERT INTO " + DbContract.adminNotificationsTable.TABLE_NAME + " ( "
@@ -188,13 +201,6 @@ public class MessageDao {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private Connection createConnection() throws ClassNotFoundException, SQLException {
-		Connection connection = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
-		Statement stm = connection.createStatement();
-		stm.executeQuery("USE " + database);
-		return connection;
 	}
 	
 	/**

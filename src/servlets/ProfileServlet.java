@@ -13,7 +13,7 @@ import db.MyDbInfo;
  * Servlet implementation class profileServlet
  */
 @WebServlet("/profileServlet")
-public class profileServlet extends HttpServlet {
+public class ProfileServlet extends HttpServlet {
 	private static String account = MyDbInfo.MYSQL_USERNAME;
 	private static String password = MyDbInfo.MYSQL_PASSWORD;
 	private static String server =	"jdbc:mysql://" + MyDbInfo.MYSQL_DATABASE_SERVER;
@@ -23,7 +23,7 @@ public class profileServlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public profileServlet() {
+    public ProfileServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

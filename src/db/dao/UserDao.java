@@ -85,8 +85,6 @@ public class UserDao {
 
 	/**
 	 * returns Person object based on UserId (from Accounts table)
-	 * 
-	 * @throws SQLException
 	 */
 	public Person getPersonByUserId(int searchedUserId) {
 		try (Connection connection = createConnection()) {
@@ -117,10 +115,8 @@ public class UserDao {
 
 	/**
 	 * returns user's id number based on user name
-	 * 
 	 * @param username
 	 * @return id number of user
-	 * @throws SQLException
 	 */
 	public int getUserIdByUserName(String username) {
 		String query = "SELECT account_id FROM Accounts WHERE account_user_name = ?";
@@ -160,9 +156,7 @@ public class UserDao {
 
 	/**
 	 * Checks if username is already in database
-	 * 
-	 * @param username
-	 *            username which must be checked in database
+	 * @param username username which must be checked in database
 	 * @return true if username isn't in database else return false
 	 */
 	public boolean usernameIsAvailable(String username) {
@@ -292,7 +286,6 @@ public class UserDao {
 	 * @param connection
 	 *            connection with database
 	 * @return id of person in database
-	 * @throws SQLException
 	 */
 	private int getPersonId(Person person, Connection connection) {
 		String sql = "SELECT " + DbContract.personsTable.COLUMN_NAME_PERSON_ID + " FROM "
@@ -322,7 +315,6 @@ public class UserDao {
 	 * @param connection
 	 *            connection with database
 	 * @return id of account in database
-	 * @throws SQLException
 	 */
 	private int getAccountId(Account account, Connection connection) {
 		String sql = "SELECT " + DbContract.accountsTable.COLUMN_NAME_ID + " FROM "
@@ -357,7 +349,6 @@ public class UserDao {
 
 	/**
 	 * Deletes user person and account in database based on user name
-	 * 
 	 * @param username
 	 */
 	public void deleteUser(String username) {
@@ -391,11 +382,8 @@ public class UserDao {
 
 	/**
 	 * Returns the person id number based on its account id number
-	 * 
-	 * @param AccountID
-	 *            The aid number of the account
+	 * @param AccountID The aid number of the account
 	 * @return The id number of the person
-	 * @throws SQLException
 	 */
 	public int getPersonIdByUserID(int AccountID) {
 		String query = "SELECT " + DbContract.personsTable.COLUMN_NAME_PERSON_ID + " FROM "
@@ -417,10 +405,7 @@ public class UserDao {
 
 	/**
 	 * Deletes user personal information from database based on its id number
-	 * 
-	 * @param personID
-	 *            The id number of person
-	 * @throws SQLException
+	 * @param personID The id number of person
 	 */
 	private void deleteUserPersonalInfo(int personID) {
 		String query = "DELETE FROM " + DbContract.personsTable.TABLE_NAME + " WHERE "
@@ -437,10 +422,7 @@ public class UserDao {
 
 	/**
 	 * Deletes user account from database based on its id number of account
-	 * 
-	 * @param AccountID
-	 *            The id number of account
-	 * @throws SQLException
+	 * @param AccountID The id number of account
 	 */
 	private void deleteUserAccount(int accountID) {
 		String query = "DELETE FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE "
@@ -459,10 +441,7 @@ public class UserDao {
 	/**
 	 * Deletes connection between user personal information and account
 	 * information
-	 * 
-	 * @param AccountID
-	 *            The id number of account
-	 * @throws SQLException
+	 * @param AccountID The id number of account
 	 */
 	private void deleteUserConnectionToPersonalInfo(int accountID){
 		String query = "DELETE FROM " + DbContract.personAccountMapTable.TABLE_NAME + " WHERE "
@@ -480,10 +459,7 @@ public class UserDao {
 
 	/**
 	 * Deletes friendship connection between given user and other users
-	 * 
-	 * @param AccountID
-	 *            The id number of account
-	 * @throws SQLException
+	 * @param AccountID The id number of account
 	 */
 	private void deleteUserFreindships(int accountID) {
 		String queryForAccountFirst = "DELETE FROM " + DbContract.friendsTable.TABLE_NAME + " WHERE "
@@ -508,10 +484,7 @@ public class UserDao {
 	/**
 	 * Deletes user's sent messages and user's received messages based on its
 	 * account id information
-	 * 
-	 * @param AccountID
-	 *            The id number of account
-	 * @throws SQLException
+	 * @param AccountID The id number of account
 	 */
 	private void deleteUserMessages(int accountID) {
 		String queryForSendMessagess = "DELETE FROM " + DbContract.messagesTable.TABLE_NAME + " WHERE "
@@ -536,10 +509,7 @@ public class UserDao {
 	/**
 	 * Deletes user's sent challenges and user's received challenges based on
 	 * its account id information
-	 * 
-	 * @param AccountID
-	 *            The id number of account
-	 * @throws SQLException
+	 * @param AccountID The id number of account
 	 */
 	private void deleteUserChallenges(int accountID) {
 		String queryForSendChallenges = "DELETE FROM " + DbContract.challengesTable.TABLE_NAME + " WHERE "
@@ -560,6 +530,9 @@ public class UserDao {
 		}
 	}
 
+	/**
+	 * @return how many users were registered
+	 */
 	public long getNumUsers() {
 		try (Connection connection = createConnection()) {
 			String query = "SELECT * FROM " + DbContract.accountsTable.TABLE_NAME;
@@ -574,12 +547,9 @@ public class UserDao {
 	}
 
 	/**
-	 * 
-	 * selects all usernames containing given String
-	 * 
+	 * selects all usernames containing given Strings
 	 * @param searchedWord
-	 * @return
-	 * @throws SQLException
+	 * @return array list of usernames
 	 */
 	public ArrayList<String> searchUser(String searchedWord)  {
 		String query = "SELECT " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " FROM "
@@ -600,6 +570,12 @@ public class UserDao {
 		return null;
 	}
 
+	/**
+	 * checks if user is admin with parameters:
+	 * @param userName
+	 * @param password
+	 * @return boolean
+	 */
 	public boolean isAdmin(String userName, String password) {
 		try (Connection connection = createConnection()) {
 			String query = "SELECT * FROM " + DbContract.accountsTable.TABLE_NAME + " WHERE "
@@ -621,6 +597,10 @@ public class UserDao {
 
 	}
 
+	/**
+	 * Makes user admin
+	 * @param userName
+	 */
 	public void promoteAdmin(String userName) {
 		try (Connection connection = createConnection()) {
 			String query = "UPDATE " + DbContract.accountsTable.TABLE_NAME + " SET "
@@ -692,7 +672,6 @@ public class UserDao {
 						+ "ON p." + DbContract.personsTable.COLUMN_NAME_PERSON_ID + " = pam." + DbContract.personAccountMapTable.COLUMN_NAME_PERSON_ID + ";";
 			
 			PreparedStatement stm = connection.prepareStatement(query);
-			System.out.println(query);
 			stm.setInt(1, userID);
 			stm.setInt(2, userID);
 			ResultSet rs = stm.executeQuery();
@@ -714,7 +693,7 @@ public class UserDao {
 	 * @param second
 	 */
 	public void addFriendshipInDatabase(String sender, String receiver) {
-		DeleteFriendRequestFromDatabase(sender, receiver);
+		deleteFriendRequestFromDatabase(sender, receiver);
 		String query = "INSERT INTO " + DbContract.friendsTable.TABLE_NAME + "(" + DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + ", " 
 				+ DbContract.friendsTable.COLUMN_NAME_ACCOUNT_SECOND + ")"
 				+ " VALUES (?, ?);";
@@ -738,7 +717,7 @@ public class UserDao {
 	 * @param sender as sender_id
 	 * @param receiver as receiver_id
 	 */
-	public void DeleteFriendRequestFromDatabase(String sender, String receiver) {
+	public void deleteFriendRequestFromDatabase(String sender, String receiver) {
 		String query = "DELETE FROM " + DbContract.friendRequestTable.TABLE_NAME + " WHERE " + DbContract.friendRequestTable.COLUMN_NAME_SENDER_ID + "=? AND "
 												+ DbContract.friendRequestTable.COLUMN_NAME_RECEIVER_ID + "=?;";
 		int senderID;

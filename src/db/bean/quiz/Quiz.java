@@ -209,7 +209,5 @@ public class Quiz {
 	public List<String> getTags() {
 		return tags;
 	}
-	
-	
 
 }

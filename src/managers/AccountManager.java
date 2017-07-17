@@ -173,4 +173,19 @@ public class AccountManager {
 	public long getNumUsers() {
 		return userDao.getNumUsers();
 	}
+
+	/**
+	 * calls addFriendshipInDatabase if value equals Confirm
+	 * else calss deleteFriendRequestFromDatabase
+	 * @param value confirm or delete request
+	 * @param senderUsername request sender
+	 * @param receiverUsername request receiver
+	 */
+	public void requestController(String value, String senderUsername, String receiverUsername) {
+		if(value.equals("Confirm"))
+			userDao.addFriendshipInDatabase(senderUsername, receiverUsername);
+		else
+			userDao.deleteFriendRequestFromDatabase(senderUsername, receiverUsername);
+	}
+	
 }

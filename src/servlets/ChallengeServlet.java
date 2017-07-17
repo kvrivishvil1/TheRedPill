@@ -19,7 +19,6 @@ public class ChallengeServlet extends HttpServlet {
      */
     public ChallengeServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**

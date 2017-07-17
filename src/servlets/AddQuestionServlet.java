@@ -62,13 +62,7 @@ public class AddQuestionServlet extends HttpServlet {
 			rd.forward(request, response);
 		} else if (type == 0 && !act.equals("next")) {
 			QuizDao dao = new QuizDao();
-			try {
 				dao.addQuiz(quiz);
-				System.out.println("wow");
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		} else {
 			question.setNote(request.getParameter("note"));
 			if(request.getParameter("time-limited") != null && request.getParameter("time-limited").equals("on")){
@@ -142,12 +136,7 @@ public class AddQuestionServlet extends HttpServlet {
 				rd.forward(request, response);
 			} else {
 				QuizDao dao = new QuizDao();
-				try {
-					dao.addQuiz(quiz);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				dao.addQuiz(quiz);
 			}
 		}
 
