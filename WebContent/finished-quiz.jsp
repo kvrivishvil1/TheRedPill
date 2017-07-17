@@ -1,3 +1,4 @@
+<%@page import="managers.AchievementManager"%>
 <%@page import="managers.MainManager"%>
 <%@page import="db.dao.QuizDao"%>
 <%@page import="db.bean.quiz.QuizAttempt"%>
@@ -16,6 +17,9 @@
 		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 		QuizAttempt attempt = (QuizAttempt) request.getSession().getAttribute("attempt");
 		mainManager.getQuizManager().addQuizAttempt(attempt);
+		QuizDao dao = new QuizDao();
+		AchievementManager amng = new AchievementManager(dao);
+		amng.updateAchievementsAfterQuiz(1, 1);//should take attributes from quiz
 		out.write("<div class = \"container1\">");
 		out.write("<h1>you have got: " + attempt.getScore() + " points</h1>");
 		out.write("<p>Started at:" + attempt.getStartTime() + "</p>");
