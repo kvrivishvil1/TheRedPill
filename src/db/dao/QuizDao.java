@@ -1400,4 +1400,151 @@ public class QuizDao {
 		}
 		return result;
 	}
+	
+	/**
+	 * Returns the list of all achievements that be earned
+	 * 
+	 * @return The list of all achievements
+	 */
+	public List<Achievement> getAllAchievements() {
+		List<Achievement> result = new ArrayList<Achievement>();
+		String query = "SELECT " + DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_ID + ", "
+				+ DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_NAME + " FROM "
+				+ DbContract.achievementsTable.TABLE_NAME + ";";
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						int achievementID = rs.getInt(DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_ID);
+						String name = rs.getString(DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_NAME);
+						List<Property> properties = getPropertiesByAchievementID(con, achievementID);
+						Achievement newAchievement = new Achievement(achievementID, name, properties);
+						result.add(newAchievement);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+
+	/**
+	 * Returns the list of all achievements that be earned
+	 * 
+	 * @return The list of all achievements
+	 */
+	public List<Achievement> getAllAchievementsForUser(int accountID) {
+		List<Achievement> result = new ArrayList<Achievement>();
+		String query = "SELECT "
+				+ " a." + DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_ID + ", "
+				+ DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_NAME + " FROM "
+				+ DbContract.achievementsTable.TABLE_NAME + " a, " + DbContract.accountAchievementsTable.TABLE_NAME
+				+ " aa WHERE " + "a." + DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_ID + " = " + "aa."
+				+ DbContract.accountAchievementsTable.COLUMN_NAME_ACHIEVEMENT_ID + " AND aa."
+				+ DbContract.accountAchievementsTable.COLUMN_NAME_ACCOUNT_ID + " = ?";
+		System.out.println(query);
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, accountID);
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						int achievementID = rs.getInt(DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_ID);
+						String name = rs.getString(DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_NAME);
+						List<Property> properties = getPropertiesByAchievementID(con, achievementID);
+						Achievement newAchievement = new Achievement(achievementID, name, properties);
+						result.add(newAchievement);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * Gets best score of the quiz by quizID
+	 * @param quizID for which best score should be found
+	 * @return The best score in quiz
+	 */
+	public int getQuizBestScore(int quizID) {
+		int bestScore = 0;
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			String query = "SELECT MAX(" + DbContract.quizAttemptsTable.COLUMN_NAME_SCORE + ") AS best_score FROM "
+					+ DbContract.quizAttemptsTable.TABLE_NAME + " WHERE "
+					+ DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID + " = ? GROUP BY "
+					+ DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID + ";";
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, quizID);
+				try (ResultSet rs = ps.executeQuery()) {
+					if (rs.next()) {
+						bestScore = rs.getInt("best_score");
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return bestScore;
+	}
+	
+	/**
+	 * Returns the number of quizzes taken by particular user
+	 * @param accountID for user
+	 * @return The number of quizzes taken
+	 */
+	public int getQuizTakeCountForUser(int accountID) {
+		int takeCount = 0;
+		String query = "SELECT COUNT(1) AS cnt FROM " + DbContract.quizAttemptsTable.TABLE_NAME + " WHERE "
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_ACCOUNT_ID + " = ?";
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, accountID);
+				try (ResultSet rs = ps.executeQuery()) {
+					if (rs.next()) {
+						takeCount = rs.getInt("cnt");
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return takeCount;
+	}
+	
+	/**
+	 * Returns the number of quizzes taken by particular user
+	 * @param accountID for user
+	 * @return The number of quizzes taken
+	 */
+	public int getQuizCreateCountForUser(int accountID) {
+		int createCount = 0;
+		String query = "SELECT COUNT(1) AS cnt FROM " + DbContract.quizzesTable.TABLE_NAME + " WHERE "
+				+ DbContract.quizzesTable.COLUMN_NAME_ACCOUNT_ID + " = ?";
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, accountID);
+				try (ResultSet rs = ps.executeQuery()) {
+					if (rs.next()) {
+						createCount = rs.getInt("cnt");
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return createCount;
+	}
 }
