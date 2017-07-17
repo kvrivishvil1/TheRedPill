@@ -1,3 +1,6 @@
-/db/
-/servlets/
 /managers/
+/servlets/
+/test/
+/db/
+/analyzer/
+/helpers/

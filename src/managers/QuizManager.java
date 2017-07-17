@@ -1,10 +1,21 @@
 package managers;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import analyzer.quiz.OptionDataAnalyzer;
+import analyzer.quiz.QuestionDataAnalyzer;
+import analyzer.quiz.SubquestionDataContainer;
+import analyzer.quiz.subquestion.SubquestionDataAnalyzer;
+import db.bean.quiz.Option;
+import db.bean.quiz.Question;
 import db.bean.quiz.Quiz;
 import db.bean.quiz.QuizAttempt;
+import db.bean.quiz.Subquestion;
 import db.dao.QuizDao;
 import helpers.DataCouple;
 
@@ -158,5 +169,45 @@ public class QuizManager {
 	 */
 	public int getQuizMaxScore(int quizID) {
 		return quizDao.getQuizMaxScore(quizID);
+	}
+	
+	/**
+	 * Question data analyzer method. Takes data submitted from quiz creator.
+	 * @param typeID of question 
+	 * @param note of question 
+	 * @param timeLimit value if time is limited. Otherwise, -1.
+	 * @param isOrderSensitive true if time is limited for question. Otherwise, false.
+	 * @param container object which saves data about subquestions of the question
+	 * @return
+	 */
+	public Question analyzeQuestion(int typeID, String note, long timeLimit, boolean isOrderSensitive, SubquestionDataContainer container){
+		Map<Integer, String> map = quizDao.getAllQuestionTypes();
+		
+		Object analyzer = null;
+		try {
+			Class<?> classObject = Class.forName("analyzer.quiz.subquestion." + map.get(typeID) + "SubquestionDataAnalyzer");
+			Constructor<?> cons = classObject.getConstructor(String[].class, String[].class, String[].class, String[].class, String[].class, String.class);
+			analyzer = cons.newInstance(container.getQuestions(), container.getAnswers(), container.getOptions(), container.getOptionIDs(), container.getAnswerOptions(), container.getParser());
+		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<Subquestion> subquestionsList = ((SubquestionDataAnalyzer)analyzer).getSubquestions();	
+		
+		OptionDataAnalyzer optionDataAnalyzer = new OptionDataAnalyzer(container.getAnswerOptions());
+		List<Option> optionsList = optionDataAnalyzer.getOptions();
+		
+		QuestionDataAnalyzer questionDataAnalyzer = new QuestionDataAnalyzer(typeID, note, subquestionsList, optionsList, isOrderSensitive, timeLimit);
+		Question question = questionDataAnalyzer.getQuestion();
+		
+		return question;
+	}
+	
+	/**
+	 * Adds quiz into database
+	 * @param quiz which should be added
+	 */
+	public void addQuiz(Quiz quiz){
+		quizDao.addQuiz(quiz);
 	}
 }

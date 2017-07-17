@@ -14,13 +14,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import db.bean.quiz.Answer;
+import analyzer.quiz.SubquestionDataContainer;
 import db.bean.quiz.Question;
 import db.bean.quiz.Quiz;
-import db.bean.quiz.Subquestion;
-import db.bean.quiz.Option;
 import db.dao.QuizDao;
-import helpers.StringParser;
+import helpers.TimeConverter;
+import managers.MainManager;
+import managers.QuizManager;
 
 /**
  * Servlet implementation class AddQuestionServlet
@@ -53,90 +53,53 @@ public class AddQuestionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int type = Integer.parseInt(request.getParameter("question-type"));
-		Quiz quiz = (Quiz) request.getSession().getAttribute("quiz");
+		MainManager mainManager = (MainManager)request.getServletContext().getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
+		QuizManager quizManager = mainManager.getQuizManager();
+		
+		int typeID = Integer.parseInt(request.getParameter("question-type"));
 		String act = request.getParameter("act");
-		Question question = new Question(type);
-		if (type == 0 && act.equals("next")) {
+		Quiz quiz = (Quiz) request.getSession().getAttribute("quiz");
+
+		if (typeID == 0 && act.equals("next")) {
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/question-form.jsp");
 			rd.forward(request, response);
-		} else if (type == 0 && !act.equals("next")) {
-			QuizDao dao = new QuizDao();
-				dao.addQuiz(quiz);
+		} else if (typeID == 0 && !act.equals("next")) {
+			quizManager.addQuiz(quiz);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/quiz-form.jsp");
+			rd.forward(request, response);
 		} else {
-			question.setNote(request.getParameter("note"));
-			if(request.getParameter("time-limited") != null && request.getParameter("time-limited").equals("on")){
-				int hours = Integer.parseInt(request.getParameter("hours"));
-				int minutes = Integer.parseInt(request.getParameter("minutes"));
-				int seconds = Integer.parseInt(request.getParameter("seconds"));
-				int total = hours*3600 + minutes*60 + seconds;
-				if(total > 0)
-					question.setTimeLimit(total);
+			String parser = request.getParameter("parsing");
+			String note = request.getParameter("note");
+			
+			long timeLimit = -1;
+			if (request.getParameter("time-limited") != null && request.getParameter("time-limited").equals("on")) {
+				timeLimit = TimeConverter.toSeconds(request.getParameter("hours"), request.getParameter("minutes"),
+						request.getParameter("seconds"));
 			}
-			if(request.getParameter("order-sensitive") != null && request.getParameter("order-sensitive").equals("on"))
-				question.setOrderSensitive(true);
-			if (type != 7) {
-				String parser = request.getParameter("parsing");
-				Subquestion subquestion = new Subquestion(request.getParameter("question-text"));
-				String[] answers = request.getParameterValues("answer-text");
-				if(answers != null){
-					for (int i = 0; i < answers.length; i++) {
-						ArrayList<String> singleAnswersList = new ArrayList<String>();
-						char parserSymbol = 's';
-						if (parser != null && !parser.equals("")) {
-							parserSymbol = parser.charAt(0);
-							singleAnswersList = StringParser.parseStringBy(parserSymbol, answers[i]);
-						} else {
-							singleAnswersList.add(answers[i]);
-						}
-						Answer answer = new Answer(singleAnswersList);
-						if (parser != null && !parser.equals("")) {
-							answer.setParserSymbol(parserSymbol);
-						}
-						subquestion.addAnswer(answer);
-					}
-				}
-				String[] options = request.getParameterValues("option-text");
-				String[] optionIDs = request.getParameterValues("option-id");
-				String[] answerOptions = request.getParameterValues("answer-option");
-				int index = 0;
-				if (options != null) {
-					for (int i = 0; i < options.length; i++) {
-						System.out.println(index);
-						if (index < answerOptions.length && answerOptions[index].equals(optionIDs[i])) {
-							index++;
-							ArrayList<String> singleAnswersList = new ArrayList<String>();
-							singleAnswersList.add(options[i]);
-							Answer answer = new Answer(singleAnswersList);
-							subquestion.addAnswer(answer);
-						}
-						Option option = new Option(options[i]);
-						question.addOption(option);
-					}
-				}
-				question.addSubquestion(subquestion);
-				quiz.addQuestion(question);
-			} else {
-				String[] options = request.getParameterValues("option-text");
-				String[] questions = request.getParameterValues("question-text");
-				String[] correctAnswers = request.getParameterValues("answer-option");
-				for (int i = 0; i < options.length; i++) {
-					Option option = new Option(options[i]);
-					Subquestion subquestion = new Subquestion(questions[i]);
-					ArrayList<String> answers = new ArrayList<String>();
-					answers.add(options[Integer.parseInt(correctAnswers[i]) - 1]);
-					subquestion.addAnswer(new Answer(answers));
-					question.addSubquestion(subquestion);
-					question.addOption(option);
-				}
-				quiz.addQuestion(question);
+
+			boolean isOrderSensitive = false;
+			if (request.getParameter("order-sensitive") != null
+					&& request.getParameter("order-sensitive").equals("on")) {
+				isOrderSensitive = true;
 			}
+
+			String[] questions = request.getParameterValues("question-text");
+			String[] answers = request.getParameterValues("answer-text");
+			String[] options = request.getParameterValues("option-text");
+			String[] answerOptions = request.getParameterValues("answer-option");
+			String[] optionIDs = request.getParameterValues("option-id");
+
+			SubquestionDataContainer container = new SubquestionDataContainer(questions, answers, options, optionIDs,
+					answerOptions, parser);
+			Question analyzedQuestion = quizManager.analyzeQuestion(typeID, note, timeLimit, isOrderSensitive,
+					container);
+
+			quiz.addQuestion(analyzedQuestion);
 			if (act.equals("next")) {
 				RequestDispatcher rd = getServletContext().getRequestDispatcher("/question-form.jsp");
 				rd.forward(request, response);
 			} else {
-				QuizDao dao = new QuizDao();
-				dao.addQuiz(quiz);
+				quizManager.addQuiz(quiz);
 			}
 		}
 

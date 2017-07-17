@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import db.bean.quiz.Quiz;
 import helpers.StringParser;
+import helpers.TimeConverter;
 
 /**
  * Servlet implementation class QuizServlet
@@ -45,6 +46,7 @@ public class QuizCreateServlet extends HttpServlet {
 		String category = request.getParameter("category");
 		String tags = request.getParameter("tags");
 		Quiz quiz = new Quiz(name, category);
+		quiz.setAccountID(1);
 		quiz.setDescription(description);
 		quiz.setPracticableMode(isPracticable);
 		quiz.setRearrangableMode(isRearrangable);
@@ -54,13 +56,7 @@ public class QuizCreateServlet extends HttpServlet {
 		}
 		boolean isTimeLimited = Boolean.valueOf(request.getParameter("time-limit"));
 		if(isTimeLimited){
-			int hours = Integer.parseInt(request.getParameter("hours"));
-			int minutes = Integer.parseInt(request.getParameter("minutes"));
-			int seconds = Integer.parseInt(request.getParameter("seconds"));
-			int total = hours*3600 + minutes*60 + seconds;
-			System.out.println(total);
-			if(total > 0)
-				quiz.setTimeLimit(total);
+			quiz.setTimeLimit(TimeConverter.toSeconds(request.getParameter("hours"), request.getParameter("minutes"), request.getParameter("seconds")));
 		}
 		request.getSession().setAttribute("quiz", quiz);
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/question-form.jsp");

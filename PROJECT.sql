@@ -109,7 +109,7 @@ CREATE TABLE quizzes (
     category_id INT NOT NULL,
     CONSTRAINT quizzes_pk PRIMARY KEY (quiz_id),
     CONSTRAINT quizzes_fk FOREIGN KEY (account_id)
-        REFERENCES accounts (accout_id)
+        REFERENCES accounts (account_id)
 );
 
 CREATE TABLE question_types (

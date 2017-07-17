@@ -52,12 +52,14 @@ public class QuizDao {
 	}
 
 	/**
-	 * adds quiz, all its questions, subquestions with their 
-	 * answers and options in database
-	 * @param quiz Quiz object to be added in database
+	 * adds quiz, all its questions, subquestions with their answers and options
+	 * in database
+	 * 
+	 * @param quiz
+	 *            Quiz object to be added in database
 	 * @return return boolean tells us whether insert was successful
 	 */
-	public boolean addQuiz(Quiz quiz){
+	public boolean addQuiz(Quiz quiz) {
 		try (Connection connection = createConnection()) {
 			int lastQuizId = addQuizToDatabase(connection, quiz);
 			addTagsToQuizInDatabase(connection, quiz, lastQuizId);
@@ -86,6 +88,7 @@ public class QuizDao {
 
 	/**
 	 * adds all tags of a quiz in tags table in database
+	 * 
 	 * @param connection
 	 * @param quiz
 	 * @param lastQuizId
@@ -111,6 +114,7 @@ public class QuizDao {
 
 	/**
 	 * gets category id from categories table
+	 * 
 	 * @param string
 	 * @param connection
 	 * @return
@@ -134,6 +138,7 @@ public class QuizDao {
 
 	/**
 	 * adds single option in database
+	 * 
 	 * @param connection
 	 * @param currentOption
 	 * @param lastQuestionId
@@ -155,9 +160,13 @@ public class QuizDao {
 
 	/**
 	 * adds answers in database
-	 * @param connection JDBC connection
-	 * @param currAnswer Answer object that should be added in database
-	 * @param lastQuestionId question id which the answer belongs to
+	 * 
+	 * @param connection
+	 *            JDBC connection
+	 * @param currAnswer
+	 *            Answer object that should be added in database
+	 * @param lastQuestionId
+	 *            question id which the answer belongs to
 	 */
 	private void addAnswerToDatabase(Connection connection, Answer currentAnswer, int lastSubquestionId) {
 		int lastAnswerId = addPairInAnswerSubquestionMap(connection, lastSubquestionId);
@@ -181,9 +190,10 @@ public class QuizDao {
 
 	/**
 	 * add answer id and subquestion id in mapping table
+	 * 
 	 * @param connection
 	 * @param lastSubquestionId
-	 * @return 
+	 * @return
 	 */
 	private int addPairInAnswerSubquestionMap(Connection connection, int lastSubquestionId) {
 		String query = "INSERT INTO " + DbContract.answerSubquestionMapTable.TABLE_NAME + " ( "
@@ -204,7 +214,8 @@ public class QuizDao {
 	}
 
 	/**
-	 * adds single subquestion in database 
+	 * adds single subquestion in database
+	 * 
 	 * @param connection
 	 * @param currentSubquestion
 	 * @param lastQuestionId
@@ -221,7 +232,7 @@ public class QuizDao {
 			stm.setInt(1, lastQuestionId);
 			stm.setString(2, currentSubquestion.getQuestion());
 			stm.executeUpdate();
-			
+
 			ResultSet rs = stm.getGeneratedKeys();
 			if (rs.next()) {
 				lastSubquestionId = rs.getInt(1);
@@ -234,9 +245,13 @@ public class QuizDao {
 
 	/**
 	 * function adds single question in database
-	 * @param connection sql database connection
-	 * @param currentQuestion question object
-	 * @param lastQuizId quiz id which the question belongs to
+	 * 
+	 * @param connection
+	 *            sql database connection
+	 * @param currentQuestion
+	 *            question object
+	 * @param lastQuizId
+	 *            quiz id which the question belongs to
 	 * @return returns the unique id which the question was added at
 	 */
 	private int addQuestionToDatabase(Connection connection, Question currentQuestion, int lastQuizId) {
@@ -254,7 +269,7 @@ public class QuizDao {
 			stm.setString(3, currentQuestion.getNote());
 			stm.setBoolean(4, currentQuestion.isOrderSensitive());
 			stm.executeUpdate();
-			
+
 			ResultSet rs = stm.getGeneratedKeys();
 			if (rs.next())
 				lastQuestionId = rs.getInt(1);
@@ -266,27 +281,32 @@ public class QuizDao {
 
 	/**
 	 * inserts Quiz in database
-	 * @param connection JDBC connection
-	 * @param quiz quiz object that should be added
+	 * 
+	 * @param connection
+	 *            JDBC connection
+	 * @param quiz
+	 *            quiz object that should be added
 	 * @return the unique id at which the quiz was added
 	 */
 	private int addQuizToDatabase(Connection connection, Quiz quiz) {
 		String query = "INSERT INTO " + DbContract.quizzesTable.TABLE_NAME + " ( "
 				+ DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME + " , "
+				+ DbContract.quizzesTable.COLUMN_NAME_ACCOUNT_ID + " , "
 				+ DbContract.quizzesTable.COLUMN_NAME_ISREARRANGABLE + " , "
 				+ DbContract.quizzesTable.COLUMN_NAME_ISPRACTICABLE + " , "
 				+ DbContract.quizzesTable.COLUMN_NAME_DESCRIPTION + " , "
-				+ DbContract.quizzesTable.COLUMN_NAME_CATEGORY_ID + " ) values( ? , ? , ? , ? , ? )";
+				+ DbContract.quizzesTable.COLUMN_NAME_CATEGORY_ID + " ) values( ?, ?,  ? , ? , ? , ? )";
 
 		PreparedStatement stm;
 		int lastQuizId = 0;
 		try {
 			stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			stm.setString(1, quiz.getName());
-			stm.setBoolean(2, quiz.isRearrangable());
-			stm.setBoolean(3, quiz.isPracticable());
-			stm.setString(4, quiz.getDescription());
-			stm.setInt(5, selectCategory(quiz.getCategory(), connection));
+			stm.setLong(2, quiz.getAccountID());
+			stm.setBoolean(3, quiz.isRearrangable());
+			stm.setBoolean(4, quiz.isPracticable());
+			stm.setString(5, quiz.getDescription());
+			stm.setInt(6, selectCategory(quiz.getCategory(), connection));
 			stm.executeUpdate();
 			ResultSet rs = stm.getGeneratedKeys();
 			if (rs.next()) {
@@ -298,9 +318,10 @@ public class QuizDao {
 		}
 		return lastQuizId;
 	}
-	
+
 	/**
 	 * pulls and returns quiz object from database
+	 * 
 	 * @param quizId
 	 * @return
 	 */
@@ -318,6 +339,7 @@ public class QuizDao {
 
 	/**
 	 * pulls data from database representing tags of the given quiz
+	 * 
 	 * @param currentQuiz
 	 * @param connection
 	 * @param quizId
@@ -340,6 +362,7 @@ public class QuizDao {
 
 	/**
 	 * pulls questions by quiz id and adds them to quiz object
+	 * 
 	 * @param currentQuiz
 	 * @param connection
 	 * @param quizId
@@ -367,7 +390,38 @@ public class QuizDao {
 	}
 
 	/**
+	 * Returns list of all question types found in database. Key is question ID,
+	 * value is question name.
+	 * 
+	 * @return The pairs of question ID's and names.
+	 */
+	public Map<Integer, String> getAllQuestionTypes() {
+		Map<Integer, String> questionTypes = new HashMap<Integer, String>();
+		String query = "SELECT " + DbContract.questionTypesTable.COLUMN_NAME_QUESTION_TYPE_ID + ", "
+				+ DbContract.questionTypesTable.COLUMN_NAME_QUESTION_TYPE_NAME + " FROM "
+				+ DbContract.questionTypesTable.TABLE_NAME + ";";
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						Integer questionTypeID = rs.getInt(DbContract.questionTypesTable.COLUMN_NAME_QUESTION_TYPE_ID);
+						String questionTypeName = rs
+								.getString(DbContract.questionTypesTable.COLUMN_NAME_QUESTION_TYPE_NAME);
+						questionTypes.put(questionTypeID, questionTypeName);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return questionTypes;
+	}
+
+	/**
 	 * pulls data from database representing subquestions of the given question
+	 * 
 	 * @param connection
 	 * @param questionId
 	 * @param question
@@ -394,6 +448,7 @@ public class QuizDao {
 
 	/**
 	 * pulls data from map table, which connects answer and subquestion
+	 * 
 	 * @param subquestion
 	 * @param subquestionID
 	 * @param connection
@@ -417,6 +472,7 @@ public class QuizDao {
 
 	/**
 	 * pulls data from database representing answers of the ginven subquestion
+	 * 
 	 * @param subquestion
 	 * @param answerId
 	 * @param connection
@@ -446,6 +502,7 @@ public class QuizDao {
 
 	/**
 	 * add order sensitivity, id and note to given question
+	 * 
 	 * @param connection
 	 * @param questionId
 	 * @param question
@@ -470,6 +527,7 @@ public class QuizDao {
 
 	/**
 	 * adds options of the question in database
+	 * 
 	 * @param connection
 	 * @param questionId
 	 * @param question
@@ -514,6 +572,7 @@ public class QuizDao {
 
 	/**
 	 * pulls quiz info from database and creates quiz object
+	 * 
 	 * @param connection
 	 * @param quizId
 	 * @return
@@ -548,6 +607,7 @@ public class QuizDao {
 
 	/**
 	 * returns string representing name of category of the given id
+	 * 
 	 * @param categoryId
 	 * @return string representing name of category of the given id
 	 */
@@ -609,6 +669,7 @@ public class QuizDao {
 
 	/**
 	 * Returns the list of category names found in database
+	 * 
 	 * @return The list of category names
 	 */
 	public List<String> getAllCategoryNames() {
@@ -633,6 +694,7 @@ public class QuizDao {
 
 	/**
 	 * Deletes whole quiz with its helper tables from database
+	 * 
 	 * @param quizID
 	 */
 	public void deleteQuiz(int quizID) {
@@ -658,6 +720,7 @@ public class QuizDao {
 
 	/**
 	 * Deletes quiz from database
+	 * 
 	 * @param quizID
 	 */
 	public void deleteOnlyQuiz(int quizID) {
@@ -668,6 +731,7 @@ public class QuizDao {
 
 	/**
 	 * Deletes all subquestions from database for questions of current quiz
+	 * 
 	 * @param quizID
 	 */
 	public void deleteSubquestions(int quizID) {
@@ -679,8 +743,9 @@ public class QuizDao {
 	}
 
 	/**
-	 * Deletes all deleteAnswerSubquestionsMaps from database 
-	 * for questions of current quiz
+	 * Deletes all deleteAnswerSubquestionsMaps from database for questions of
+	 * current quiz
+	 * 
 	 * @param quizID
 	 */
 	public void deleteAnswerSubquestionsMaps(int quizID) {
@@ -697,6 +762,7 @@ public class QuizDao {
 
 	/**
 	 * Deletes all answers from database for questions of current quiz
+	 * 
 	 * @param quizID
 	 */
 	public void deleteAnswers(int quizID) {
@@ -715,6 +781,7 @@ public class QuizDao {
 
 	/**
 	 * Deletes all question options from database for questions of current quiz
+	 * 
 	 * @param quizID
 	 */
 	public void deleteQuestionOptions(int quizID) {
@@ -727,6 +794,7 @@ public class QuizDao {
 
 	/**
 	 * Deletes all questions from database for current quiz
+	 * 
 	 * @param quizID
 	 */
 	public void deleteQuestions(int quizID) {
@@ -737,6 +805,7 @@ public class QuizDao {
 
 	/**
 	 * Deletes all quiz attempts from database for current quiz
+	 * 
 	 * @param quizID
 	 */
 	public void deleteQuizAttempts(int quizID) {
@@ -747,6 +816,7 @@ public class QuizDao {
 
 	/**
 	 * Deletes all quiz tags from database for current quiz
+	 * 
 	 * @param quizID
 	 */
 	public void deleteQuizTags(int quizID) {
@@ -757,6 +827,7 @@ public class QuizDao {
 
 	/**
 	 * Deletes all quiz reviews from database for current quiz
+	 * 
 	 * @param quizID
 	 */
 	public void deleteQuizReviews(int quizID) {
@@ -767,6 +838,7 @@ public class QuizDao {
 
 	/**
 	 * Deletes all quiz reports from database for current quiz
+	 * 
 	 * @param quizID
 	 */
 	public void deleteQuizReport(int quizID) {
@@ -777,6 +849,7 @@ public class QuizDao {
 
 	/**
 	 * Executes referenced query with QuizID setted
+	 * 
 	 * @param quizID
 	 * @param query
 	 */
@@ -792,6 +865,7 @@ public class QuizDao {
 
 	/**
 	 * Returns the list of all achievements that be earned
+	 * 
 	 * @return The list of all achievements
 	 */
 	public List<Achievement> getAllAchievementsExceptEarned() {
@@ -871,8 +945,11 @@ public class QuizDao {
 
 	/**
 	 * Adds data about unlocked achievements for specified user.
-	 * @param unlockedAchievementIDs unlocked achievement ID's
-	 * @param accountID for whom the data should be updated
+	 * 
+	 * @param unlockedAchievementIDs
+	 *            unlocked achievement ID's
+	 * @param accountID
+	 *            for whom the data should be updated
 	 */
 	public void addUnlockedAchievements(List<Integer> unlockedAchievementIDs, int accountID) {
 		String query = "INSERT INTO " + DbContract.accountAchievementsTable.TABLE_NAME + " ( "
@@ -895,8 +972,9 @@ public class QuizDao {
 
 	/**
 	 * searches particular quizzes by name
+	 * 
 	 * @param searchedWord
-	 * @return 
+	 * @return
 	 */
 	public ArrayList<String> searchQuizByName(String searchedWord) {
 		try (Connection connection = createConnection()) {
