@@ -1,0 +1,28 @@
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+}
+
+a, a:visited, a:hover, a:active{
+	text-decoration: none;
+	color:inherit;
+	color:blue;
+}
+
+.content { 
+	width:550px;
+	margin: 0 auto;
+}
+
+.quiz {
+	margin-bottom:15px;
+}
+
+.link {
+	font-size:20px;
+}
