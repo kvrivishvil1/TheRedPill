@@ -14,34 +14,29 @@ body {
 }
 
 .challenges {
-	width: 550px;
+	width:550px;
+	margin: 0 auto;
 }
 
-.challenge-line {
-	width: 100%;
+.each-challenge {
+	margin-bottom:25px;
 }
 
-.challenge {
+.challenge-form {
 	width:100%;
 }
 
 .challenge-info {
-	float: left;
-	display: inline-block;
-}
-
-.challenge-buttons {
-	float: right;
+	float:left;
 	display:inline-block;
-	vertical-align: middle;
 }
 
 .challenge-info-line {
-	margin-bottom: 10px;
-}
-
-.button:first-child{
 	margin-bottom:10px;
 }
 
-
+.challenge-buttons {
+	float:right;
+	display:inline-block;
+	vertical-align:middle;
+}

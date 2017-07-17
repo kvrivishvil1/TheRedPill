@@ -35,4 +35,29 @@ public class MessageManager {
 	public HashSet<Challenge> getAllChallngesForUser(int userID) {
 		return messageDao.getAllChallngesForUser(userID);
 	}
+
+	/**
+	 * calls deleteChallenge if value equals Confirm
+	 * else calss deleteFriendRequestFromDatabase
+	 * @param value
+	 * @param quizName
+	 * @param senderId
+	 */
+	/**
+	 * returns true if value equals Start Quiz
+	 * else deletes change from database with parameters senderId, quizId, receiverId
+	 * @param value
+	 * @param senderId
+	 * @param quizId
+	 * @param receiverId
+	 * @return
+	 */
+	public boolean challengeController(String value, int quizId, int senderId, int receiverId) {
+		if(value.equals("Start Quiz"))
+			return true;
+		else {
+			messageDao.deleteChallenge(quizId, senderId, receiverId);
+		}
+		return false;
+	}
 }

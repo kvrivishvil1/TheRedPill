@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 			if (currentlySigningIn.getPassword().equals(encryptedPassword)) {
 				saveLoginInfo(request, response, currentlySigningIn);
 				request.getSession().setAttribute("username", userName);
-				response.getWriter().print("{ 'success' : true, 'location' : 'friend-request.jsp' }");
+				response.getWriter().print("{ 'success' : true, 'location' : 'profile.jsp' }");
 			} else {
 				response.getWriter().write("{ 'success' : false, 'location' : 'unknown' }");
 			}

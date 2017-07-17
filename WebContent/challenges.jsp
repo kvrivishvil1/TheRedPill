@@ -15,7 +15,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 <link rel="stylesheet" href="CSS/normalize.css">
-<link rel="stylesheet" href="CSS/challenges.css">
+<link rel="stylesheet" href="CSS/challenge.css">
 </head>
 <body>
 <div class="content">
@@ -26,23 +26,23 @@
 		int userID = mainManager.getAccountManager().getUserIdByUserName("kvrivishvil1");
 		HashSet<Challenge> challenges = mainManager.getMessageManager().getAllChallngesForUser(userID);
 	%>
-	<h2> You have <%= challenges.size() %> Challenges </h2>
 	<div class="challenges">
+	<h2> You have <%= challenges.size() %> Challenges </h2>
 		<% for(Challenge challenge : challenges) { %>
 		<% 
 			DateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 			formatter.setLenient(false);
 			Date date = challenge.getDate();
 		%>
-		<form class="challenge-line" action="challengeServlet" method="post">
-			<div class="challenge">
+	<div class="each-challenge">
+		<form class="challenge-form" action="ChallengeServlet" method="post">
 				<div class="challenge-info">
 					<div class="challenge-info-line">
-						Challenge sender: <%= mainManager.getAccountManager().getUsernameByUserId(challenge.getSenderID()) %> 
+						Challenge sender: <%= mainManager.getAccountManager().getUsernameByUserId(challenge.getSenderID()) %>
 					</div> 
 					<div class="challenge-info-line">Sent: <%= formatter.format(date) %> </div>
 					<div class="challenge-info-line">Max score: <%= challenge.getMaxScore() %> </div>
-					<div class="challenge-info-line">Quiz name: <%= challenge.getQuizName() %></div>
+					<div class="challenge-info-line" style="margin-bottom:0px;">Quiz name: <%= mainManager.getQuizManager().getQuizName(challenge.getQuizID()) %></div>
 				</div>
 				<div class="challenge-buttons">
 					<div class="button">
@@ -51,10 +51,13 @@
 					<div class="button">
 						<input type="submit" class="delete" name="act" value="Delete Challenge">
 					</div>
-					<input type="hidden" name="quizName" value="<%= challenge.getQuizName() %>"> 
+					<input type="hidden" name="quizId" value="<%= challenge.getQuizID() %>"> 
+					<input type="hidden" name="senderId" value="<%= challenge.getSenderID() %>">
+					<input type="hidden" name="receiverId" value="<%= challenge.getRecieverID() %>">
 				</div>
-			</div>
-		</form>
+				<div class="spacer" style="clear: both;"></div>
+			</form>
+		</div>
 		<% } %>
 	</div>
 </div>

@@ -85,20 +85,6 @@ CREATE TABLE messages (
         REFERENCES accounts (account_id)
 );
 
-CREATE TABLE challenges (
-    challenge_id INT NOT NULL AUTO_INCREMENT,
-    quiz_challenged VARCHAR(50) NOT NULL,
-    sender_id INT NOT NULL,
-    reciever_id INT NOT NULL,
-    score_challenged INT NOT NULL,
-    time_sent DATETIME NOT NULL,
-    CONSTRAINT challenges_pk PRIMARY KEY (challenge_id),
-    CONSTRAINT challenges_fk1 FOREIGN KEY (sender_id)
-        REFERENCES accounts (account_id),
-    CONSTRAINT challenges_fk2 FOREIGN KEY (reciever_id)
-        REFERENCES accounts (account_id)
-);
-
 CREATE TABLE quizzes (
     quiz_id INT NOT NULL AUTO_INCREMENT,
     quiz_name VARCHAR(100) NOT NULL,
@@ -110,6 +96,22 @@ CREATE TABLE quizzes (
     CONSTRAINT quizzes_pk PRIMARY KEY (quiz_id),
     CONSTRAINT quizzes_fk FOREIGN KEY (account_id)
         REFERENCES accounts (account_id)
+);
+
+CREATE TABLE challenges (
+    challenge_id INT NOT NULL AUTO_INCREMENT,
+    quiz_challenged INT NOT NULL,
+    sender_id INT NOT NULL,
+    reciever_id INT NOT NULL,
+    score_challenged INT NOT NULL,
+    time_sent DATETIME NOT NULL,
+    CONSTRAINT challenges_pk PRIMARY KEY (challenge_id),
+    CONSTRAINT challenges_fk1 FOREIGN KEY (sender_id)
+        REFERENCES accounts (account_id),
+	CONSTRAINT challenges_fk2 FOREIGN KEY (reciever_id)
+        REFERENCES accounts (account_id),
+	CONSTRAINT challenges_fk3 FOREIGN KEY (quiz_challenged)
+        REFERENCES quizzes (quiz_id)
 );
 
 CREATE TABLE question_types (
@@ -286,12 +288,6 @@ CREATE TABLE account_achievements (
     CONSTRAINT account_achievements_fk2 FOREIGN KEY (achievement_id)
         REFERENCES achievements (achievement_id)
 );
-
-INSERT INTO achievement_properties(achievement_id, property_id)
-VALUES (1, 1),
-	(2, 2),
-    (3, 3),
-    (4, 4);
     
 INSERT INTO properties(property_parameter, property_bound, property_bound_type)
 VALUES ('quiz_create', 1, '>='),
@@ -306,3 +302,9 @@ VALUES ('Amateur Author'),
         ('Prodigious Author'),
         ('Quiz Machine'),
         ('I am the Greatest');   
+
+INSERT INTO achievement_properties(achievement_id, property_id)
+VALUES (1, 1),
+	(2, 2),
+    (3, 3),
+    (4, 4);

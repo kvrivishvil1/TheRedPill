@@ -143,7 +143,7 @@ public class DbContract {
 	public class challengesTable {
 		public static final String TABLE_NAME = "challenges";
 		public static final String COLUMN_NAME_CHALLENGE_ID = "challenge_id";
-		public static final String COLUMN_NAME_QUIZ_CHALLENGED = "quiz_challenged";
+		public static final String COLUMN_NAME_QUIZ_CHALLENGED = "quiz_id";
 		public static final String COLUMN_NAME_SENDER_ID = "sender_id";
 		public static final String COLUMN_NAME_RECIEVER_ID = "reciever_id";
 		public static final String COLUMN_NAME_SCORE_CHALLENGED = "score_challenged";

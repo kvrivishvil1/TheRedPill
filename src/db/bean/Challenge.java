@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Challenge extends Message {
 	private int maxScore;
-	private String quizChallnged;
+	private int quizId;
 	
 	/**
 	 * Constructor for a challenge object with the specified parameters
@@ -14,11 +14,11 @@ public class Challenge extends Message {
 	 * @param link The link of this challenge
 	 * @param maxScore Challenger's max score in this quiz
 	 */
-	public Challenge(String quizChallnged, int senderID, int recieverID, Date date, int maxScore){
+	public Challenge(int quizId, int senderID, int recieverID, Date date, int maxScore){
 		this.senderID = senderID;
 		this.recieverID = recieverID;
 		this.date = new Date(date.getTime());
-		this.quizChallnged = quizChallnged;
+		this.quizId = quizId;
 		this.maxScore = maxScore;
 	}
 
@@ -44,8 +44,11 @@ public class Challenge extends Message {
 		return maxScore;
 	}
 	
-	public String getQuizName() {
-		return quizChallnged;
+	/**
+	 * @return quiz id
+	 */
+	public int getQuizID() {
+		return quizId;
 	}
 	
 	@Override
@@ -54,7 +57,7 @@ public class Challenge extends Message {
 		build.append("Challenge Sender: " + senderID + "\n");
 		build.append("Challenge Receiver: " + recieverID + "\n");
 		build.append("Challenge Date: " + date.toString() + "\n");
-		build.append("Quiz name: " + quizChallnged + "\n");
+		build.append("Quiz id: " + quizId + "\n");
 		build.append("Challenge MaxScore: " + maxScore);
 		return build.toString();
 	}

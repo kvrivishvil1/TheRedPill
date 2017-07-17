@@ -216,10 +216,32 @@ public class MessageDao {
 			stm.setInt(1, receiverID); 
 			ResultSet rs = stm.executeQuery();
 			while(rs.next())
-				challenges.add(new Challenge(rs.getString(1), rs.getInt(2), receiverID, rs.getDate(3), rs.getInt(4)));
+				challenges.add(new Challenge(rs.getInt(1), rs.getInt(2), receiverID, rs.getDate(3), rs.getInt(4)));
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return challenges;
+	}
+	
+	/**
+	 * Deletes challenge from database with parameters:
+	 * @param quizId
+	 * @param senderId
+	 * @param receiverId
+	 */
+	public void deleteChallenge(int quizId, int senderId, int receiverId) {
+		try (Connection connection = createConnection()) {
+			String query = "Delete FROM " + DbContract.challengesTable.TABLE_NAME + " WHERE " + 
+						DbContract.challengesTable.COLUMN_NAME_SENDER_ID + " =? AND " + 
+						DbContract.challengesTable.COLUMN_NAME_RECIEVER_ID + " =? AND " + 
+						DbContract.challengesTable.COLUMN_NAME_QUIZ_CHALLENGED + " =?;";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, senderId); 
+			stm.setInt(2, receiverId);
+			stm.setInt(3, quizId);
+			stm.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
