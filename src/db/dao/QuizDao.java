@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import db.bean.quiz.Option;
 import db.bean.quiz.Quiz;
 import db.bean.quiz.QuizAttempt;
 import db.bean.quiz.Subquestion;
+import helpers.DataCouple;
 import db.bean.quiz.Question;
 
 public class QuizDao {
@@ -949,11 +951,378 @@ public class QuizDao {
 			if (rs.next()) {
 				return rs.getInt(DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID);
 			}
-		} catch (SQLException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return 0;
 	}
 
+	/**
+	 * Returns the name of the quiz which has given id number
+	 * 
+	 * @param quizID
+	 *            The id number of the quiz
+	 * @return The name of the quiz
+	 */
+	public String getQuizName(int quizID) {
+		String query = "SELECT " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME + " FROM "
+				+ DbContract.quizzesTable.TABLE_NAME + " WHERE " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " = ?";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			ResultSet rs = stm.executeQuery();
+			rs.last();
+			String result = rs.getString("quiz_name");
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	/**
+	 * Returns the description of the quiz which has given id number
+	 * 
+	 * @param quizID
+	 *            The id number of the quiz
+	 * @return The description of the quiz
+	 */
+	public String getQuizDescription(int quizID) {
+		String query = "SELECT " + DbContract.quizzesTable.COLUMN_NAME_DESCRIPTION + " FROM "
+				+ DbContract.quizzesTable.TABLE_NAME + " WHERE " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " = ?";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			ResultSet rs = stm.executeQuery();
+			rs.last();
+			String result = rs.getString("Description");
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	/**
+	 * Returns the user name of the creator of the quiz
+	 * 
+	 * @param quizID
+	 *            id number of the quiz
+	 * @return The name of the quiz creator
+	 */
+	public String getQuizCreator(int quizID) {
+		String query = "SELECT " + DbContract.accountsTable.COLUMN_NAME_USERNAME + " FROM "
+				+ DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.accountsTable.COLUMN_NAME_ID
+				+ " = ( SELECT " + DbContract.quizzesTable.COLUMN_NAME_ACCOUNT_ID + " FROM "
+				+ DbContract.quizzesTable.TABLE_NAME + " WHERE " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID
+				+ " = ?)";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			ResultSet rs = stm.executeQuery();
+			rs.last();
+			String result = rs.getString("account_user_name");
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return "";
+
+	}
+
+	/**
+	 * Returns the last performances from quiz history for the quiz with given
+	 * id number The result is map which contains user name and his attempt
+	 * score in this quiz
+	 * 
+	 * @param quizID
+	 *            the id of the quiz
+	 * @return All attempt performances for this quiz
+	 */
+	public ArrayList<DataCouple> getLastPerformances(int quizID) {
+		ArrayList<DataCouple> result = new ArrayList<DataCouple>();
+		String query = "SELECT " + DbContract.accountsTable.TABLE_NAME + "."
+				+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " , " + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_SCORE + " FROM " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ " , " + DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ "." + DbContract.quizAttemptsTable.COLUMN_NAME_ACCOUNT_ID + " = "
+				+ DbContract.accountsTable.TABLE_NAME + "." + DbContract.accountsTable.COLUMN_NAME_ID + " AND "
+				+ DbContract.quizAttemptsTable.TABLE_NAME + "." + DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID
+				+ " = ? ";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			ResultSet rs = stm.executeQuery();
+			int usernameColumn = rs.findColumn(DbContract.accountsTable.COLUMN_NAME_USERNAME);
+			int scoreColumn = rs.findColumn(DbContract.quizAttemptsTable.COLUMN_NAME_SCORE);
+			while (rs.next()) {
+				String username = rs.getString(usernameColumn);
+				int score = rs.getInt(scoreColumn);
+				DataCouple couple = new DataCouple(username, score);
+				result.add(couple);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the last performances from quiz history for the quiz with given
+	 * id number result data is ordered by the score results in the attempts of
+	 * the quiz. The result is map which contains user name and his attempt
+	 * score in this quiz
+	 * 
+	 * @param quizID
+	 *            the id of the quiz
+	 * @return All attempt performances for this quiz, ordered by score
+	 */
+	public ArrayList<DataCouple> getLastPerformsOrderByScore(int quizID) {
+		ArrayList<DataCouple> result = new ArrayList<DataCouple>();
+		String query = "SELECT " + DbContract.accountsTable.TABLE_NAME + "."
+				+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " , " + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_SCORE + " FROM " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ " , " + DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ "." + DbContract.quizAttemptsTable.COLUMN_NAME_ACCOUNT_ID + " = "
+				+ DbContract.accountsTable.TABLE_NAME + "." + DbContract.accountsTable.COLUMN_NAME_ID + " AND "
+				+ DbContract.quizAttemptsTable.TABLE_NAME + "." + DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID
+				+ " = ? " + " ORDER BY " + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_SCORE + " desc;";
+
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			ResultSet rs = stm.executeQuery();
+			int usernameColumn = rs.findColumn(DbContract.accountsTable.COLUMN_NAME_USERNAME);
+			int scoreColumn = rs.findColumn(DbContract.quizAttemptsTable.COLUMN_NAME_SCORE);
+			while (rs.next()) {
+				String username = rs.getString(usernameColumn);
+				int score = rs.getInt(scoreColumn);
+				DataCouple couple = new DataCouple(username, score);
+				result.add(couple);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the last performances from quiz history for the quiz with given
+	 * id number result data is ordered by the date of the quiz attempt of the
+	 * quiz. The result is map which contains user name and his attempt score in
+	 * this quiz
+	 * 
+	 * @param quizID
+	 *            the id of the quiz
+	 * @return All attempt performances for this quiz, ordered by date
+	 */
+	public ArrayList<DataCouple> getLastPerformsOrderByDate(int quizID) {
+		ArrayList<DataCouple> result = new ArrayList<DataCouple>();
+
+		String query = "SELECT " + DbContract.accountsTable.TABLE_NAME + "."
+				+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " , " + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_SCORE + " FROM " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ " , " + DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ "." + DbContract.quizAttemptsTable.COLUMN_NAME_ACCOUNT_ID + " = "
+				+ DbContract.accountsTable.TABLE_NAME + "." + DbContract.accountsTable.COLUMN_NAME_ID + " AND "
+				+ DbContract.quizAttemptsTable.TABLE_NAME + "." + DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID
+				+ " = ? " + " ORDER BY " + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_FINISH_TIME;
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			ResultSet rs = stm.executeQuery();
+			int usernameColumn = rs.findColumn("account_user_name");
+			int scoreColumn = rs.findColumn("score");
+			while (rs.next()) {
+				String username = rs.getString(usernameColumn);
+				int score = rs.getInt(scoreColumn);
+				DataCouple couple = new DataCouple(username, score);
+				result.add(couple);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the last performances from quiz history for the quiz with given
+	 * id number result data is ordered by the the time duration which was used
+	 * in this attempt of the quiz. The result is map which contains user name
+	 * and his attempt score in this quiz
+	 * 
+	 * @param quizID
+	 *            the id of the quiz
+	 * @return All attempt performances for this quiz, ordered by time duration
+	 */
+	public ArrayList<DataCouple> getLastPerformsOrderByTime(int quizID) {
+		ArrayList<DataCouple> result = new ArrayList<DataCouple>();
+		String query = "SELECT " + DbContract.accountsTable.TABLE_NAME + "."
+				+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " , " + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_SCORE + " FROM " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ " , " + DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ "." + DbContract.quizAttemptsTable.COLUMN_NAME_ACCOUNT_ID + " = "
+				+ DbContract.accountsTable.TABLE_NAME + "." + DbContract.accountsTable.COLUMN_NAME_ID + " AND "
+				+ DbContract.quizAttemptsTable.TABLE_NAME + "." + DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID
+				+ " = ? " + " ORDER BY (" + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_FINISH_TIME + " - " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ "." + DbContract.quizAttemptsTable.COLUMN_NAME_START_TIME + " );";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			ResultSet rs = stm.executeQuery();
+			int usernameColumn = rs.findColumn("account_user_name");
+			int scoreColumn = rs.findColumn("score");
+			while (rs.next()) {
+				String username = rs.getString(usernameColumn);
+				int score = rs.getInt(scoreColumn);
+				DataCouple couple = new DataCouple(username, score);
+				result.add(couple);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the last performances from quiz history for the quiz with given
+	 * id number, which takes place atcurrent day result data is ordered by the
+	 * score of the attempt of the quiz. The result is map which contains user
+	 * name and his attempt score in this quiz
+	 * 
+	 * @param quizID
+	 *            the id of the quiz
+	 * @return All attempt performances at current day with best scores, for
+	 *         this quiz
+	 */
+	public ArrayList<DataCouple> getTopPerformancesToday(int quizID) {
+		ArrayList<DataCouple> result = new ArrayList<DataCouple>();
+		String query = "SELECT " + DbContract.accountsTable.TABLE_NAME + "."
+				+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " , " + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_SCORE + " FROM " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ " , " + DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ "." + DbContract.quizAttemptsTable.COLUMN_NAME_ACCOUNT_ID + " = "
+				+ DbContract.accountsTable.TABLE_NAME + "." + DbContract.accountsTable.COLUMN_NAME_ID + " AND "
+				+ DbContract.quizAttemptsTable.TABLE_NAME + "." + DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID
+				+ " = ? " + " AND " + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_FINISH_TIME + " = ?" + " ORDER BY "
+				+ DbContract.quizAttemptsTable.TABLE_NAME + "." + DbContract.quizAttemptsTable.COLUMN_NAME_SCORE
+				+ " LIMIT  " + " ? ";
+
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			Date date = new Date();
+			stm.setTimestamp(2, new java.sql.Timestamp(date.getTime()));
+			stm.setInt(3, 10);
+			ResultSet rs = stm.executeQuery();
+			int usernameColumn = rs.findColumn(DbContract.accountsTable.COLUMN_NAME_USERNAME);
+			int scoreColumn = rs.findColumn(DbContract.quizAttemptsTable.COLUMN_NAME_SCORE);
+			while (rs.next()) {
+				String username = rs.getString(usernameColumn);
+				int score = rs.getInt(scoreColumn);
+				DataCouple couple = new DataCouple(username, score);
+				result.add(couple);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the last performances from quiz history for the quiz with given
+	 * id number, which takes place at current day result data is ten
+	 * performances for this quiz. The result is map which contains user name
+	 * and his attempt score in this quiz
+	 * 
+	 * @param quizID
+	 *            the id of the quiz
+	 * @return All attempt performances at current day, for this quiz
+	 */
+	public ArrayList<DataCouple> getRecentPerformances(int quizID) {
+		ArrayList<DataCouple> result = new ArrayList<DataCouple>();
+		String query = "SELECT " + DbContract.accountsTable.TABLE_NAME + "."
+				+ DbContract.accountsTable.COLUMN_NAME_USERNAME + " , " + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_SCORE + " FROM " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ " , " + DbContract.accountsTable.TABLE_NAME + " WHERE " + DbContract.quizAttemptsTable.TABLE_NAME
+				+ "." + DbContract.quizAttemptsTable.COLUMN_NAME_ACCOUNT_ID + " = "
+				+ DbContract.accountsTable.TABLE_NAME + "." + DbContract.accountsTable.COLUMN_NAME_ID + " AND "
+				+ DbContract.quizAttemptsTable.TABLE_NAME + "." + DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID
+				+ " = ? " + " AND " + DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_FINISH_TIME + " = ?" + " LIMIT  " + " ? ";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			Date date = new Date();
+			stm.setTimestamp(2, new java.sql.Timestamp(date.getTime()));
+			stm.setInt(3, 10);
+			ResultSet rs = stm.executeQuery();
+			int usernameColumn = rs.findColumn(DbContract.accountsTable.COLUMN_NAME_USERNAME);
+			int scoreColumn = rs.findColumn(DbContract.quizAttemptsTable.COLUMN_NAME_SCORE);
+			while (rs.next()) {
+				String username = rs.getString(usernameColumn);
+				int score = rs.getInt(scoreColumn);
+				DataCouple couple = new DataCouple(username, score);
+				result.add(couple);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the max score of the quiz with given id number
+	 * 
+	 * @param quizID
+	 *            The id number of the quiz
+	 * @return max score of the quiz
+	 */
+	public int getQuizMaxScore(int quizID) {
+		int result = 0;
+		String query = "SELECT  COUNT(1) FROM " + DbContract.quizzesTable.TABLE_NAME + " , "
+				+ DbContract.questionsTable.TABLE_NAME + " , " + DbContract.subquestionsTable.TABLE_NAME + " , "
+				+ DbContract.answerSubquestionMapTable.TABLE_NAME + " , " + " WHERE "
+				+ DbContract.quizzesTable.TABLE_NAME + "." + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " = "
+				+ DbContract.questionsTable.TABLE_NAME + "." + DbContract.questionsTable.COLUMN_NAME_QUIZ_ID + " AND "
+				+ DbContract.questionsTable.TABLE_NAME + "." + DbContract.questionsTable.COLUMN_NAME_QUESTION_ID + " = "
+				+ DbContract.subquestionsTable.COLUMN_NAME_QUESTION_ID + " AND "
+				+ DbContract.subquestionsTable.TABLE_NAME + "."
+				+ DbContract.subquestionsTable.COLUMN_NAME_SUBQUESTION_ID + " = "
+				+ DbContract.answerSubquestionMapTable.TABLE_NAME + "."
+				+ DbContract.answerSubquestionMapTable.COLUMN_NAME_SUBQUESTION_ID + " AND "
+				+ DbContract.quizzesTable.TABLE_NAME + "." + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + "=?";
+
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			ResultSet rs = stm.executeQuery();
+			rs.last();
+			result = rs.getInt("count(1)");
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

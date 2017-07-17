@@ -102,11 +102,14 @@ CREATE TABLE challenges (
 CREATE TABLE quizzes (
     quiz_id INT NOT NULL AUTO_INCREMENT,
     quiz_name VARCHAR(100) NOT NULL,
+    account_id INT NOT NULL,
     is_rearrangable BOOLEAN NOT NULL,
     is_practicable BOOLEAN NOT NULL,
     Description TEXT NOT NULL,
     category_id INT NOT NULL,
-    CONSTRAINT quizzes_pk PRIMARY KEY (quiz_id)
+    CONSTRAINT quizzes_pk PRIMARY KEY (quiz_id),
+    CONSTRAINT quizzes_fk FOREIGN KEY (account_id)
+        REFERENCES accounts (accout_id)
 );
 
 CREATE TABLE question_types (

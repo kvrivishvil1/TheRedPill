@@ -72,6 +72,7 @@ public class DbContract {
 		public static final String TABLE_NAME = "quizzes";
 		public static final String COLUMN_NAME_QUIZ_ID = "quiz_id";
 		public static final String COLUMN_NAME_QUIZ_NAME = "quiz_name";
+		public static final String COLUMN_NAME_ACCOUNT_ID = "account_id";
 		public static final String COLUMN_NAME_ISREARRANGABLE = "is_rearrangable";
 		public static final String COLUMN_NAME_ISPRACTICABLE = "is_practicable";
 		public static final String COLUMN_NAME_DESCRIPTION = "description";

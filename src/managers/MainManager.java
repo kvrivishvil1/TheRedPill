@@ -35,4 +35,5 @@ public class MainManager {
 	public MessageManager getMessageManager() {
 		return messageManager;
 	}
+	
 }
