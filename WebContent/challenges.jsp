@@ -47,10 +47,10 @@
 			</div>
 			<div class="challenge-buttons">
 				<div class="button button-top">
-					<input class="input" type="submit" class="confirm" name="act" value="Start Quiz">
+					<input type="submit" class="confirm input" name="act" value="Start Quiz">
 				</div>
 				<div class="button">
-					<input class="input" type="submit" class="delete" name="act" value="Delete Challenge">
+					<input type="submit" class="delete input" name="act" value="Delete Challenge">
 				</div>
 				<input type="hidden" name="quizId" value="<%= challenge.getQuizID() %>"> 
 				<input type="hidden" name="senderId" value="<%= challenge.getSenderID() %>">

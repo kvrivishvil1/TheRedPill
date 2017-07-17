@@ -65,10 +65,22 @@ a, a:visited, a:hover, a:active{
 	right: 0;
 }
 
+.confirm {
+	background-color: #2874A6;
+}
+
+.delete {
+	background-color: #ba001b;
+}
+
 .top {
 	margin-bottom:10px;
 }
 
 .input {
 	width: 130px;
+	height: 30px;
+	border-radius: 15px;
+	outline: none;
+	border: none;
 }

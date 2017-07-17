@@ -33,10 +33,10 @@
 					</div>
 					<div class="buttons">
 						<div class="button top">
-							<input class="input" type="submit" class="confirm" name="act" value="Confirm">
+							<input type="submit" class="confirm input" name="act" value="Confirm">
 						</div>
 						<div class="button">
-							<input class="input" type="submit" class="delete" name="act" value="Delete Request">
+							<input type="submit" class="delete input" name="act" value="Delete Request">
 						</div>
 						
 						<input type="hidden" name="username" value="<%= usernm %>"> 

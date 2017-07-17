@@ -42,7 +42,11 @@
 			
 			<tr >
 				<td class = ""> User Name:</td>
-				<td><%= session.getAttribute("username") %></td>
+				<% if(request.getParameter("showProfile") == null) { %>
+					<td><%= session.getAttribute("username") %></td>
+				<% } else { %>
+					<td><%= (String)request.getParameter("showProfile") %></td>
+				<% } %>
 			</tr>
 			
 			<tr>

@@ -38,6 +38,18 @@ body {
 
 .input {
 	width: 150px;
+	height: 30px;
+	border-radius: 15px;
+	outline: none;
+	border: none;
+}
+
+.confirm {
+	background-color: #2874A6;
+}
+
+.delete {
+	background-color: #ba001b;
 }
 
 .button-top {
