@@ -30,6 +30,9 @@ $(document).ready(function() {
 	$(".question-container").hide();
 	$("#submit-area").hide();
 	$("#ques-0").show();
+	if(count == 1){
+		$("#submit-area").show();
+	}
 	$("#next_question").click(function() {
 		goToNextQuestion();
 	});

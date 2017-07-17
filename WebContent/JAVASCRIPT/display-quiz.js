@@ -1,7 +1,11 @@
 var position = 0;
+var slide = function(header) {
+	$(header).next().slideToggle();
+};
 /**
  * connects server
  */
+
 var randomizeOrder = function() {
 	$.ajax({
 		url : "QuizServlet",
@@ -22,6 +26,13 @@ var randomizeOrder = function() {
 }
 
 $(document).ready(function() {
+	$(".form").hide();
+	$(".review").click(function() {
+		slide(this);
+	});
+	$(".report").click(function() {
+		slide(this);
+	});
 	// start displaying quiz on click
 	$("#start-quiz").click(function() {
 		randomizeOrder();

@@ -1,4 +1,9 @@
 var countQuestions = $("#number").text();
+
+var slide = function(header) {
+	$(header).next().slideToggle();
+};
+
 var checkQuestionResponse = function(position, answerArea) {
 	var answer = answerArea.val();
 	$.ajax({
@@ -133,6 +138,7 @@ var checkMatching = function(position) {
 	});
 };
 var recordFinishState = function() {
+	
 	$.ajax({
 		url : "QuizServlet",
 		type : "get",

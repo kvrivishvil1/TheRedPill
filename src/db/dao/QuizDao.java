@@ -1608,9 +1608,47 @@ public class QuizDao {
 	
 	
 	
-	
-	
-	
+	public ArrayList<Integer> getPopularQuizIds() {
+		try (Connection connection = createConnection()) {
+			String query = "SELECT " + DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID + " , COUNT(1) FROM "
+					+ DbContract.quizAttemptsTable.TABLE_NAME + "  GROUP BY "
+					+ DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID + " ORDER BY COUNT(1) LIMIT 10";
+			PreparedStatement stm = connection.prepareStatement(query);
+			ResultSet rs = stm.executeQuery();
+			ArrayList<Integer> result = new ArrayList<>();
+
+			while (rs.next()) {
+				int id = rs.getInt(DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public ArrayList<Integer> getMyQuizes(int AccountId) {
+		try (Connection connection = createConnection()) {
+			String query = "SELECT* FROM " + DbContract.quizzesTable.TABLE_NAME + " WHERE "
+					+ DbContract.quizzesTable.COLUMN_NAME_ACCOUNT_ID + " =?";
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, AccountId);
+			ResultSet rs = stm.executeQuery();
+			ArrayList<Integer> result = new ArrayList<>();
+			while (rs.next()) {
+				int id = rs.getInt(DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID);
+				result.add(id);
+			}
+			return result;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 	
