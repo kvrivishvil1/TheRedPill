@@ -1,3 +1,7 @@
+<% if(session.getAttribute("username") == null) {
+	RequestDispatcher rd = request.getRequestDispatcher("index.html");
+ 	rd.forward(request,response);
+}%>
 <!doctype html>
 <%@page import="java.util.List"%>
 <%@page import="db.dao.QuizDao"%>

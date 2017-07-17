@@ -1,3 +1,7 @@
+<% if(session.getAttribute("username") == null) {
+	RequestDispatcher rd = request.getRequestDispatcher("index.html");
+ 	rd.forward(request,response);
+}%>
 <%@page import="managers.MainManager"%>
 <%@page import="db.bean.quiz.Quiz"%>
 <%@page import="db.dao.QuizDao"%>

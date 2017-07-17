@@ -1,3 +1,8 @@
+<% if(session.getAttribute("username") == null) {
+	RequestDispatcher rd = request.getRequestDispatcher("index.html");
+ 	rd.forward(request,response);
+}
+%>
 <%@page import="managers.MainManager"%>
 <%@ page import="db.dao.UserDao"%>
 <%@ page import="db.bean.Person"%>
@@ -15,9 +20,7 @@
 </head>
 
 <body>
-
 	<div>
-	
 		<%
 			ServletContext cont = request.getServletContext();
 			MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
@@ -27,10 +30,8 @@
 			} else {
 				userId = mainManager.getAccountManager().getUserIdByUserName((String)session.getAttribute("username"));
 			}
-
 			Person currentUser = mainManager.getAccountManager().getPersonByUserId(userId);
 		%>
-		
 	</div>
 	
 	<div class ="container">
