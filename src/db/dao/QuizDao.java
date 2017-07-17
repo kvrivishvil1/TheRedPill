@@ -275,17 +275,19 @@ public class QuizDao {
 	private int addQuizToDatabase(Connection connection, Quiz quiz) throws SQLException {
 		String query = "INSERT INTO " + DbContract.quizzesTable.TABLE_NAME + " ( "
 				+ DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME + " , "
+				+ DbContract.quizzesTable.COLUMN_NAME_ACCOUNT_ID + " , "
 				+ DbContract.quizzesTable.COLUMN_NAME_ISREARRANGABLE + " , "
 				+ DbContract.quizzesTable.COLUMN_NAME_ISPRACTICABLE + " , "
 				+ DbContract.quizzesTable.COLUMN_NAME_DESCRIPTION + " , "
-				+ DbContract.quizzesTable.COLUMN_NAME_CATEGORY_ID + " ) values( ? , ? , ? , ? , ? )";
+				+ DbContract.quizzesTable.COLUMN_NAME_CATEGORY_ID + " ) values( ? , ? , ? , ? , ? , ?)";
 
 		PreparedStatement stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		stm.setString(1, quiz.getName());
-		stm.setBoolean(2, quiz.isRearrangable());
-		stm.setBoolean(3, quiz.isPracticable());
-		stm.setString(4, quiz.getDescription());
-		stm.setInt(5, selectCategory(quiz.getCategory(), connection));
+		stm.setLong(2, quiz.getAccountID());
+		stm.setBoolean(3, quiz.isRearrangable());
+		stm.setBoolean(4, quiz.isPracticable());
+		stm.setString(5, quiz.getDescription());
+		stm.setInt(6, selectCategory(quiz.getCategory(), connection));
 		stm.executeUpdate();
 		int lastQuizId = 0;
 		ResultSet rs = stm.getGeneratedKeys();

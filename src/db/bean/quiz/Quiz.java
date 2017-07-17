@@ -13,6 +13,7 @@ public class Quiz {
 	private String category;
 	private List<String> tags;
 	private long timeLimit;
+	private long accountID;
 
 	public Quiz(String name, String category) {
 		this.name = name;
@@ -147,6 +148,21 @@ public class Quiz {
 	}
 
 	/**
+	 * Sets the account id number for the quiz
+	 * @param accountID The id of the quiz
+	 */
+	public void setAccountID(long accountID){
+		this.accountID = accountID;
+	}
+	/**
+	 * Returns the account id number of quiz
+	 * @return account id
+	 */
+	public long getAccountID(){
+		return accountID;
+	}
+	
+	/**
 	 * Sets category information for the quiz
 	 * 
 	 * @param category
@@ -193,5 +209,7 @@ public class Quiz {
 	public List<String> getTags() {
 		return tags;
 	}
+	
+	
 
 }
