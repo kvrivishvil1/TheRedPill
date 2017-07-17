@@ -1650,8 +1650,29 @@ public class QuizDao {
 		return null;
 	}
 	
-	
-	
-	
+	/**
+	 * Adds report into database
+	 * @param report which should be added
+	 */
+	public void addReport(Report report) {
+		String query = "INSERT INTO " + DbContract.quizReportsTable.TABLE_NAME + " ( "
+				+ DbContract.quizReportsTable.COLUMN_NAME_QUIZ_ID + ", "
+				+ DbContract.quizReportsTable.COLUMN_NAME_ACCOUNT_ID + ", "
+				+ DbContract.quizReportsTable.COLUMN_NAME_REPORT_TEXT + ", "
+				+ DbContract.quizReportsTable.COLUMN_NAME_REPORT_DATE + ") VALUES (?, ?, ?, ?);";
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, report.getQuizID());
+				ps.setInt(2, report.getAccountID());
+				ps.setString(3, report.getReportText());
+				ps.setTimestamp(4, new java.sql.Timestamp(report.getDate().getTime()));
+				ps.execute();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}	
 	
 }
