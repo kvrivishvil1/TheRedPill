@@ -757,4 +757,114 @@ public class UserDao {
 		return username;
 	}
 	
+	
+	
+	
+
+	/**
+	 * Returns the list of quizzes which are created by logged user with given account id
+	 * @param userID The account id of logged user
+	 * @return The quizzes created of the user
+	 * @throws SQLException
+	 */
+	public ArrayList<String> userCreatedQuizzes(int userID)  {
+		ArrayList<String> result = new ArrayList<String>();
+		String query = "SELECT " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME 
+				+ " FROM " + DbContract.quizzesTable.TABLE_NAME 
+				+ " WHERE " + DbContract.quizzesTable.COLUMN_NAME_ACCOUNT_ID  + " = ?";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, userID);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				String quizName = rs.getString(DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME);
+				result.add(quizName);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} 
+		return result;
+	}
+	
+	
+	/*
+	 * select quizzes.quiz_name from quizzes, quiz_attempts
+where quizzes.quiz_id = quiz_attempts.quiz_id 
+and quiz_attempts.account_id = 1;
+	 */
+	/**
+	 * Returns the list of quizzes which are played by logged user with given account id
+	 * @param userID The account id of logged user
+	 * @return The quizzes played of the user
+	 * @throws SQLException
+	 */
+	public ArrayList<String> userPlayedQuizzes(int userID) {
+		ArrayList<String> result = new ArrayList<String>();
+		String query = "SELECT " + DbContract.quizzesTable.TABLE_NAME + "."
+				+ DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME + " FROM "
+				+ DbContract.quizzesTable.TABLE_NAME + " , " 
+				+ DbContract.quizAttemptsTable.TABLE_NAME + " WHERE "
+				+ DbContract.quizzesTable.TABLE_NAME + "."
+				+ DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " = " 
+				+ DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID + " AND "
+				+ DbContract.quizAttemptsTable.TABLE_NAME + "."
+				+ DbContract.quizAttemptsTable.COLUMN_NAME_ACCOUNT_ID + " =?";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, userID);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				String quizName = rs.getString(DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME);
+				result.add(quizName);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} 
+		return result;
+	}
+	
+	
+
+	
+	
+	/**
+	 * Returns the list of achievements which are got by logged user
+	 * @param userID The achievements  of logged user
+	 * @return The quizzes played of the user
+	 * @throws SQLException
+	 */
+	public ArrayList<String> userAchievemnts(int userID) {
+		ArrayList<String> result = new ArrayList<String>();
+		String query = "SELECT " + DbContract.achievementsTable.TABLE_NAME +"."
+				+DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_NAME + " FROM "
+				+ DbContract.achievementsTable.TABLE_NAME + " , "
+				+ DbContract.accountAchievementsTable.TABLE_NAME + " WHERE "
+				+ DbContract.achievementsTable.TABLE_NAME + "."
+				+ DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_ID + " = "
+				+ DbContract.accountAchievementsTable.TABLE_NAME + "."
+				+ DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_ID + " AND "
+				+ DbContract.accountAchievementsTable.TABLE_NAME + "."
+				+ DbContract.accountAchievementsTable.COLUMN_NAME_ACCOUNT_ID + "=?";
+		System.out.println(query);
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, userID);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				String quizName = rs.getString(DbContract.achievementsTable.COLUMN_NAME_ACHIEVEMENT_NAME);
+				result.add(quizName);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} 
+		return result;
+	}
+	
+	
+	
+	
 }

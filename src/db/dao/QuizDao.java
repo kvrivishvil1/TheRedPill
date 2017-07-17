@@ -1576,4 +1576,44 @@ public class QuizDao {
 		return list;
 	}
 	
+	
+	
+	/**
+	 * Returns recently created quizzes
+	 * @return Recently created quizzes
+	 */
+	public ArrayList<Integer> getRecentQuizzes(){
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		String query = "SELECT " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID 
+				+ " FROM " + DbContract.quizzesTable.TABLE_NAME
+				+ " ORDER BY " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID 
+				+ " DESC " + " LIMIT "  + " ? ";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, 10);
+			ResultSet rs = stm.executeQuery();
+			int quizIdColumn = rs.findColumn(DbContract.accountsTable.COLUMN_NAME_USERNAME);
+			while (rs.next()) {
+				int quizID = rs.getInt(quizIdColumn);
+				result.add(quizID);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}	
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

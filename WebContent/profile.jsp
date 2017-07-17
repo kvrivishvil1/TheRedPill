@@ -4,6 +4,7 @@
 }
 %>
 <%@page import="managers.MainManager"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page import="db.dao.UserDao"%>
 <%@ page import="db.bean.Person"%>
 <%@page import="java.time.Year"%>
@@ -31,6 +32,9 @@
 				userId = mainManager.getAccountManager().getUserIdByUserName((String)session.getAttribute("username"));
 			}
 			Person currentUser = mainManager.getAccountManager().getPersonByUserId(userId);
+			ArrayList<String> userCreatedQuizzes = mainManager.getAccountManager().userCreatedQuizzes(userId);
+			ArrayList<String> userPlayedQuizzes = mainManager.getAccountManager().userPlayedQuizzes(userId);
+			ArrayList<String> userAchievemnts = mainManager.getAccountManager().userAchievemnts(userId);
 		%>
 	</div>
 	
@@ -86,43 +90,94 @@
 		
 	<div class="columns">
 	  
-	  <ul class="awards">
+	   <ul class="awards">
 	    <li class="header">Quizzes you created</li>
-	    <li class="number">0</li>
+	    <li class="number"> <%=userCreatedQuizzes.size() %></li>
 	    <li class="top">Top 3 quiz</li>
-	    <li>first</li>
-	    <li>second</li>
-	    <li>third</li>
+	    <li> 
+	    	<% if (userCreatedQuizzes.size()==0){
+	    			out.println("Nothing to show"); 
+	    		}else{ 
+	    			out.println(userCreatedQuizzes.get(0));
+	    		} %> 
+	    </li>
+	    <li>
+	    	<% if (userCreatedQuizzes.size()==1){
+	    			out.println("Nothing to show"); 
+	    		}else{ 
+	    			out.println(userCreatedQuizzes.get(1));
+	    		} %> 
+	    </li>
+	    <li>
+	    	<% if (userCreatedQuizzes.size()==2){
+	    			out.println("Nothing to show"); 
+	    		}else{ 
+	    			out.println(userCreatedQuizzes.get(2));
+	    		} %> 
+	    </li>
 	    
-	    <li class="header"><a href="#" class="button">See all</a></li>
+	  
 	  </ul>
 	</div>
 	
 	<div class="columns" style="margin-top: 8%;">
 	  <ul class="awards">
 	    <li class="header" style="background-color:	#523634">Achievement rank</li>
-	    <li class="number" style="background-color:	hsl(36, 100%, 55%)">#0</li>
-	    <li class="top">next achievements</li>
-	    <li>achievement#1</li>
-	    <li>achievement#2</li>
-	    <li>achievement#3</li>
-	    
-	    <li class="header" style="background-color:	#523634">
-	    	<a href="#" class="button" style="background-color: hsl(36, 100%, 55%) ">See all</a>
+	    <li class="number" style="background-color:	hsl(36, 100%, 55%)"><%=userAchievemnts.size() %></li>
+	    <li class="top">your achievements</li>
+	     <li> 
+	    	<% if (userAchievemnts.size()==0){
+	    			out.println("Nothing to show"); 
+	    		}else{ 
+	    			out.println(userAchievemnts.get(userAchievemnts.size()-1));
+	    		} %> 
 	    </li>
+	    <li>
+	    	<% if (userAchievemnts.size()==1){
+	    			out.println("Nothing to show"); 
+	    		}else{ 
+	    			out.println(userAchievemnts.get(userAchievemnts.size()-2));
+	    		} %> 
+	    </li>
+	    <li>
+	    	<% if (userAchievemnts.size()==2){
+	    			out.println("Nothing to show"); 
+	    		}else{ 
+	    			out.println(userAchievemnts.get(userAchievemnts.size()-3));
+	    		} %> 
+	    </li>
+	    
+	   
 	  </ul>
 	</div>
 	
 	<div class="columns">
 	  <ul class="awards">
 	    <li class="header">Quizzes you played</li>
-	    <li class="number">0</li>
+	    <li class="number"><%= userPlayedQuizzes.size() %></li>
 	    <li class="top">Top 3 quiz</li>
-	    <li>first</li>
-	    <li>second</li>
-	    <li>third</li>
+	    <li> 
+	    	<% if (userPlayedQuizzes.size()==0){
+	    			out.println("Nothing to show"); 
+	    		}else{ 
+	    			out.println(userPlayedQuizzes.get(0));
+	    		} %> 
+	    </li>
+	    <li>
+	    	<% if (userPlayedQuizzes.size()==1){
+	    			out.println("Nothing to show"); 
+	    		}else{ 
+	    			out.println(userPlayedQuizzes.get(1));
+	    		} %> 
+	    </li>
+	    <li>
+	    	<% if (userPlayedQuizzes.size()==2){
+	    			out.println("Nothing to show"); 
+	    		}else{ 
+	    			out.println(userPlayedQuizzes.get(2));
+	    		} %> 
+	    </li>
 	    
-	    <li class="header" ><a href="#" class="button" >See all</a></li>
 	  </ul>
 	</div>
 

@@ -188,4 +188,35 @@ public class AccountManager {
 			userDao.deleteFriendRequestFromDatabase(senderUsername, receiverUsername);
 	}
 	
+	
+	/**
+	 * Calls userCreatedQuizzes method from user DAO
+	 * @param userID The account id of user
+	 * @return user Created Quizzes
+	 */
+	public ArrayList<String> userCreatedQuizzes(int userID){
+		return userDao.userCreatedQuizzes(userID);
+	}
+	
+	
+	/**
+	 * Calls userCreatedQuizzes method from user DAO
+	 * @param userID The account id of user
+	 * @return user Played Quizzes
+	 */
+	public ArrayList<String> userPlayedQuizzes(int userID){
+		return userDao.userPlayedQuizzes(userID);
+	}
+	
+	
+	/**
+	 * Calls userCreatedQuizzes method from user DAO
+	 * @param userID The account id of user
+	 * @return user Achievemnts
+	 */
+	public ArrayList<String> userAchievemnts(int userID){
+		return userDao.userAchievemnts(userID);
+	}
+	
+	
 }
