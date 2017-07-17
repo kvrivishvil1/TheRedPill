@@ -195,7 +195,7 @@ public class QuizManager {
 		}
 		List<Subquestion> subquestionsList = ((SubquestionDataAnalyzer)analyzer).getSubquestions();	
 		
-		OptionDataAnalyzer optionDataAnalyzer = new OptionDataAnalyzer(container.getAnswerOptions());
+		OptionDataAnalyzer optionDataAnalyzer = new OptionDataAnalyzer(container.getOptions());
 		List<Option> optionsList = optionDataAnalyzer.getOptions();
 		
 		QuestionDataAnalyzer questionDataAnalyzer = new QuestionDataAnalyzer(typeID, note, subquestionsList, optionsList, isOrderSensitive, timeLimit);
