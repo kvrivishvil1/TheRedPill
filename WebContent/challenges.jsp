@@ -34,30 +34,31 @@
 			formatter.setLenient(false);
 			Date date = challenge.getDate();
 		%>
-	<div class="each-challenge">
-		<form class="challenge-form" action="ChallengeServlet" method="post">
-				<div class="challenge-info">
-					<div class="challenge-info-line">
-						Challenge sender: <%= mainManager.getAccountManager().getUsernameByUserId(challenge.getSenderID()) %>
-					</div> 
-					<div class="challenge-info-line">Sent: <%= formatter.format(date) %> </div>
-					<div class="challenge-info-line">Max score: <%= challenge.getMaxScore() %> </div>
-					<div class="challenge-info-line" style="margin-bottom:0px;">Quiz name: <%= mainManager.getQuizManager().getQuizName(challenge.getQuizID()) %></div>
+	
+	<form class="challenge-form" action="ChallengeServlet" method="post">
+		<div class="each-challenge">
+			<div class="challenge-info">
+				<div class="challenge-info-line">
+					Challenge sender: <%= mainManager.getAccountManager().getUsernameByUserId(challenge.getSenderID()) %>
+				</div> 
+				<div class="challenge-info-line">Sent: <%= formatter.format(date) %> </div>
+				<div class="challenge-info-line">Max score: <%= challenge.getMaxScore() %> </div>
+				<div class="challenge-info-line" style="margin-bottom:0px;">Quiz name: <%= mainManager.getQuizManager().getQuizName(challenge.getQuizID()) %></div>
+			</div>
+			<div class="challenge-buttons">
+				<div class="button button-top">
+					<input class="input" type="submit" class="confirm" name="act" value="Start Quiz">
 				</div>
-				<div class="challenge-buttons">
-					<div class="button">
-						<input type="submit" class="confirm" name="act" value="Start Quiz">
-					</div>
-					<div class="button">
-						<input type="submit" class="delete" name="act" value="Delete Challenge">
-					</div>
-					<input type="hidden" name="quizId" value="<%= challenge.getQuizID() %>"> 
-					<input type="hidden" name="senderId" value="<%= challenge.getSenderID() %>">
-					<input type="hidden" name="receiverId" value="<%= challenge.getRecieverID() %>">
+				<div class="button">
+					<input class="input" type="submit" class="delete" name="act" value="Delete Challenge">
 				</div>
-				<div class="spacer" style="clear: both;"></div>
-			</form>
+				<input type="hidden" name="quizId" value="<%= challenge.getQuizID() %>"> 
+				<input type="hidden" name="senderId" value="<%= challenge.getSenderID() %>">
+				<input type="hidden" name="receiverId" value="<%= challenge.getRecieverID() %>">
+			</div>
+			<div class="spacer" style="clear: both;"></div>
 		</div>
+	</form>
 		<% } %>
 	</div>
 </div>

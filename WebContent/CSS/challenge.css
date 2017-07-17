@@ -18,16 +18,17 @@ body {
 	margin: 0 auto;
 }
 
-.each-challenge {
+.challenge-form {
+	width:100%;
 	margin-bottom:25px;
 }
 
-.challenge-form {
+.each-challenge {
 	width:100%;
+	position: relative;
 }
 
 .challenge-info {
-	float:left;
 	display:inline-block;
 }
 
@@ -35,8 +36,18 @@ body {
 	margin-bottom:10px;
 }
 
+.input {
+	width: 150px;
+}
+
+.button-top {
+	margin-bottom: 10px;
+}
+
 .challenge-buttons {
-	float:right;
-	display:inline-block;
+	position: absolute;
+	top:50%;
+	transform: translateY(-50%);
+	right: 0;
 	vertical-align:middle;
 }
