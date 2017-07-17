@@ -1,6 +1,7 @@
 package managers;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import db.bean.Challenge;
@@ -59,5 +60,14 @@ public class MessageManager {
 			messageDao.deleteChallenge(quizId, senderId, receiverId);
 		}
 		return false;
+	}
+	
+
+	/**
+	 *  Calls getAdministrationNote method 
+	 * @return Returns last ten administration notes
+	 */
+	public HashMap<String, String> getAdminstrationNote() {
+		return messageDao.getAdminstrationNote();
 	}
 }
