@@ -41,7 +41,7 @@ button:hover {
 	background: #d41515;
 }
 
-#submit-area, #navigation{
+#submit-area, #navigation {
 	border-style: double;
 	padding: 5px;
 	border-radius: 10px;
@@ -53,4 +53,18 @@ button:hover {
 	text-align: center;
 	float: none;
 	width: 40%;
+}
+.container1{
+	border-style: double;
+	padding: 5px;
+	border-radius: 10px;
+	background: rgba(0, 0, 0, 0.1);
+	margin: 0 auto;
+	font-family: serif;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: center;
+	float: none;
+	width: 40%;
+	margin-top: 10%;
 }

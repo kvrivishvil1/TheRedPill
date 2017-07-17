@@ -7,6 +7,7 @@ var checkQuestionResponse = function(position, answerArea) {
 		data : {
 			type : "checkAnswer",
 			position : position,
+			async : false,
 			answer : answer,
 			precision : 90
 		},
@@ -22,6 +23,7 @@ var checkFillBlank = function(position, answerArea) {
 		data : {
 			type : "checkAnswer",
 			position : position,
+			async : false,
 			answer : answer,
 			precision : 90
 		},
@@ -39,6 +41,7 @@ var checkMultChoice = function(position, answerArea) {
 		data : {
 			type : "checkAnswer",
 			position : position,
+			async : false,
 			answer : answer,
 			precision : 100
 		},
@@ -55,6 +58,7 @@ var checkPicResponse = function(position, answerArea) {
 		data : {
 			type : "checkAnswer",
 			position : position,
+			async : false,
 			answer : answer,
 			precision : 90
 		},
@@ -74,6 +78,7 @@ var checkMultAnswer = function(position, answerArea) {
 		data : {
 			type : "checkAnswer",
 			position : position,
+			async : false,
 			answer : answer,
 			precision : 90
 		},
@@ -94,6 +99,7 @@ var checkMultChoiceMultAnswer = function(position, answerArea) {
 		type : "get",
 		data : {
 			type : "checkAnswer",
+			async : false,
 			position : position,
 			answer : answer,
 			precision : 100
@@ -120,6 +126,7 @@ var checkMatching = function(position) {
 				subQuestion : subQuestion
 			},
 			success : function(response) {
+				
 			}
 		});
 		subQuestion++;

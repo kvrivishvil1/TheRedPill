@@ -928,10 +928,10 @@ public class QuizDao {
 					+ DbContract.quizAttemptsTable.COLUMN_NAME_FINISH_TIME + " ) VALUES (? , ?, ?, ?, ?)";
 			PreparedStatement stm = connection.prepareStatement(query);
 			stm.setInt(1, attempt.getQuizID());
-			stm.setInt(1, attempt.getAccountID());
-			stm.setInt(1, attempt.getScore());
-			stm.setString(1, attempt.getStartTime().toString());
-			stm.setString(1, attempt.getFinishTime().toString());
+			stm.setInt(2, attempt.getAccountID());
+			stm.setInt(3, attempt.getScore());
+			stm.setTimestamp(4, new java.sql.Timestamp(attempt.getStartTime().getTime()));
+			stm.setTimestamp(5, new java.sql.Timestamp(attempt.getFinishTime().getTime()));
 			stm.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
 

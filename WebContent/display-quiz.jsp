@@ -10,20 +10,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script src="JAVASCRIPT/display-quiz.js"></script>
 <script src="https://code.jquery.com/jquery.min.js"></script>
+<link rel="stylesheet" href="CSS/quiz.css">
 <title>Quiz</title>
 </head>
 <body>
 	<%
-		request.getSession().setAttribute("quizId", 2);//alert! temporary line 
+		request.getSession().setAttribute("quizId", 3);//alert! temporary line 
 		ServletContext cont = request.getServletContext();
 		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 		int quizId = (int) request.getSession().getAttribute("quizId");
 		Quiz quiz = mainManager.getQuizManager().getQuiz(quizId);
 	%>
-	<div class="container">
+	<div class="container1">
 		<h1><%=quiz.getName()%></h1>
 		<p><%=quiz.getDescription()%></p>
-		<input type="checkbox" id="single-page" /> Display On Single Page<br>
+		<p><input type="checkbox" id="single-page" /> Display On Single Page</p><br>
 		<button id="start-quiz">Start a Quiz</button>
 	</div>
 	<script src="JAVASCRIPT/jquery-1.9.1.min.js"></script>
