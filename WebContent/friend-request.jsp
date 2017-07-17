@@ -1,3 +1,4 @@
+<%@page import="Managers.MainManager"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="db.dao.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -14,10 +15,10 @@
 	<div class="container">
 		<% 
 			ServletContext cont = request.getServletContext();
-			UserDao dao = (UserDao) cont.getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
+			MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 			String username = (String)request.getSession().getAttribute("username");
-			int userID = dao.getUserIdByUserName(username);
-			HashMap <String, String> requests = dao.getAllUsernamesFromFriendRequestsForUser(userID);
+			int userID = mainManager.getAccountManager().getUserIdByUserName(username);
+			HashMap <String, String> requests = mainManager.getAccountManager().getAllUsernamesFromFriendRequestsForUser(userID);
 		%>
 		<h2> Respond to Your <%= requests.size() %> Friend Requests </h2>
 		<div class="requests">

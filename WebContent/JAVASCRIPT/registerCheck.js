@@ -205,11 +205,12 @@ function correctDate() {
 //}
 
 function validate() {
-	if($('.user-name').val() == "" || $('.first-name').val() == "" || $('.last-name').val() == "" ||
-			$('.password').val() == "" || $('.password-confirm').val() == "" || $('.email').val() == "" || 
-			$('.day-check').val != "" || $('.gender-check').val != "" || $('.email-check') != "" || 
-			$('.confirm-check') != "" || $('.password-check') != "" || $('.username-check').val() != "" || 
-			$('.first-name-check') != "" || $('.last-name-check') != "") { 
+	if($('.user-name').val() == "" || $('.first-name').val() == "" || $('.last-name').val() == "" 
+			||$('.password').val() == "" || $('.password-confirm').val() == "" || $('.email').val() == "" 
+			|| $('.email-check').val() != "" || $('.confirm-check').val() != "" 
+			|| $('.password-check').val() != "" || $('.username-check').val() != "" 
+			|| $('.first-name-check').val() != "" || $('.last-name-check').val() != "" 
+		) { 
 		alert("Fill every field");
 	} else {
 		//lastValidation();

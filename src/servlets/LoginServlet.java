@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Managers.AccountManager;
+import Managers.MainManager;
 import db.bean.Account;
 import db.dao.UserDao;
 import helpers.PasswordEncryptor;
@@ -35,33 +37,27 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ServletContext context = getServletContext();
-		UserDao userDataAccess = (UserDao) context.getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
+		MainManager mainManager = (MainManager) context.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 		String userName = request.getParameter("username");
 		String password = request.getParameter("password");
 		String encryptedPassword = PasswordEncryptor.encrypt(password);
-		try {
-
-			// if administrator is signing in
-			if (userDataAccess.isAdmin(userName, encryptedPassword)) {
+		// if administrator is signing in
+		if (mainManager.getAccountManager().isAdmin(userName, encryptedPassword)) {
+			request.getSession().setAttribute("username", userName);
+			response.getWriter().print("{ 'success' : true, 'location' : 'administration.jsp' }");
+			return;
+		}
+		if (!mainManager.getAccountManager().usernameIsAvailable(userName)) {
+			Account currentlySigningIn = mainManager.getAccountManager().getAccount(userName);
+			if (currentlySigningIn.getPassword().equals(encryptedPassword)) {
+				saveLoginInfo(request, response, currentlySigningIn);
 				request.getSession().setAttribute("username", userName);
-				response.getWriter().print("{ 'success' : true, 'location' : 'administration.jsp' }");
-				return;
-			}
-			if (!userDataAccess.usernameIsAvailable(userName)) {
-				Account currentlySigningIn = userDataAccess.getAccount(userName);
-
-				if (currentlySigningIn.getPassword().equals(encryptedPassword)) {
-					saveLoginInfo(request, response, currentlySigningIn);
-					request.getSession().setAttribute("username", userName);
-					response.getWriter().print("{ 'success' : true, 'location' : 'profile.jsp' }");
-				} else {
-					response.getWriter().write("{ 'success' : false, 'location' : 'unknown' }");
-				}
+				response.getWriter().print("{ 'success' : true, 'location' : 'friend-request.jsp' }");
 			} else {
-				response.getWriter().print("{ 'success' : false, 'location' : 'unknown' }");
+				response.getWriter().write("{ 'success' : false, 'location' : 'unknown' }");
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} else {
+			response.getWriter().print("{ 'success' : false, 'location' : 'unknown' }");
 		}
 
 	}

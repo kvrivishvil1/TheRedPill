@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Managers.AccountManager;
+import Managers.MainManager;
 import db.bean.Account;
 import db.bean.Person;
 import db.bean.Person.Gender;
@@ -35,11 +36,11 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		AccountManager mng = (AccountManager) request.getServletContext().getAttribute(AccountManager.CONTEXT_ATTRIBUTE_NAME);
+		MainManager mainManager = (MainManager) request.getServletContext().getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 		String type = request.getParameter("type");
 		String email = request.getParameter("email");
 		String username = request.getParameter("userName");
-		if(mng.checkInDatabase(type, email, username))
+		if(mainManager.getAccountManager().checkInDatabase(type, email, username))
 			response.getWriter().print(true);
 		else
 			response.getWriter().print(false);
@@ -49,7 +50,7 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		AccountManager mng = (AccountManager) request.getServletContext().getAttribute(AccountManager.CONTEXT_ATTRIBUTE_NAME);
+		MainManager mainManager = (MainManager) request.getServletContext().getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 		String username = request.getParameter("username");
 		String password = PasswordEncryptor.encrypt(request.getParameter("password"));
 		String firstName = request.getParameter("firstname");
@@ -59,7 +60,7 @@ public class RegisterServlet extends HttpServlet {
 		int year = Integer.parseInt(request.getParameter("year"));
 		int month = Integer.parseInt(request.getParameter("month"));
 		int day = Integer.parseInt(request.getParameter("day"));
-		mng.addNewUser(firstName, lastName, email, gender, year, month, day, username, password);
+		mainManager.getAccountManager().addNewUser(firstName, lastName, email, gender, year, month, day, username, password);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("index.html");
      	rd.forward(request,response);

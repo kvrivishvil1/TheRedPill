@@ -1,8 +1,10 @@
 package Managers;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -79,5 +81,61 @@ public class AccountManager {
 		} else{
 			return userDao.usernameIsAvailable(username);
 		}
+	}
+	
+	/**
+	 * Calls userdao usernameIsAvailable method 
+	 * @param username
+	 * @return boolean if username is available;
+	 */
+	public boolean usernameIsAvailable(String username) {
+		return userDao.usernameIsAvailable(username);
+	}
+	
+	/**
+	 * Calls userdao getAccount method 
+	 * @param username
+	 * @return Account if username exists
+	 *  and if not returns null
+	 */
+	public Account getAccount(String username) {
+		return userDao.getAccount(username);
+	}
+	
+	/**
+	 * Calls userdao isAdmin method with current parameters
+	 * @param username 
+	 * @param password
+	 * @return true if is admin and if not returns false
+	 */
+	public boolean isAdmin(String username, String password) {
+		return userDao.isAdmin(username, password);
+	}
+	
+	/**
+	 * Calls getUserIdByUserName method of user dao with parameters:
+	 * @param username
+	 * @return userId
+	 */
+	public int getUserIdByUserName(String username) {
+		return userDao.getUserIdByUserName(username);
+	}
+	
+	/**
+	 * Calls getAllUsernamesFromFriendRequestsForUser method of user dao with parameters:
+	 * @param userID
+	 * @return hash set of full names with keys username
+	 */
+	public HashMap<String, String> getAllUsernamesFromFriendRequestsForUser(int userID) {
+		return userDao.getAllUsernamesFromFriendRequestsForUser(userID);
+	}
+	
+	/**
+	 * Calls getAllFriendsForUser method of user dao with parameters:
+	 * @param userID
+	 * @return hash set of full names with keys username
+	 */
+	public HashMap<String, String> getAllFriendsForUser(int userID) {
+		return userDao.getAllFriendsForUser(userID);
 	}
 }
