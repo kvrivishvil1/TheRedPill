@@ -1,4 +1,4 @@
-<%@page import="Managers.MainManager"%>
+<%@page import="managers.MainManager"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="db.dao.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -17,7 +17,7 @@
 			ServletContext cont = request.getServletContext();
 			MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 			String username = (String)request.getSession().getAttribute("username");
-			int userID = mainManager.getAccountManager().getUserIdByUserName(username);
+			int userID = mainManager.getAccountManager().getUserIdByUserName("kvrivishvil1");
 			HashMap <String, String> requests = mainManager.getAccountManager().getAllUsernamesFromFriendRequestsForUser(userID);
 		%>
 		<h2> Respond to Your <%= requests.size() %> Friend Requests </h2>
@@ -28,7 +28,7 @@
 					<div class="image-div">
 						<img alt="" src="IMG" class="profile-image">
 					</div>
-					<span class="name"><%= requests.get(usernm) %></span>
+					<a class="name" href="profile.jsp?showProfile=<%= usernm%>"><%= requests.get(usernm) %></a>
 					<div class="buttons">
 						<input type="submit" class="confirm" name="act" value="Confirm">
 						<input type="submit" class="delete" name="act" value="Delete Request">

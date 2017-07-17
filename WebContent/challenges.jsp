@@ -1,3 +1,4 @@
+<%@page import="managers.MainManager"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.DateFormat"%>
@@ -19,11 +20,11 @@
 <body>
 <div class="content">
 	<% 
-		UserDao dao = new UserDao();
-		MessageDao md = new MessageDao();
+		ServletContext cont = request.getServletContext();
+		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 		String username = (String)request.getSession().getAttribute("username");
-		int userID = dao.getUserIdByUserName("kvrivishvil1");
-		HashSet<Challenge> challenges = md.getAllChallngesForUser(userID);
+		int userID = mainManager.getAccountManager().getUserIdByUserName("kvrivishvil1");
+		HashSet<Challenge> challenges = mainManager.getMessageManager().getAllChallngesForUser(userID);
 	%>
 	<h2> You have <%= challenges.size() %> Challenges </h2>
 	<div class="challenges">
@@ -36,7 +37,9 @@
 		<form class="challenge-line" action="challengeServlet" method="post">
 			<div class="challenge">
 				<div class="challenge-info">
-					<div class="challenge-info-line">Challenge sender: <%= dao.getUsernameByUserId(challenge.getSenderID()) %> </div> 
+					<div class="challenge-info-line">
+						Challenge sender: <%= mainManager.getAccountManager().getUsernameByUserId(challenge.getSenderID()) %> 
+					</div> 
 					<div class="challenge-info-line">Sent: <%= formatter.format(date) %> </div>
 					<div class="challenge-info-line">Max score: <%= challenge.getMaxScore() %> </div>
 					<div class="challenge-info-line">Quiz name: <%= challenge.getQuizName() %></div>

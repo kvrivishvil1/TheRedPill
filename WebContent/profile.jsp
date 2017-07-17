@@ -1,3 +1,4 @@
+<%@page import="managers.MainManager"%>
 <%@ page import="db.dao.UserDao"%>
 <%@ page import="db.bean.Person"%>
 <%@page import="java.time.Year"%>
@@ -18,10 +19,16 @@
 	<div>
 	
 		<%
-			ServletContext sc = request.getServletContext();
-			UserDao ud = (UserDao) sc.getAttribute("userDataAccess");
-			int userId = ud.getUserIdByUserName((String)session.getAttribute("username"));
-			Person currentUser = ud.getPersonByUserId(userId);
+			ServletContext cont = request.getServletContext();
+			MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
+			int userId;
+			if(request.getParameter("showProfile") != null) {
+				userId = mainManager.getAccountManager().getUserIdByUserName((String)request.getParameter("showProfile"));
+			} else {
+				userId = mainManager.getAccountManager().getUserIdByUserName((String)session.getAttribute("username"));
+			}
+
+			Person currentUser = mainManager.getAccountManager().getPersonByUserId(userId);
 		%>
 		
 	</div>

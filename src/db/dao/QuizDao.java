@@ -558,7 +558,7 @@ public class QuizDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public HashMap<Integer, String> getAllQuizzes() throws SQLException {
+	public HashMap<Integer, String> getAllQuizzes() {
 		try (Connection connection = createConnection()) {
 			HashMap<Integer, String> quizes = new HashMap<>();
 			String query = "SELECT " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " , "
@@ -571,20 +571,20 @@ public class QuizDao {
 				quizes.put(id, name);
 			}
 			return quizes;
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public long getNumQuizes() throws SQLException {
+	public long getNumQuizzes() {
 		try (Connection connection = createConnection()) {
 			String query = "SELECT * FROM " + DbContract.quizzesTable.TABLE_NAME;
 			PreparedStatement stm = connection.prepareStatement(query);
 			ResultSet rs = stm.executeQuery();
 			rs.last();
 			return rs.getRow();
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 		return 0;

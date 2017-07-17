@@ -4,11 +4,13 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import Managers.AccountManager;
-import Managers.MainManager;
 import db.dao.MessageDao;
 import db.dao.QuizDao;
 import db.dao.UserDao;
+import managers.AccountManager;
+import managers.MainManager;
+import managers.MessageManager;
+import managers.QuizManager;
 
 /**
  * Application Lifecycle Listener implementation class ContextListener
@@ -20,6 +22,8 @@ public class ContextListener implements ServletContextListener {
 	QuizDao quizDataAccess;
 	MessageDao messageDataAccess;
 	AccountManager accountManager;
+	QuizManager quizManager;
+	MessageManager messageManager;
 	MainManager mainManager;
 	
 
@@ -47,9 +51,11 @@ public class ContextListener implements ServletContextListener {
 		arg0.getServletContext().setAttribute(QuizDao.CONTEXT_ATTRIBUTE_NAME, quizDataAccess);
 		messageDataAccess = new MessageDao();
 		arg0.getServletContext().setAttribute(MessageDao.CONTEXT_ATTRIBUTE_NAME, messageDataAccess);
-		accountManager = new AccountManager(userDataAccess);
 		
-		mainManager = new MainManager(accountManager);
+		accountManager = new AccountManager(userDataAccess);
+		quizManager = new QuizManager(quizDataAccess);
+		messageManager = new MessageManager(messageDataAccess);
+		mainManager = new MainManager(accountManager, quizManager, messageManager);
 		arg0.getServletContext().setAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME, mainManager);
 	}
 

@@ -1,3 +1,4 @@
+<%@page import="managers.MainManager"%>
 <%@page import="db.dao.QuizDao"%>
 <%@page import="db.dao.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -31,10 +32,10 @@
 			<button class="btn btn-secondary" type="button">Manage Users</button>
 			<div class="details">
 				<%
-					ServletContext context = request.getServletContext();
-					UserDao userDataAccess = (UserDao) context.getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
+					ServletContext cont = request.getServletContext();
+					MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 				%>
-				<p>Total number of users: <b><%=userDataAccess.getNumUsers()%></b><p>
+				<p>Total number of users: <b><%=mainManager.getAccountManager().getNumUsers()%></b><p>
 				
 				
 				<a id="display-all" href="all-user.jsp" role="button">Display
@@ -45,10 +46,7 @@
 			<button class="btn btn-secondary" type="button">Manage
 				Quizes</button>
 			<div class="details">
-				<%
-					QuizDao quizDataAccess = (QuizDao) context.getAttribute(QuizDao.CONTEXT_ATTRIBUTE_NAME);
-				%>
-				<p>Total number of quizzes: <b><%=quizDataAccess.getNumQuizes()%></b><p>
+				<p>Total number of quizzes: <b><%=mainManager.getQuizManager().getNumQuizzes()%></b><p>
 				
 				<a id="display-all" href="all-quiz.jsp" role="button">Display
 					All Quizzes</a>

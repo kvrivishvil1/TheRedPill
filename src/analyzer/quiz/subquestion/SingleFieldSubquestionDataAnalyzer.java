@@ -13,7 +13,7 @@ public abstract class SingleFieldSubquestionDataAnalyzer extends SubquestionData
 		List<Subquestion> subquestionsList = new ArrayList<Subquestion>();
 		Subquestion subquestion = new Subquestion(questions[0]);
 		String answerText = answers[0];
-		if(parser == null || parser.equals("\n"))
+		if(parser == null || parser.equals(""))
 			parser = "\n";
 		AnswerDataAnalyzer analyzer = new AnswerDataAnalyzer(answerText, parser.charAt(0));
 		Answer answer = analyzer.getAnswer();

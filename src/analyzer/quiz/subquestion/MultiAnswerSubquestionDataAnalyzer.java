@@ -24,7 +24,7 @@ public class MultiAnswerSubquestionDataAnalyzer extends SubquestionDataAnalyzer 
 		Subquestion subquestion = new Subquestion(questions[0]);
 		for(int i = 0; i < answers.length; i++){
 			String answerText = answers[i];
-			if(parser == null || parser.equals("\n"))
+			if(parser == null || parser.equals(""))
 				parser = "\n";
 			AnswerDataAnalyzer analyzer = new AnswerDataAnalyzer(answerText, parser.charAt(0));
 			Answer answer = analyzer.getAnswer();

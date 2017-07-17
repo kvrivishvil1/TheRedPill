@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Managers.AccountManager;
-import Managers.MainManager;
 import db.bean.Account;
 import db.bean.Person;
 import db.bean.Person.Gender;
 import db.dao.UserDao;
 import helpers.PasswordEncryptor;
+import managers.AccountManager;
+import managers.MainManager;
 
 /**
  * Servlet implementation class RegisterServlet

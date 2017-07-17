@@ -1,3 +1,4 @@
+<%@page import="managers.MainManager"%>
 <%@page import="com.sun.javafx.collections.MappingChange.Map"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="db.dao.QuizDao"%>
@@ -16,13 +17,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="CSS/administration.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Created Quizes</title>
+<title>Created Quizzes</title>
 </head>
 <body>
 	<%
-		ServletContext context = request.getServletContext();
-		QuizDao quizDataAccess = (QuizDao) context.getAttribute(QuizDao.CONTEXT_ATTRIBUTE_NAME);
-		HashMap<Integer, String> allQuizzes = quizDataAccess.getAllQuizzes();
+		ServletContext cont = request.getServletContext();
+		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
+		HashMap<Integer, String> allQuizzes = mainManager.getQuizManager().getAllQuizzes();
 	%>
 	<div class="container">
 		<div class="input-group">

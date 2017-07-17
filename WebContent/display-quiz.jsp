@@ -1,3 +1,4 @@
+<%@page import="managers.MainManager"%>
 <%@page import="db.bean.quiz.Quiz"%>
 <%@page import="db.dao.QuizDao"%>
 <%@page import="db.bean.quiz.Question"%>
@@ -14,9 +15,10 @@
 <body>
 	<%
 		request.getSession().setAttribute("quizId", 2);//alert! temporary line 
-		QuizDao dao = new QuizDao();
+		ServletContext cont = request.getServletContext();
+		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 		int quizId = (int) request.getSession().getAttribute("quizId");
-		Quiz quiz = dao.getQuiz(quizId);
+		Quiz quiz = mainManager.getQuizManager().getQuiz(quizId);
 	%>
 	<div class="container">
 		<h1><%=quiz.getName()%></h1>

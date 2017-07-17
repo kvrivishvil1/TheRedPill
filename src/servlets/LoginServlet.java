@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Managers.AccountManager;
-import Managers.MainManager;
 import db.bean.Account;
 import db.dao.UserDao;
 import helpers.PasswordEncryptor;
+import managers.AccountManager;
+import managers.MainManager;
 
 /**
  * Servlet implementation class LoginServlet

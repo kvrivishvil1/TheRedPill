@@ -1,8 +1,9 @@
-package Managers;
+package managers;
 
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -137,5 +138,39 @@ public class AccountManager {
 	 */
 	public HashMap<String, String> getAllFriendsForUser(int userID) {
 		return userDao.getAllFriendsForUser(userID);
+	}
+	
+	/**
+	 * Calls getPersonByUserId method of user dao with parameters:
+	 * @param userID
+	 * @return person 
+	 */
+	public Person getPersonByUserId(int userID) {
+		return userDao.getPersonByUserId(userID);
+	}
+	
+	/**
+	 * Calls getPersonByUserId method of user dao with parameters:
+	 * @param userID
+	 * @return username
+	 */
+	public String getUsernameByUserId(int userID) {
+		return userDao.getUsernameByUserId(userID);
+	}
+	
+	/**
+	 * Calls getPersonByUserId method of user dao 
+	 * @return list of all usernames
+	 */
+	public ArrayList<String> getAllUsernames() {
+		return userDao.getAllUsernames();
+	}
+	
+	/**
+	 * Calls getNumUsers method of user dao 
+	 * @return amount of users
+	 */
+	public long getNumUsers() {
+		return userDao.getNumUsers();
 	}
 }

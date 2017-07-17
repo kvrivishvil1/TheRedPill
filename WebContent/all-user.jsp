@@ -1,3 +1,4 @@
+<%@page import="managers.MainManager"%>
 <%@page import="db.dao.UserDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -18,9 +19,9 @@
 </head>
 <body>
 	<%
-		ServletContext context = request.getServletContext();
-		UserDao userDataAccess = (UserDao) context.getAttribute(UserDao.CONTEXT_ATTRIBUTE_NAME);
-		ArrayList<String> allUsers = userDataAccess.getAllUsernames();
+		ServletContext cont = request.getServletContext();
+		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
+		ArrayList<String> allUsers = mainManager.getAccountManager().getAllUsernames();
 	%>
 	<div class="container">
 		<div class="input-group">
