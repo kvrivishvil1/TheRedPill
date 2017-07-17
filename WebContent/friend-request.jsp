@@ -17,25 +17,32 @@
 			ServletContext cont = request.getServletContext();
 			MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 			String username = (String)request.getSession().getAttribute("username");
-			int userID = mainManager.getAccountManager().getUserIdByUserName(username);
+			int userID = mainManager.getAccountManager().getUserIdByUserName("kvrivishvil1");
 			HashMap <String, String> requests = mainManager.getAccountManager().getAllUsernamesFromFriendRequestsForUser(userID);
 		%>
-		<h2> Respond to Your <%= requests.size() %> Friend Requests </h2>
 		<div class="requests">
+		<h2> Respond to Your <%= requests.size() %> Friend Requests </h2>
 			<% for(String usernm : requests.keySet()) { %>
-			<div class="request-line">
-				<form class="form-line" action="FriendRequestsServlet" method="post">
+			<form class="form-line" action="FriendRequestsServlet" method="post">
+				<div class="request-line clearfix">
 					<div class="image-div">
-						<img alt="" src="IMG" class="profile-image">
+						<img alt="" src="images/img.jpg" class="profile-image">
 					</div>
-					<a class="name" href="profile.jsp?showProfile=<%= usernm%>"><%= requests.get(usernm) %></a>
+					<div class="name-div">
+						<a class="name" href="profile.jsp?showProfile=<%= usernm%>"><%= requests.get(usernm) %></a>
+					</div>
 					<div class="buttons">
-						<input type="submit" class="confirm" name="act" value="Confirm">
-						<input type="submit" class="delete" name="act" value="Delete Request">
+						<div class="button top">
+							<input class="input" type="submit" class="confirm" name="act" value="Confirm">
+						</div>
+						<div class="button">
+							<input class="input" type="submit" class="delete" name="act" value="Delete Request">
+						</div>
+						
 						<input type="hidden" name="username" value="<%= usernm %>"> 
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 			<% } %>
 		</div>
 	</div>
