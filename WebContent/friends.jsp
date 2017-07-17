@@ -17,7 +17,7 @@
 		ServletContext cont = request.getServletContext();
 		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 		String username = (String)request.getSession().getAttribute("username");
-		int userID = mainManager.getAccountManager().getUserIdByUserName("kvrivishvil1");
+		int userID = mainManager.getAccountManager().getUserIdByUserName(username);
 		HashMap <String, String> friends = mainManager.getAccountManager().getAllFriendsForUser(userID);
 	%>
 	<h2> You have <% friends.size();%> friends </h2>

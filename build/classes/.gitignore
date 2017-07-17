@@ -1,6 +1,8 @@
+/achievement/
+/analyzer/
+/db/
+/helpers/
+/listeners/
 /managers/
 /servlets/
 /test/
-/db/
-/analyzer/
-/helpers/

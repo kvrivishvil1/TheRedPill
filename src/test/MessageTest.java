@@ -35,11 +35,11 @@ public class MessageTest {
 	@Test
 	public void testChallengeSimple() {
 		Date date = new Date();
-		Challenge challenge = new Challenge("Simple.test.com",1, 2, date,  0);
+		Challenge challenge = new Challenge(1,1, 2, date,  0);
 		assertEquals(challenge.getSenderID(), 1);
 		assertEquals(challenge.getRecieverID(), 2);
 		assertEquals(challenge.getDate(), date);
-		assertEquals(challenge.getQuizName(), "Simple.test.com");
+		assertEquals(challenge.getQuizID(), 1);
 		assertEquals(challenge.getMaxScore(), 0);
 	}
 	
