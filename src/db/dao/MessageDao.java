@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -243,5 +244,27 @@ public class MessageDao {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	/**
+	 * @return first 10 notes created by administrator
+	 */
+	public HashMap<String, String> getAdminstrationNote() {
+		String query = "SELECT * FROM " + DbContract.adminNotificationsTable.TABLE_NAME + "ORDER BY "
+				+ DbContract.adminNotificationsTable.COLUMN_NAME_NOTE_ID + " DESC LIMIT 10";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			ResultSet rs = stm.executeQuery();
+			HashMap<String, String> result = new HashMap<>();
+
+			while (rs.next()) {
+				String header = rs.getString(DbContract.adminNotificationsTable.COLUMN_NAME_NOTE_HEADER);
+				String text = rs.getString(DbContract.adminNotificationsTable.COLUMN_NAME_NOTE);
+				result.put(header, text);
+			}
+			return result;
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
