@@ -18,6 +18,7 @@ import db.bean.quiz.QuizAttempt;
 import db.bean.quiz.Subquestion;
 import db.dao.QuizDao;
 import helpers.DataCouple;
+import javafx.util.Pair;
 
 public class QuizManager {
 	public static final String CONTEXT_ATTRIBUTE_NAME = "MainManager";
@@ -209,5 +210,14 @@ public class QuizManager {
 	 */
 	public void addQuiz(Quiz quiz){
 		quizDao.addQuiz(quiz);
+	}
+	
+	/**
+	 * Gets all quizzes which has tag named:
+	 * @param tag
+	 * @return list of quizzes with current tag
+	 */
+	public ArrayList<Pair<String, Integer>> getQuizesByTag(String tag) {
+		return quizDao.getQuizesByTag(tag);
 	}
 }

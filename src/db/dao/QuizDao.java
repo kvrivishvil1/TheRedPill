@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
+
 import achievement.Achievement;
 import achievement.Property;
 import db.DbContract;
@@ -22,6 +24,7 @@ import db.bean.quiz.Quiz;
 import db.bean.quiz.QuizAttempt;
 import db.bean.quiz.Subquestion;
 import helpers.DataCouple;
+import javafx.util.Pair;
 import db.bean.quiz.Question;
 
 public class QuizDao {
@@ -1547,4 +1550,30 @@ public class QuizDao {
 		}
 		return createCount;
 	}
+
+	/**
+	 * Gets all quizzes which has tag named:
+	 * @param tag
+	 * @return list of quizzes with current tag
+	 */
+	public ArrayList<Pair<String, Integer>> getQuizesByTag(String tag) {
+		ArrayList<Pair<String, Integer>> list = new ArrayList<>();
+		String query = "SELECT " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_NAME + ", " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + 
+						" FROM " + DbContract.quizzesTable.TABLE_NAME + " WHERE " + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " IN " +
+						"(SELECT " + DbContract.quizTagsTable.COLUMN_NAME_QUIZ_ID  + " FROM " + DbContract.quizTagsTable.TABLE_NAME + 
+						" WHERE " + DbContract.quizTagsTable.COLUMN_NAME_TAG_NAME + " LIKE " + "?)";
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+			stmt.executeQuery("USE " + database);
+			PreparedStatement ps = con.prepareStatement(query);
+			ps.setString(1, tag);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) 
+				list.add(new Pair<String, Integer>(rs.getString(1), rs.getInt(2)));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
 }
