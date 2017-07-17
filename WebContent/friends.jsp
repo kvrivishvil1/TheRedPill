@@ -17,15 +17,15 @@
 		ServletContext cont = request.getServletContext();
 		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 		String username = (String)request.getSession().getAttribute("username");
-		int userID = mainManager.getAccountManager().getUserIdByUserName(username);
+		int userID = mainManager.getAccountManager().getUserIdByUserName("kvrivishvil1");
 		HashMap <String, String> friends = mainManager.getAccountManager().getAllFriendsForUser(userID);
 	%>
-	<h2> You have <% friends.size();%> friends </h2>
+	<h2> You have <%= friends.size()%> friends </h2>
 		<div class="freinds">
 			<% for(String usernm : friends.keySet()) { %>
-			<div class="friend-line">
+			<div class="friend-line clearfix">
 				<div class="image-div"> 
-					<img alt="" src="IMG" class="profile-image">
+					<img alt="" src="images/img.jpg" class="profile-image">
 				</div>
 				<div class="name">
 					<a href="profile.jsp?showProfile=<%= usernm%>"> <%= friends.get(usernm) %> </a>
