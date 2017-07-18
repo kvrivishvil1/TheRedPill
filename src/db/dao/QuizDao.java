@@ -1620,6 +1620,7 @@ public class QuizDao {
 
 			while (rs.next()) {
 				int id = rs.getInt(DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID);
+				result.add(id);
 			}
 			return result;
 		} catch (ClassNotFoundException | SQLException e) {

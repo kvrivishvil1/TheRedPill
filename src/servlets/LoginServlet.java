@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
 				request.getSession().setAttribute("accountID", accountManager.getUserIdByUserName(userName));
 				saveLoginInfo(request, response, currentlySigningIn);
 				request.getSession().setAttribute("username", userName);
-				response.getWriter().print("{ 'success' : true, 'location' : 'conversation.jsp' }");
+				response.getWriter().print("{ 'success' : true, 'location' : 'homepage.jsp' }");
 			} else {
 				response.getWriter().write("{ 'success' : false, 'location' : 'unknown' }");
 			}
