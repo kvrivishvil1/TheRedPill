@@ -7,7 +7,12 @@ a, a:visited, a:hover, a:active {
 	color: blue;
 }
 
-.container {
+h4{
+	margin: 5px;
+}
+
+.container1 {
+	display:inline;
 	color:red;
 	width: 400px;
 }
@@ -79,7 +84,7 @@ a, a:visited, a:hover, a:active {
 	border: none;
 }
 </style>
-<div class="container">
+<div class="container1">
 		<% 
 			ServletContext cont = request.getServletContext();
 			MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
@@ -89,6 +94,10 @@ a, a:visited, a:hover, a:active {
 		%>
 		<div class="requests">
 		<h4> Respond to Your <%= requests.size() %> Friend Requests </h4>
+		<div>
+			<a href="friend-request.jsp" style="text-align:left;"> see all </a>
+		</div>
+		<div class="requests">
 			<% for(String usernm : requests.keySet()) { %>
 			<form class="form-line" action="FriendRequestsServlet" method="post">
 				<div class="request-line clearfix">

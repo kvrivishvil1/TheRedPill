@@ -16,23 +16,21 @@
 <script src="https://code.jquery.com/jquery.min.js"></script>
 </head>
 <body>
-
-
 	<div class="form clearfix">
 		<section>
 			<design class="active" href="#home">
-				<i class="fa fa-home" aria-hidden="true"></i>
+				<a href=""><i class="fa top fa-home" aria-hidden="true"></i></a>	
 			</design>
 		</section>
 		<section>
 			<design href="#quiz">
-				<i class="fa fa-server" aria-hidden="true"></i>
+				<a href=""><i class="fa top fa-server" aria-hidden="true"></i></a>
 			</design>
 		</section>
 		<section>
 			<design href="#friends">
 				<div class="friend-request">
-					<i class="fa fa-address-book-o" aria-hidden="true"></i>
+					<a href=""><i class="fa top fa-address-book-o" aria-hidden="true"></i></a>
 					<div class="triangle transform"></div>
 					<div class="friend-request-display"><jsp:include page="friend-request-min.jsp"></jsp:include></div>
 				</div>
@@ -40,12 +38,10 @@
 		</section>
 		<section>
 			<design href="#messages">
-				<i class="fa fa-envelope-open-o" aria-hidden="true"></i>
+				<a href=""><i class="fa top fa-envelope-open-o" aria-hidden="true"></i></a>
 			</design>
 		</section>
 	</div>
-
-
 	<div class="container clearfix">
 		<div class="icon-form">
 			<i class="fa fa-paint-brush  fa-5x" aria-hidden="true">
@@ -89,19 +85,35 @@
 			ServletContext sc = request.getServletContext();
 			MainManager mainManager = (MainManager) sc.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 			HashMap<String, String> announcements = mainManager.getMessageManager().getAdminstrationNote();
-			for (String header : announcements.keySet()) {
+			if(announcements != null) {
+				for (String header : announcements.keySet()) {
 		%>
-		<div class="annoucement-form">
-			<div class="header-form">
-				<div class="title-form"><%=header%></div>
+			<div class="annoucement-form">
+				<div class="header-form">
+					<div class="title-form"><%= header %></div>
+				</div>
+				<div class="announcement-content-form"><%= announcements.get(header) %></div>
 			</div>
-			<div class="announcement-content-form"><%=announcements.get(header)%></div>
-		</div>
-		<%
+			<%
+				}
 			}
 		%>
 
 	</div>
+	<div class="container2">
+		<div class="list-quizzes clearfix">
+			<div class="list-member">
+				<jsp:include page="recent-quizes.jsp"></jsp:include>
+			</div>	
+			<div class="list-member">
+				<jsp:include page="popular-quizes.jsp"></jsp:include>
+			</div>
+			<div class="list-member">
+				<jsp:include page="user-quizes.jsp"></jsp:include>
+			</div>
+		</div>
+	</div>
+	
 
 	<script src="JAVASCRIPT/homepage.js"></script>
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -110,13 +122,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

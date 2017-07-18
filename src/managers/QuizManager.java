@@ -220,4 +220,29 @@ public class QuizManager {
 	public ArrayList<Pair<String, Integer>> getQuizesByTag(String tag) {
 		return quizDao.getQuizesByTag(tag);
 	}
+	
+	/**
+	 * Returns recently created quizzes
+	 * @return Recently created quizzes
+	 */
+	public ArrayList<Integer> getRecentQuizzes() {
+		return quizDao.getRecentQuizzes();
+	}
+	
+	/**
+	 * Returns popular quizzes
+	 * @return popular quizzes
+	 */
+	public ArrayList<Integer> getPopularQuizIds() {
+		return quizDao.getPopularQuizIds();
+	}
+	
+	/**
+	 * return quizzes which are created by current account
+	 * @param AccountId
+	 * @return ArrayList of quizIds
+	 */
+	public ArrayList<Integer> getMyQuizes(int AccountId) {
+		return quizDao.getMyQuizes(AccountId);
+	}
 }

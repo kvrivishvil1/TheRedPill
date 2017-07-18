@@ -1594,22 +1594,21 @@ public class QuizDao {
 			PreparedStatement stm = connection.prepareStatement(query);
 			stm.setInt(1, 10);
 			ResultSet rs = stm.executeQuery();
-			int quizIdColumn = rs.findColumn(DbContract.accountsTable.COLUMN_NAME_USERNAME);
 			while (rs.next()) {
-				int quizID = rs.getInt(quizIdColumn);
+				int quizID = rs.getInt(1);
 				result.add(quizID);
 			}
 			return result;
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			e.printStackTrace();
 		}	
 		return result;
 	}
 	
-	
-	
-	
+	/**
+	 * Returns popular quizzes
+	 * @return popular quizzes
+	 */
 	public ArrayList<Integer> getPopularQuizIds() {
 		try (Connection connection = createConnection()) {
 			String query = "SELECT " + DbContract.quizAttemptsTable.COLUMN_NAME_QUIZ_ID + " , COUNT(1) FROM "
@@ -1629,6 +1628,11 @@ public class QuizDao {
 		return null;
 	}
 
+	/**
+	 * return quizzes which are created by current account
+	 * @param AccountId
+	 * @return ArrayList of quizIds
+	 */
 	public ArrayList<Integer> getMyQuizes(int AccountId) {
 		try (Connection connection = createConnection()) {
 			String query = "SELECT* FROM " + DbContract.quizzesTable.TABLE_NAME + " WHERE "

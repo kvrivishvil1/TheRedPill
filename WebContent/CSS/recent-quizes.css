@@ -1,0 +1,38 @@
+a, a:visited, a:hover, a:active {
+	text-decoration: none;
+	color: inherit;
+	color: blue;
+}
+
+.container-hpq {
+	width: 290px;
+	margin: 0 auto;
+}
+
+.quiz {
+	margin-bottom: 10px;
+	height: 40px;
+	position: relative;
+}
+
+.link {
+	font-size: 20px;
+}
+
+.quiz-name {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 0;
+}
+
+.summary {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 0;
+}
+
+.input {
+	width:100px;
+}

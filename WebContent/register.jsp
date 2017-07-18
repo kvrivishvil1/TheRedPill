@@ -1,4 +1,7 @@
-
+<% if(session.getAttribute("username") == null) {
+	RequestDispatcher rd = request.getRequestDispatcher("index.html");
+ 	rd.forward(request,response);
+}%>
 <%@page import="java.time.Year"%>
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"

@@ -249,13 +249,12 @@ public class MessageDao {
 	 * @return first 10 notes created by administrator
 	 */
 	public HashMap<String, String> getAdminstrationNote() {
-		String query = "SELECT * FROM " + DbContract.adminNotificationsTable.TABLE_NAME + "ORDER BY "
+		String query = "SELECT * FROM " + DbContract.adminNotificationsTable.TABLE_NAME + " ORDER BY "
 				+ DbContract.adminNotificationsTable.COLUMN_NAME_NOTE_ID + " DESC LIMIT 10";
 		try (Connection connection = createConnection()) {
 			PreparedStatement stm = connection.prepareStatement(query);
 			ResultSet rs = stm.executeQuery();
 			HashMap<String, String> result = new HashMap<>();
-
 			while (rs.next()) {
 				String header = rs.getString(DbContract.adminNotificationsTable.COLUMN_NAME_NOTE_HEADER);
 				String text = rs.getString(DbContract.adminNotificationsTable.COLUMN_NAME_NOTE);

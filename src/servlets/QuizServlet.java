@@ -81,7 +81,6 @@ public class QuizServlet extends HttpServlet {
 
 	/**
 	 * sets attempt object to session
-	 * 
 	 * @param request
 	 * @param response
 	 */

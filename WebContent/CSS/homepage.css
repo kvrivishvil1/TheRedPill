@@ -14,11 +14,16 @@ html {
 body {
 	width: 100%;
 	height: 100%;
-	background-color: #DDC5A2;
+}
+
+a, a:visited, a:hover, a:active {
+	text-decoration: none;
 }
 
 .container {
 	position: relative;
+	background-color: #DDC5A2;
+	padding-bottom: 15px;
 }
 
 .clearfix:before, .clearfix:after {
@@ -50,8 +55,16 @@ section design {
 	font-size: 20px;
 }
 
-design:hover:not (.active ) {
+design:hover:not (.active ){
 	background-color: silver;
+}
+
+.fa-address-book-o:HOVER {
+	
+}
+
+.top {
+	color: white;
 }
 
 .active {
@@ -110,4 +123,60 @@ design:hover:not (.active ) {
 	font-family: 'FranchiseRegular';
 	color: #B6452C;
 	font-size: 30px;
+}
+
+.friend-request {
+	position: relative;
+}
+
+.friend-request-display {
+	display: none;
+	position: absolute;
+	height: 500px;
+	width: 400px;
+	top: 35px;
+	background: white;
+	z-index: 10;
+	border-left: solid #EEEEE0 1px;
+	border-right: solid #EEEEE0 1px;
+	border-bottom: solid #EEEEE0 1px;
+	transform: translateX(-88%);
+}
+
+.triangle {
+	display: none;
+	width: 0;
+	height: 0;
+	border-top-width: 25px;
+	border-top-style: solid;
+	border-top-color: #ffffff;
+	border-right-width: 25px;
+	border-right-style: solid;
+	border-right-color: #ffffff;
+	-ms-transform: rotate(-135deg); /* IE 9 */
+	-webkit-transform: rotate(-135deg); /* Chrome, Safari, Opera */
+	transform: rotate(-135deg);
+	width: 0;
+}
+
+.transform {
+	position: absolute;
+	top: 26px;
+	right: -5px;
+}
+
+.container2 {
+	width:100%;
+	background-color: #DDC5A2;
+}
+
+.list-quizzes {
+	width: 960px;
+	margin: 0 auto;
+}
+
+.list-member {
+	width:300px;
+	display:inline-block;
+	float:left;
 }
