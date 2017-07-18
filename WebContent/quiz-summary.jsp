@@ -12,6 +12,7 @@
 <%@page import="java.time.Year"%>
 <%@page import="java.util.Date"%>
 <%@ page import="db.bean.quiz.Quiz"%>
+<%@ page import="db.bean.Review"%>
 <%@ page import="helpers.DataCouple"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -379,6 +380,37 @@ div.scrolForm {
 
 
 	</div>
+
+
+<div class = "reviews">
+	
+	<%
+	
+	for(Review  review : mainManager.getQuizManager().getQuizReviews(quizID)){
+	%>
+	<br>
+		<div class  = "review-form"><%= review.getText() %> 
+			<div class = "review-info-form"> username : <%= mainManager.getAccountManager().getUsernameByUserId(review.getAccountId()) %> </div>
+			<div class = "review-info-form"> date : <%= review.getDate() %></div>
+		</div>
+	
+	<%}%>
+	
+	<%
+
+		for (int i = 0; i < mainManager.getQuizManager().getQuizStars(quizID); i++) {
+			if( i == 0 ){
+	%>
+		 <i class="fa fa-star fa-5x" aria-hidden="true" style = "color : hsl(51, 100%, 55%); margin-left: 30%;"></i>
+		
+	<%}else{%>
+	 	<i class="fa fa-star fa-5x" aria-hidden="true" style = "color : hsl(51, 100%, 55%); margin-left: 10px;"></i>
+	<%} }%>
+
+</div>
+<br>
+
+
 
 	<div>
 		<button class="button" style="margin-left: 6%; margin-top: 20px">

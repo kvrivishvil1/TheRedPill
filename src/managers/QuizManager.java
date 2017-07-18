@@ -11,6 +11,7 @@ import analyzer.quiz.OptionDataAnalyzer;
 import analyzer.quiz.QuestionDataAnalyzer;
 import analyzer.quiz.SubquestionDataContainer;
 import analyzer.quiz.subquestion.SubquestionDataAnalyzer;
+import db.bean.Review;
 import db.bean.quiz.Option;
 import db.bean.quiz.Question;
 import db.bean.quiz.Quiz;
@@ -244,5 +245,25 @@ public class QuizManager {
 	 */
 	public ArrayList<Integer> getMyQuizes(int AccountId) {
 		return quizDao.getMyQuizes(AccountId);
+	}
+	
+	
+	/**
+	 * Calls getQuizStarts method from quiz Dao
+	 * @param quizID the id of the quiz
+	 * @return the start rating of the quiz
+	 */
+	public int getQuizStars(int quizID){
+		return quizDao.getQuizStars(quizID);
+	}
+	
+	
+	/**
+	 * Calls getQuizReviews method from quiz dao
+	 * @param quizID The id ofthe quiz
+	 * @return quiz reviews
+	 */
+	public ArrayList<Review> getQuizReviews(int quizID){
+		return quizDao.getQuizReviews(quizID);
 	}
 }

@@ -1701,4 +1701,79 @@ public class QuizDao {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	
+	/**
+	 * Returns the star ration of the quiz
+	 * @param quizID the id number of the quiz
+	 * @return start rating
+	 */
+	public int getQuizStars(int quizID){
+		int result =0;
+		String query = "SELECT AVG(" + DbContract.quizReviewsTable.COLUMN_NAME_STAR
+				+ ")" + " FROM " + DbContract.quizReviewsTable.TABLE_NAME
+				+ " WHERE " + DbContract.quizReviewsTable.COLUMN_NAME_QUIZ_ID 
+				+ " =?";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			ResultSet rs = stm.executeQuery();
+			rs.last();
+			result = rs.getInt("AVG(" + DbContract.quizReviewsTable.COLUMN_NAME_STAR + ")");
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	
+	public ArrayList<Review> getQuizReviews(int quizID) {
+		ArrayList<Review> result = new ArrayList<Review>();
+		String query = "SELECT " + DbContract.quizReviewsTable.TABLE_NAME + "."
+				+DbContract.quizReviewsTable.COLUMN_NAME_ACCOUNT_ID +" , "
+				+ DbContract.quizReviewsTable.TABLE_NAME + "."+
+				DbContract.quizReviewsTable.COLUMN_NAME_REVIEW_TEXT + " , "
+				+ DbContract.quizReviewsTable.TABLE_NAME + "."+
+				DbContract.quizReviewsTable.COLUMN_NAME_REVIEW_DATE+ " ," +
+				DbContract.quizReviewsTable.TABLE_NAME + "." +
+				DbContract.quizReviewsTable.COLUMN_NAME_STAR + " FROM " + 
+				DbContract.quizReviewsTable.TABLE_NAME
+				+ " WHERE "
+				+ DbContract.quizReviewsTable.TABLE_NAME + "."+
+				DbContract.quizReviewsTable.COLUMN_NAME_QUIZ_ID  + " =?"
+				+ " ORDER BY " + DbContract.quizReviewsTable.COLUMN_NAME_REVIEW_DATE
+				+ " DESC LIMIT " + "?";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, quizID);
+			stm.setInt(2, 5);
+										ResultSet rs = stm.executeQuery();
+			
+			int accountIdColumn = rs.findColumn(DbContract.quizReviewsTable.COLUMN_NAME_ACCOUNT_ID);
+			int textColumn = rs.findColumn(DbContract.quizReviewsTable.COLUMN_NAME_REVIEW_TEXT);
+			int dateColumn = rs.findColumn(DbContract.quizReviewsTable.COLUMN_NAME_REVIEW_DATE);
+			int starColumn = rs.findColumn(DbContract.quizReviewsTable.COLUMN_NAME_STAR);
+			while (rs.next()) {
+				int accountID = rs.getInt(accountIdColumn);
+				String text = rs.getString(textColumn);
+				Date date  = rs.getDate(dateColumn);
+				int star =  rs.getInt(starColumn);
+				Review review = new Review(text, star, accountID, quizID, date);
+				result.add(review);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	
 }
