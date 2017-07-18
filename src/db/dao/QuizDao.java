@@ -1381,11 +1381,11 @@ public class QuizDao {
 		int result = 0;
 		String query = "SELECT  COUNT(1) FROM " + DbContract.quizzesTable.TABLE_NAME + " , "
 				+ DbContract.questionsTable.TABLE_NAME + " , " + DbContract.subquestionsTable.TABLE_NAME + " , "
-				+ DbContract.answerSubquestionMapTable.TABLE_NAME + " , " + " WHERE "
+				+ DbContract.answerSubquestionMapTable.TABLE_NAME + " WHERE "
 				+ DbContract.quizzesTable.TABLE_NAME + "." + DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " = "
 				+ DbContract.questionsTable.TABLE_NAME + "." + DbContract.questionsTable.COLUMN_NAME_QUIZ_ID + " AND "
 				+ DbContract.questionsTable.TABLE_NAME + "." + DbContract.questionsTable.COLUMN_NAME_QUESTION_ID + " = "
-				+ DbContract.subquestionsTable.COLUMN_NAME_QUESTION_ID + " AND "
+				+ DbContract.subquestionsTable.TABLE_NAME + "." + DbContract.subquestionsTable.COLUMN_NAME_QUESTION_ID + " AND "
 				+ DbContract.subquestionsTable.TABLE_NAME + "."
 				+ DbContract.subquestionsTable.COLUMN_NAME_SUBQUESTION_ID + " = "
 				+ DbContract.answerSubquestionMapTable.TABLE_NAME + "."

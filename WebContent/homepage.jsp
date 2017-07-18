@@ -135,7 +135,9 @@
 					<a href=<%="display-quiz.jsp?quizId=" + popularQuizzes.get(i)%>><i
 						class="top"> Start quiz </i> </a>
 				</div>
-				<div class="button">See quiz summary</div>
+				<div class="button"><a href=<%="quiz-summary.jsp?quizID=" + popularQuizzes.get(i)%>><i class="top">
+				See quiz summary
+					 </i></a></div>
 			</div>
 		</div>
 
@@ -164,10 +166,12 @@
 			<div class="announcement-content-form">
 				<div class="button" style="margin-left: 43px;">
 					<a href=<%="display-quiz.jsp?quizId=" + recentQuizzes.get(i)%>>
-						<i class="top"> Start quiz </i>
+						<i class="top"> See quiz summary </i>
 					</a>
 				</div>
-				<div class="button">See quiz summary</div>
+				<div class="button"><a href=<%="quiz-summary.jsp?quizID=" + recentQuizzes.get(i)%>><i class="top">
+				See quiz summary
+					 </i></a></div>
 			</div>
 		</div>
 
@@ -204,7 +208,8 @@
 						class="top"> Start quiz </i>
 					</a>
 				</div>
-				<div class="button">See quiz summary</div>
+				<div class="button"><a href=<%="display-quiz.jsp?quizId=" + userQuizzes.get(i)%>>
+						<i class="top"> Start quiz </i> </a></div>
 			</div>
 		</div>
 
