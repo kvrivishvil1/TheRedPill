@@ -40,15 +40,6 @@ public class Option {
 	public void setOptionID(int optionID) {
 		this.optionID = optionID;
 	}
-
-	/**
-	 * Returns the id of the option in database
-	 * 
-	 * @return The id of the option
-	 */
-	public int getOptionID() {
-		return optionID;
-	}
 	
 	@Override
 	public boolean equals(Object object) {
@@ -59,4 +50,15 @@ public class Option {
 		Option option = (Option)object;
 		return this.option.equals(option.option) && this.optionID == option.getOptionID();
 	}
+
+	/**
+	 * Returns the id of the option in database
+	 * 
+	 * @return The id of the option
+	 */
+	public int getOptionID() {
+		return optionID;
+	}
+	
+
 }

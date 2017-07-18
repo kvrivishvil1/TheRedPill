@@ -86,6 +86,13 @@ public class QuizAttempt {
 	public Date getFinishTime() {
 		return finishTime;
 	}
+
+	/**
+	 * @return quiz attempt id
+	 */
+	public int getQuizAttemptID() {
+		return quizAttemptID;
+	}
 	
 	@Override
 	public boolean equals(Object object) {
@@ -106,13 +113,5 @@ public class QuizAttempt {
 			third = finishTime.equals(attempt.getFinishTime());
 		return first && second && third;
 	}
-
-	/**
-	 * @return quiz attempt id
-	 */
-	public int getQuizAttemptID() {
-		return quizAttemptID;
-	}
-	
 	
 }
