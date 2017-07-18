@@ -36,19 +36,7 @@ a {
 <body>
 	<div class="title-bar">
 		<section>
-			<design href="#home"></design>
-		</section>
-		<section>
-			<design href="#quiz">Quiz</design>
-		</section>
-		<section>
-			<design href="#friends">Friends</design>
-		</section>
-		<section>
-			<design class="active" href="#messages">Messages</design>
-		</section>
-		<section>
-			<design href="#achievements">Achievements</design>
+			<design href="#home"> <a href="homepage.jsp" > Homepage </a></design>
 		</section>
 	</div>
 	<div id="chat" class="scroll col-sm-8">

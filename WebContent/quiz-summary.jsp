@@ -67,11 +67,8 @@ div.scrolForm {
 	</div>
 
 	<div class="title-bar">
-		<section> <design class="active" href="#home">Home</design></section>
-		<section> <design href="#quiz">Quiz</design></section>
-		<section> <design href="#friends">Friends</design></section>
-		<section> <design href="#messages">Messages</design></section>
-		<section> <design href="#achievements">Achievements</design></section>
+		<section> <design href="#home">
+		<a href="homepage.jsp">Homepage</a></design> </section>
 	</div>
 
 	<h2 class="nameForm">
@@ -431,8 +428,10 @@ div.scrolForm {
 		<button class="button" style="margin-left: 6%; margin-top: 20px">
 			Edit quiz</button>
 		<button class="button" style="margin-left: 30%; margin-top: 20px">
-			<a href=<%="display-quiz.jsp?quizId=" + quizID%>>
-						<i class="top"> Start quiz </i> </a></button>
+			<a href=<%="display-quiz.jsp?quizId=" + quizID%>> <i class="top">
+					Start quiz </i>
+			</a>
+		</button>
 		<button class="button" style="margin-left: 30%; margin-top: 20px">
 			practice mode</button>
 

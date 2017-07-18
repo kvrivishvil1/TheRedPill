@@ -65,7 +65,7 @@ public class AddQuestionServlet extends HttpServlet {
 			rd.forward(request, response);
 		} else if (typeID == 0 && !act.equals("next")) {
 			quizManager.addQuiz(quiz);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/quiz-form.jsp");
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/homepage.jsp");
 			rd.forward(request, response);
 		} else {
 			String parser = request.getParameter("parsing");
@@ -100,6 +100,8 @@ public class AddQuestionServlet extends HttpServlet {
 				rd.forward(request, response);
 			} else {
 				quizManager.addQuiz(quiz);
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/homepage.jsp");
+				rd.forward(request, response);
 			}
 		}
 

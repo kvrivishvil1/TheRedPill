@@ -23,6 +23,10 @@
 <title>Quiz Done</title>
 </head>
 <body>
+	<section>
+		<design href="#friends">
+		<a href="homepage.jsp">Homepage</a></design>
+	</section>
 	<%
 		ServletContext cont = request.getServletContext();
 		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);

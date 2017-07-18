@@ -21,6 +21,9 @@
 </head>
 
 <body>
+	<section>
+			<design href="#home"> <a href="homepage.jsp" > Homepage </a></design>
+		</section>
 	<div>
 		<%
 			ServletContext cont = request.getServletContext();
