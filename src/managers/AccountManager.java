@@ -218,5 +218,15 @@ public class AccountManager {
 		return userDao.userAchievemnts(userID);
 	}
 	
+	/**
+	 * Checks if are those users are friends
+	 * @param firstID
+	 * @param secondID
+	 * @return boolean if are friends
+	 */
+	public boolean areFriends(int firstID, int secondID){
+		return userDao.areFriends(firstID, secondID);
+	}
+	
 	
 }

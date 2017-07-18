@@ -864,7 +864,36 @@ and quiz_attempts.account_id = 1;
 		return result;
 	}
 	
-	
+	/**
+	 * Checks if are those users are friends
+	 * @param firstID
+	 * @param secondID
+	 * @return boolean if are friends
+	 */
+	public boolean areFriends(int firstID, int secondID){
+		String query = "SELECT * FROM "
+				+ DbContract.friendsTable.TABLE_NAME + " WHERE " + " (" + DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + " = ? AND " +
+				 DbContract.friendsTable.COLUMN_NAME_ACCOUNT_SECOND + " = ?) OR (" + DbContract.friendsTable.COLUMN_NAME_ACCOUNT_SECOND + " = ? AND " +
+				 DbContract.friendsTable.COLUMN_NAME_ACCOUNT_FIRST + " = ?)" ; 
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://" + server, account, password);
+				Statement stmt = con.createStatement()) {
+
+			stmt.executeQuery("USE " + database);
+			try (PreparedStatement ps = con.prepareStatement(query)) {
+				ps.setInt(1, firstID);
+				ps.setInt(2, secondID);
+				ps.setInt(3, firstID);
+				ps.setInt(4, secondID);
+				try (ResultSet rs = ps.executeQuery()) {
+					if(!rs.next())
+						return false;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
 	
 	
 }
