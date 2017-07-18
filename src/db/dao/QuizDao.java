@@ -19,6 +19,7 @@ import achievement.Property;
 import db.DbContract;
 import db.MyDbInfo;
 import db.bean.Report;
+import db.bean.Review;
 import db.bean.quiz.Answer;
 import db.bean.quiz.Option;
 import db.bean.quiz.Quiz;
@@ -1674,6 +1675,26 @@ public class QuizDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}	
-	
+	}
+
+	public void addReview(Review review) {
+		String query = "INSERT INTO " + DbContract.quizReviewsTable.TABLE_NAME + " ( "
+				+ DbContract.quizReviewsTable.COLUMN_NAME_QUIZ_ID + " , "
+				+ DbContract.quizReviewsTable.COLUMN_NAME_ACCOUNT_ID + " , "
+				+ DbContract.quizReviewsTable.COLUMN_NAME_STAR + " , "
+				+ DbContract.quizReviewsTable.COLUMN_NAME_REVIEW_TEXT + " , "
+				+ DbContract.quizReviewsTable.COLUMN_NAME_REVIEW_DATE + " ) VALUES (?, ?, ?, ?, ?)";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, review.getQuizId());
+			stm.setInt(2, review.getAccountId());
+			stm.setInt(3, review.getNumStars());
+			stm.setString(4, review.getText());
+			stm.setTimestamp(5,new java.sql.Timestamp(review.getDate().getTime()));
+			stm.executeUpdate();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

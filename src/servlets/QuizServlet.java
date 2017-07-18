@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import db.bean.Report;
+import db.bean.Review;
 import db.bean.quiz.Question;
 import db.bean.quiz.Quiz;
 import db.bean.quiz.QuizAttempt;
@@ -53,11 +55,33 @@ public class QuizServlet extends HttpServlet {
 			attempt.setFinishTime(new Date());
 			request.getSession().setAttribute("attempt", attempt);
 			response.getWriter().print(true);
+		} else if (request.getParameter("type").equals("addReview")) {
+			// add review in db
+			int accountId = 1;// (int)
+								// request.getSession().getAttribute("accountID");
+			int quizId = 1;// request.getParameter("quizId");
+			int numStars = Integer.parseInt(request.getParameter("numStars"));
+			String text = request.getParameter("text");
+			Review review = new Review(text, numStars, accountId, quizId, new Date());
+			QuizDao dao = new QuizDao();
+			dao.addReview(review);
+			response.getWriter().print(true);
+		} else if (request.getParameter("type").equals("addReport")) {
+			// add report in db
+			int quizID = 1;// get quiz id from somewhere
+			int accountID = 1;// (int)
+								// request.getSession().getAttribute("accountID");
+			String reportText = request.getParameter("text");
+			Report report = new Report(quizID, accountID, reportText, new Date());
+			QuizDao dao = new QuizDao();
+			dao.addReport(report);
+			response.getWriter().print(true);
 		}
 	}
 
 	/**
 	 * sets attempt object to session
+	 * 
 	 * @param request
 	 * @param response
 	 */

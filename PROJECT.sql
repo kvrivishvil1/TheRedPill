@@ -200,7 +200,7 @@ CREATE TABLE quiz_tags (
 );
 
 CREATE TABLE quiz_reviews (
-    review_id INT NOT NULL,
+    review_id INT NOT NULL AUTO_INCREMENT,
     quiz_id INT NOT NULL,
     account_id INT NOT NULL,
     star INT NOT NULL,
