@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="CSS/normalize.css">
 <link rel="stylesheet" href="CSS/recent-quizes.css">
 	<div class="container-hpq">
+		<h3>Quizes created By you</h3>
 		<% 
 		ServletContext cont = request.getServletContext();
 		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
@@ -11,7 +12,6 @@
 		String username = (String)session.getAttribute("username");
 		quizzes = mainManager.getQuizManager().getMyQuizes(mainManager.getAccountManager().getUserIdByUserName(username));
 		%>
-		<h3>Quizes created By you</h3>
 		<% for(Integer quizId : quizzes) { %>
 		  	<div class="quiz">
 		  		<div class="quiz-name">

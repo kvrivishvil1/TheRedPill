@@ -1,2 +1,7 @@
 /managers/
+/analyzer/
 /db/
+/helpers/
+/listeners/
+/servlets/
+/test/

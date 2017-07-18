@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="CSS/normalize.css">
 <link rel="stylesheet" href="CSS/recent-quizes.css">
 	<div class="container-hpq">
+		<h3>Most popular quizes</h3>
 		<% 
 		ServletContext cont = request.getServletContext();
 		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
