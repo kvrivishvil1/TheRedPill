@@ -18,41 +18,57 @@
 <body>
 
 
-	<div class="form">
+	<div class="form clearfix">
 		<section>
-		<design class="active" href="#home">
-		<i class="fa fa-home" aria-hidden="true"></i></design></section>
+			<design class="active" href="#home">
+				<i class="fa fa-home" aria-hidden="true"></i>
+			</design>
+		</section>
 		<section>
-		<design href="#quiz">
-		<i class="fa fa-server" aria-hidden="true"></i></design></section>
+			<design href="#quiz">
+				<i class="fa fa-server" aria-hidden="true"></i>
+			</design>
+		</section>
 		<section>
-		<design href="#friends">
-		<i class="fa fa-address-book-o" aria-hidden="true"></i></design></section>
+			<design href="#friends">
+				<div class="friend-request">
+					<i class="fa fa-address-book-o" aria-hidden="true"></i>
+					<div class="triangle transform"></div>
+					<div class="friend-request-display"><jsp:include page="friend-request-min.jsp"></jsp:include></div>
+				</div>
+			</design>
+		</section>
 		<section>
-		<design href="#messages">
-		<i class="fa fa-envelope-open-o" aria-hidden="true"></i></design></section>
+			<design href="#messages">
+				<i class="fa fa-envelope-open-o" aria-hidden="true"></i>
+			</design>
+		</section>
 	</div>
 
 
-	<div class="container">
+	<div class="container clearfix">
 		<div class="icon-form">
-			<i class="fa fa-paint-brush  fa-5x" aria-hidden="true"><p
-					class="category-title-form">Art</p></i>
+			<i class="fa fa-paint-brush  fa-5x" aria-hidden="true">
+				<p class="category-title-form">Art</p>
+			</i>
 		</div>
 
 		<div class="icon-form">
-			<i class="fa fa-shopping-bag  fa-5x" aria-hidden="true"><p
-					class="category-title-form">Fashion</p></i>
+			<i class="fa fa-shopping-bag  fa-5x" aria-hidden="true">
+				<p class="category-title-form">Fashion</p>
+			</i>
 		</div>
 
 		<div class="icon-form">
-			<i class="fa fa-futbol-o fa-5x" aria-hiddenF="true"><p
-					class="category-title-form">Sport</p></i>
+			<i class="fa fa-futbol-o fa-5x" aria-hiddenF="true">
+				<p class="category-title-form">Sport</p>
+			</i>
 		</div>
 		<br>
 		<div class="icon-form">
-			<i class="fa fa-music  fa-5x" aria-hidden="true"><p
-					class="category-title-form">Music</p></i>
+			<i class="fa fa-music  fa-5x" aria-hidden="true">
+				<p class="category-title-form">Music</p> 
+			</i>
 		</div>
 
 		<div class="icon-form">
@@ -63,8 +79,9 @@
 
 
 		<div class="icon-form">
-			<i class="fa fa-users  fa-5x" aria-hidden="true"><p
-					class="category-title-form">Celebrities</p></i>
+			<i class="fa fa-users  fa-5x" aria-hidden="true">
+				<p class="category-title-form">Celebrities</p>
+			</i>
 		</div>
 
 		<br>
