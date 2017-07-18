@@ -35,11 +35,6 @@ VALUES
 	('user'),
 	('admin');
 
-INSERT INTO accounts
-	(account_user_name, account_password, account_status)
-VALUES
-	('admin','8c599c4256f1dcf620614c8fc87ff4ab91c348e1',2);
-
 CREATE TABLE person_account_map (
     person_id INT NOT NULL,
     account_id INT NOT NULL,
@@ -238,13 +233,13 @@ values
 insert into question_types
 	(question_type_name)
 values
-	('QuestionResponseQuestion'),
-    ('FillTheBlankQuestion'),
-    ('MultipleChoiceQuestion'),
-    ('PictureResponseQuestion'),
-    ('MultiAnswerQuestion'),
-    ('MultipleChoiceMultipleAnswerQuestion'),
-    ('MatchingQuestion');
+	('QuestionResponse'),
+    ('FillTheBlank'),
+    ('MultipleChoice'),
+    ('PictureResponse'),
+    ('MultiAnswer'),
+    ('MultipleChoiceMultipleAnswer'),
+    ('Matching');
 
 CREATE TABLE Admin_notifications(
 	note_id INT NOT NULL AUTO_INCREMENT,
