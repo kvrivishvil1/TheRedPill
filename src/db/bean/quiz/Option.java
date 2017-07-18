@@ -12,7 +12,7 @@ public class Option {
 	 */
 	public Option(String option) {
 		this.option = option;
-	}
+	} 
 
 	/**
 	 * Sets the option text for the option
@@ -48,5 +48,15 @@ public class Option {
 	 */
 	public int getOptionID() {
 		return optionID;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if(this == object) 
+			return true;
+		if(!(object instanceof Option))
+			return false; 
+		Option option = (Option)object;
+		return this.option.equals(option.option) && this.optionID == option.getOptionID();
 	}
 }

@@ -107,4 +107,15 @@ public class Subquestion {
 		}
 		return numberOfCorrectAnswers;
 	}
+	
+	@Override
+	public boolean equals (Object object) {
+		if(this == object) 
+			return true;
+		if(!(object instanceof Subquestion))
+			return false; 
+		Subquestion subquestion = (Subquestion)object;
+		return answers.equals(subquestion.getAnswers()) && question.equals(subquestion.getQuestion()) 
+							&& subquestionID == subquestion.getSubquestionID();
+	}
 }

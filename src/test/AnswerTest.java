@@ -161,4 +161,40 @@ public class AnswerTest {
 		assertEquals(answer.isCorrect("More than hundred percent", 1290), true);
 		assertEquals(answer.isCorrect("More than hundred percent", 120), true);
 	}
+	
+	@Test
+	public void test() {
+		ArrayList<String> answerList = new ArrayList<String>();
+		answerList.add("This is correct answer");
+		answerList.add("This answer is also correct");
+		Answer answer1 = new Answer(answerList);
+		assertEquals(true, answer1.equals(answer1));
+		String a = "";
+		assertEquals(false, answer1.equals(a));
+		
+		Answer answer2 = new Answer(answerList);
+		assertEquals(true, answer2.equals(answer1));
+		answer2.setAnswerID(1);
+		assertEquals(false, answer2.equals(answer1));
+		answer1.setAnswerID(1);
+		assertEquals(true, answer2.equals(answer1));
+		answer1.setParserSymbol('#');
+		assertEquals(answer1.getParserSymbol(), '#');
+		assertEquals(false, answer2.equals(answer1));
+		answer2.setParserSymbol('#');
+		assertEquals(true, answer2.equals(answer1));
+		
+		answer1.setAnswerID(1);
+		assertEquals(answer1.getAnswerID(), 1);
+		assertEquals(answer1.getAnswers(), answerList);
+		
+		ArrayList<String> answerList1 = new ArrayList<String>();
+		answerList.add("This is correct answer");
+		Answer answer3 = new Answer(answerList1);
+		assertEquals(false, answer3.equals(answer1));
+		
+		answer1.removeAnswer("This is correct answer");
+		answerList.remove("This is correct answer");
+		assertEquals(true, answer1.getAnswers().equals(answerList));
+	}
 }

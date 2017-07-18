@@ -9,6 +9,7 @@ public class QuizAttempt {
 	private int score;
 	private Date startTime;
 	private Date finishTime;
+	
 	/**
 	 * Constructor for a quiz attempt object with the specified parameters
 	 * @param quizID 
@@ -41,6 +42,14 @@ public class QuizAttempt {
 	 */
 	public void setFinishTime(Date finishTime) {
 		this.finishTime = finishTime;
+	}
+	
+	/**
+	 * sets quiz attempt id to quiz attempt object
+	 * @param quizAttemptID
+	 */
+	public void setQuizAttemptID(int quizAttemptID) {
+		this.quizAttemptID = quizAttemptID;
 	}
 	
 	/**
@@ -78,11 +87,30 @@ public class QuizAttempt {
 		return finishTime;
 	}
 
+	/**
+	 * @return quiz attempt id
+	 */
 	public int getQuizAttemptID() {
 		return quizAttemptID;
 	}
-
-	public void setQuizAttemptID(int quizAttemptID) {
-		this.quizAttemptID = quizAttemptID;
+	
+	@Override
+	public boolean equals(Object object) {
+		if(this == object) 
+			return true;
+		if(!(object instanceof QuizAttempt))
+			return false; 
+		QuizAttempt attempt = (QuizAttempt)object; 
+		boolean first = quizID == attempt.getQuizID() && 
+				accountID == attempt.getAccountID() && 
+				quizAttemptID == attempt.getQuizAttemptID() && 
+				score == attempt.getScore();
+		boolean second = true;
+		boolean third = true;
+		if(startTime != null)
+			second = startTime.equals(attempt.startTime);
+		if(finishTime != null)
+			third = finishTime.equals(attempt.getFinishTime());
+		return first && second && third;
 	}
 }

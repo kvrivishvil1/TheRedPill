@@ -119,5 +119,17 @@ public class Answer {
 	public char getParserSymbol() {
 		return parserSymbol;
 	}
-
+	
+	@Override
+	public boolean equals(Object object) {
+		if(this == object) 
+			return true;
+		if(!(object instanceof Answer))
+			return false; 
+		
+		Answer answer = (Answer)object;
+		return answers.equals(answer.getAnswers()) 
+				&& answerID == answer.getAnswerID() 
+				&& parserSymbol == answer.getParserSymbol();
+	}
 }
