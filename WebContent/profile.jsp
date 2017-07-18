@@ -102,14 +102,14 @@
 	    		} %> 
 	    </li>
 	    <li>
-	    	<% if (userCreatedQuizzes.size()==1){
+	    	<% if (userCreatedQuizzes.size()<=1){
 	    			out.println("Nothing to show"); 
 	    		}else{ 
 	    			out.println(userCreatedQuizzes.get(1));
 	    		} %> 
 	    </li>
 	    <li>
-	    	<% if (userCreatedQuizzes.size()==2){
+	    	<% if (userCreatedQuizzes.size()<=2){
 	    			out.println("Nothing to show"); 
 	    		}else{ 
 	    			out.println(userCreatedQuizzes.get(2));
@@ -133,14 +133,14 @@
 	    		} %> 
 	    </li>
 	    <li>
-	    	<% if (userAchievemnts.size()==1){
+	    	<% if (userAchievemnts.size()<=1){
 	    			out.println("Nothing to show"); 
 	    		}else{ 
 	    			out.println(userAchievemnts.get(userAchievemnts.size()-2));
 	    		} %> 
 	    </li>
 	    <li>
-	    	<% if (userAchievemnts.size()==2){
+	    	<% if (userAchievemnts.size()<=2){
 	    			out.println("Nothing to show"); 
 	    		}else{ 
 	    			out.println(userAchievemnts.get(userAchievemnts.size()-3));
@@ -164,14 +164,14 @@
 	    		} %> 
 	    </li>
 	    <li>
-	    	<% if (userPlayedQuizzes.size()==1){
+	    	<% if (userPlayedQuizzes.size()<=1){
 	    			out.println("Nothing to show"); 
 	    		}else{ 
 	    			out.println(userPlayedQuizzes.get(1));
 	    		} %> 
 	    </li>
 	    <li>
-	    	<% if (userPlayedQuizzes.size()==2){
+	    	<% if (userPlayedQuizzes.size()<=2){
 	    			out.println("Nothing to show"); 
 	    		}else{ 
 	    			out.println(userPlayedQuizzes.get(2));
