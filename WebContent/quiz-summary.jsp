@@ -350,9 +350,9 @@ div.scrolForm {
 		<div class="mySlides">
 			<div class="section">
 				<div class="sectionTitleForm">statistic</div>
-
 				<%
 					int maxScore = mainManager.getQuizManager().getQuizMaxScore(quizID);
+					if(maxScore<1) maxScore = 500;
 					int first = 0;
 					int second = 0;
 					int third = 0;
@@ -378,6 +378,7 @@ div.scrolForm {
 						}
 					}
 					int allScore = first + second + third + fourth + fifth;
+					if(allScore == 0) allScore = 1;
 				%>
 				<ul class="chart">
 					<li>
