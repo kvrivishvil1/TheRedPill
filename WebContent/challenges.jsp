@@ -22,6 +22,13 @@
 <link rel="stylesheet" href="CSS/challenge.css">
 </head>
 <body>
+
+
+
+
+
+
+
 <div class="content">
 	<% 
 		ServletContext cont = request.getServletContext();

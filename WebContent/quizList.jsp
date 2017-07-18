@@ -12,10 +12,37 @@
 <script src="JAVASCRIPT/quizList.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="https://code.jquery.com/jquery.min.js"></script>
+<link rel="stylesheet" href="CSS/font-awesome.min.css">
+<link rel="stylesheet" href="CSS/navigation.css">
+
 </head>
 <body>
 
 
+
+<div class="form clearfix">
+		<section> <design  href="#home"> <a
+			href="homepage.jsp"><i class="fa top fa-home" aria-hidden="true"></i></a> </design> </section>
+		<section> <design href="#quiz"> <a href="quiz-form.jsp"><i
+			class="fa top fa-server" aria-hidden="true"></i></a> </design> </section>
+		<section> <design href="#friends-request">
+		<div class="friend-request">
+			<a href="friend-request.jsp"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
+		</div>
+		</design> </section>
+		<section> <design  href="#friends"> <a
+			href="friends.jsp"><i class="fa top fa-address-book-o"
+			aria-hidden="true"></i></a> </design> </section>
+		<section> <design href="#profile"> <a
+			href="profile.jsp"><i class="fa fa-address-card"
+			aria-hidden="true"></i></a> </design> </section>
+		<section> <design  href="#messages"> <a
+			href="conversation.jsp"><i class="fa top fa-envelope-open-o"
+			aria-hidden="true"></i></a> </design> </section>
+		<section> <design href="#log-out"> <a href="">
+			<i class="fa fa-sign-out" aria-hidden="true"></i>
+		</a> </design> </section>
+	</div>
 
 <div class = "container">
 

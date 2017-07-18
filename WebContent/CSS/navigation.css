@@ -1,0 +1,51 @@
+@CHARSET "ISO-8859-1";
+
+
+a, a:visited, a:hover, a:active {
+	text-decoration: none;
+}
+
+.clearfix:before, .clearfix:after {
+	content: "";
+	display: table;
+}
+
+.clearfix:after {
+	clear: both;
+}
+
+.form {
+	list-style-type: none;
+	background-color: #B6452C;
+	
+}
+
+section {
+	float: right;
+}
+
+section design {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 15px 30px;
+	text-decoration: none;
+	font-style: italic;
+	font-size: 20px;
+}
+
+design:hover:not (.active ){
+	background-color: silver;
+}
+
+.fa-address-book-o:HOVER {
+	
+}
+
+.top {
+	color: white;
+}
+
+.active {
+	background-color: black;
+}

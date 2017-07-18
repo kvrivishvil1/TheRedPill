@@ -19,6 +19,9 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="CSS/font-awesome.min.css">
+<link rel="stylesheet" href="CSS/navigation.css">
+	
 <title>Conversation</title>
 </head>
 <script>
@@ -34,11 +37,36 @@ a {
 <script src="jquery.js"></script>
 
 <body>
-	<div class="title-bar">
-		<section>
-			<design href="#home"> <a href="homepage.jsp" > Homepage </a></design>
-		</section>
+	
+	
+	
+<div class="form clearfix">
+		<section> <design  href="#home"> <a
+			href="homepage.jsp"><i class="fa top fa-home" aria-hidden="true"></i></a> </design> </section>
+		<section> <design href="#quiz"> <a href="quiz-form.jsp"><i
+			class="fa top fa-server" aria-hidden="true"></i></a> </design> </section>
+		<section> <design href="#friends-request">
+		<div class="friend-request">
+			<a href="friend-request.jsp"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
+		</div>
+		</design> </section>
+		<section> <design  href="#friends"> <a
+			href="friends.jsp"><i class="fa top fa-address-book-o"
+			aria-hidden="true"></i></a> </design> </section>
+		<section> <design href="#profile"> <a
+			href="profile.jsp"><i class="fa fa-address-card"
+			aria-hidden="true"></i></a> </design> </section>
+		<section> <design class="active" href="#messages"> <a
+			href="conversation.jsp"><i class="fa top fa-envelope-open-o"
+			aria-hidden="true"></i></a> </design> </section>
+		<section> <design href="#log-out"> <a href="">
+			<i class="fa fa-sign-out" aria-hidden="true"></i>
+		</a> </design> </section>
 	</div>
+	
+	
+	
+	
 	<div id="chat" class="scroll col-sm-8">
 		<%
 			List<Note> recMess = null;
