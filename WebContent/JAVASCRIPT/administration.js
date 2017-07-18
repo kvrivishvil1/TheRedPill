@@ -186,6 +186,7 @@ var clearQuizInfo = function(buttonElem) {
 $(document).ready(function() {
 	$("#note-form").hide();
 	$(".details").hide();
+	$("#reports").hide();
 	// slides down information connected to the button clicked
 	$("button").click(function() {
 		slide(this);

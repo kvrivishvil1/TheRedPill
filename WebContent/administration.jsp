@@ -1,7 +1,11 @@
-<% if(session.getAttribute("username") == null) {
-	RequestDispatcher rd = request.getRequestDispatcher("index.html");
- 	rd.forward(request,response);
-}%>
+<%@page import="db.bean.Report"%>
+<%@page import="java.util.ArrayList"%>
+<%
+	if (session.getAttribute("username") == null) {
+		RequestDispatcher rd = request.getRequestDispatcher("index.html");
+		rd.forward(request, response);
+	}
+%>
 <%@page import="managers.MainManager"%>
 <%@page import="db.dao.QuizDao"%>
 <%@page import="db.dao.UserDao"%>
@@ -39,21 +43,25 @@
 					ServletContext cont = request.getServletContext();
 					MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 				%>
-				<p>Total number of users: <b><%=mainManager.getAccountManager().getNumUsers()%></b><p>
-				
-				
-				<a id="display-all" href="all-user.jsp" role="button">Display
-					All Users</a>
+				<p>
+					Total number of users: <b><%=mainManager.getAccountManager().getNumUsers()%></b>
+				<p>
+
+
+					<a id="display-all" href="all-user.jsp" role="button">Display
+						All Users</a>
 			</div>
 		</div>
 		<div class="stat-details">
 			<button class="btn btn-secondary" type="button">Manage
 				Quizes</button>
 			<div class="details">
-				<p>Total number of quizzes: <b><%=mainManager.getQuizManager().getNumQuizzes()%></b><p>
-				
-				<a id="display-all" href="all-quiz.jsp" role="button">Display
-					All Quizzes</a>
+				<p>
+					Total number of quizzes: <b><%=mainManager.getQuizManager().getNumQuizzes()%></b>
+				<p>
+
+					<a id="display-all" href="all-quiz.jsp" role="button">Display
+						All Quizzes</a>
 			</div>
 		</div>
 
@@ -70,9 +78,23 @@
 				<p id="note-status"></p>
 			</div>
 		</div>
+		<div id="report-container">
+			<button id="report-slide">See All Reports</button>
+			<div id = "reports">
+				<%
+					QuizDao dao = new QuizDao();
+					ArrayList<Report> reps = dao.getReports();
+					for (int i = 0; i < reps.size(); i++) {
+						int quizId = reps.get(i).getQuizID();
+						String quizName = dao.getQuizName(quizId);
+						out.write("<p><b>" + quizName + ": </b>");
+						out.write(reps.get(i).getReportText() + "</p>");
+					}
+				%>
+			</div>
+		</div>
 	</div>
 	<script src="JAVASCRIPT/jquery-1.9.1.min.js"></script>
 	<script src="JAVASCRIPT/administration.js"></script>
 </body>
 </html>
-

@@ -364,6 +364,29 @@ public class QuizDao {
 			e.printStackTrace();
 		}
 	}
+	
+	public ArrayList<Report> getReports() {
+		String query = "SELECT * FROM " + DbContract.quizReportsTable.TABLE_NAME;
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			ResultSet rs = stm.executeQuery();
+			ArrayList<Report> result = new ArrayList<>();
+			while (rs.next()) {
+				int quizID = rs.getInt(DbContract.quizReportsTable.COLUMN_NAME_QUIZ_ID);
+				int accountID = rs.getInt(DbContract.quizReportsTable.COLUMN_NAME_ACCOUNT_ID);
+				String reportText = rs.getString(DbContract.quizReportsTable.COLUMN_NAME_REPORT_TEXT);
+				Date date = rs.getDate(DbContract.quizReportsTable.COLUMN_NAME_REPORT_DATE);
+				Report report = new Report(quizID, accountID, reportText, date);
+				result.add(report);
+			}
+			return result;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	/**
 	 * pulls questions by quiz id and adds them to quiz object
