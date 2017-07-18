@@ -2,47 +2,39 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 
-import db.bean.quiz.Answer;
+import db.bean.quiz.Question;
+import db.bean.quiz.Subquestion;
 
 
 public class QuestionTest {
-	/*
-	 * 
-	@Test
-	public void test1(){
-		List<Answer> answers = new ArrayList<Answer>();
-		Answer first = new Answer("Fine", true);
-		Answer second = new Answer("Not working", false);
-		answers.add(first);
-		answers.add(second);
-		MultipleChoiceQuestion question = new MultipleChoiceQuestion("How does it work?", answers);
-		assertEquals(question.getQuestion(), "How does it work?");
-		assertEquals(question.getAnswers(), answers);
-		assertEquals(question.getQuestionType(), "MultipleChoice");
-	}
-	
-	*/
-	
-	/*
-	@Test
-	public void test2(){
-		List<Answer> answers = new ArrayList<Answer>();
-		Answer first = new Answer("Fine", true);
-		answers.add(first);
-		MultipleChoiceQuestion question = new MultipleChoiceQuestion("How does it work?", answers);
-		//Gets answers and add new answer in it
-		List<Answer> result = question.getAnswers();
-		Answer second = new Answer("Not working", false);
-		result.add(second);
-		//Getting answers again should return the same answers
-		assertEquals(question.getAnswers(), answers);
-	}
 
-*/
+	@Test
+	public void test1() {
+		Question quest = new Question(1);
+		quest.setNote("note");
+		quest.setQuestionID(1);
+		assertEquals(quest.getQuestionType(), 1);
+		assertEquals(quest.getQuestionID(), 1);
+		assertEquals(quest.getNote(), "note");
+		assertEquals(quest.isOrderSensitive(), false);
+		assertEquals(quest.getTimeLimit(), -1);
+		quest.setOrderSensitive(true);
+		quest.setTimeLimit(10000);
+		quest.setQuestionType(2);
+		assertEquals(quest.getQuestionType(), 2);
+		assertEquals(quest.isOrderSensitive(), true);
+		assertEquals(quest.getTimeLimit(), 10000);
+		
+		//Subquestion subquest = new Subquestion(question)
+		
+	}
+	
+	
+	@Test
+	public void test2() {
+		
+	}
 	
 }

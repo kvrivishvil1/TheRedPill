@@ -58,5 +58,40 @@ public class QuizTest {
 		assertEquals(quiz.getNumQuestions(), 1);
 		assertEquals(quiz.getAllQuestions().get(0), question);
 	}
+	
+	@Test 
+	public void test3() {
+		Quiz quiz = new Quiz("Quiz", "Math");
+		ArrayList<String> tags = new ArrayList<>();
+		
+		quiz.setAccountID(1);
+		quiz.setDescription("description");
+		quiz.setPracticableMode(true);
+		quiz.setRearrangableMode(true);
+		quiz.setTimeLimit(10000);
+		quiz.addTag("Mathmatics");
+		tags.add("Mathmatics");
+		quiz.addTag("CS");
+		tags.add("CS");
+		
+		assertEquals(quiz.getName(), "Quiz");
+		assertEquals(quiz.getCategory(), "Math");
+		assertEquals(quiz.getAccountID(), 1);
+		assertEquals(quiz.getDescription(), "description");
+		assertEquals(quiz.isPracticable(), true);
+		assertEquals(quiz.isRearrangable(), true);
+		assertEquals(quiz.getTimeLimit(), 10000);
+		assertEquals(quiz.getTags(), tags);
+		
+		quiz.removeTag("CS");
+		tags.remove("CS");
+		assertEquals(quiz.getTags(), tags);
+		
+		quiz.setName("Quizz");
+		assertEquals(quiz.getName(), "Quizz");
+		
+		quiz.setCategory("Mathh");
+		assertEquals(quiz.getCategory(), "Mathh");
+	}
 
 }
