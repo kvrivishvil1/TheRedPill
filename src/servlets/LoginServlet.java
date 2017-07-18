@@ -43,6 +43,7 @@ public class LoginServlet extends HttpServlet {
 		String encryptedPassword = PasswordEncryptor.encrypt(password);
 		// if administrator is signing in
 		if (mainManager.getAccountManager().isAdmin(userName, encryptedPassword)) {
+			request.getSession().setAttribute("accountID", 1);
 			request.getSession().setAttribute("username", userName);
 			response.getWriter().print("{ 'success' : true, 'location' : 'administration.jsp' }");
 			return;
@@ -50,9 +51,11 @@ public class LoginServlet extends HttpServlet {
 		if (!mainManager.getAccountManager().usernameIsAvailable(userName)) {
 			Account currentlySigningIn = mainManager.getAccountManager().getAccount(userName);
 			if (currentlySigningIn.getPassword().equals(encryptedPassword)) {
+				AccountManager accountManager = mainManager.getAccountManager();	
+				request.getSession().setAttribute("accountID", accountManager.getUserIdByUserName(userName));
 				saveLoginInfo(request, response, currentlySigningIn);
 				request.getSession().setAttribute("username", userName);
-				response.getWriter().print("{ 'success' : true, 'location' : 'profile.jsp' }");
+				response.getWriter().print("{ 'success' : true, 'location' : 'conversation.jsp' }");
 			} else {
 				response.getWriter().write("{ 'success' : false, 'location' : 'unknown' }");
 			}

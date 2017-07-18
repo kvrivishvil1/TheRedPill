@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>No Conversation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<link rel="stylesheet" href="CSS/messenger.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta charset="utf-8">
+</head>
+<script src="jquery.js"></script>
+<script>
+$(function() {
+	$("#modal-data").load("new-message.html");
+});
+</script>
+<body style="background-color: #DDC5A2">
+	<div style="text-align: center">
+		<div class="center-align">
+			<h1>No conversations yet</h1>
+			<button type="button" class="btn" style="background: #B6452C; color : white"
+				data-toggle="modal" data-target="#new-message">Create New
+				Conversation</button>
+		</div>
+		<div id="modal-data"></div>
+	</div>
+</body>
+</html>

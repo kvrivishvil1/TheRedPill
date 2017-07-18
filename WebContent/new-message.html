@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<div class="modal fade" id="new-message" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<form action="NewMessageServlet" method="post">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="input-group">
+						<p class="input-group-addon">Send message to:</p>
+						<input type="text" class="form-control" name="reciever-username"
+							placeholder="Enter reciever's username">
+					</div>
+					<textarea rows="10" class="form-control" style="min-width: 100%"
+						name="message" placeholder="Enter your message here"></textarea>
+					<div class="modal-footer">
+						<button type="button" class="btn"
+							data-dismiss="modal">Close</button>
+						<button class="btn"  style="background: #B6452C; color : white">Send</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

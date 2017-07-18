@@ -143,6 +143,7 @@ public class MessageDao {
 			stmt.executeQuery("USE " + database);
 			try (PreparedStatement ps = con.prepareStatement(query)) {
 				ps.setInt(1, userID);
+				ps.setInt(2, userID);
 				try (ResultSet rs = ps.executeQuery()) {
 					while (rs.next()) {
 						Note currValue = generateNote(rs);

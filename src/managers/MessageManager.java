@@ -3,6 +3,7 @@ package managers;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import db.bean.Challenge;
 import db.bean.Note;
@@ -70,4 +71,23 @@ public class MessageManager {
 	public HashMap<String, String> getAdminstrationNote() {
 		return messageDao.getAdminstrationNote();
 	}
+	
+	/**
+	 * Gets most recent messages for specified user
+	 * @param userID for which recent messages should be taken
+	 * @return The list of recent messages
+	 */
+	public List<Note> getRecentMessages(int userID){
+		return messageDao.getRecentMessages(userID);
+	}
+	
+	/**
+	 * Gets conversation between two users
+	 * @param firstUser first username
+	 * @param secondUser second username
+	 * @return The list of recent messages
+	 */
+	public List<Note> getConversation(int firstUser, int secondUser){
+		return messageDao.getConversation(firstUser, secondUser);
+	}	
 }
