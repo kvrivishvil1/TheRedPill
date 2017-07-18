@@ -1,7 +1,11 @@
-<% if(session.getAttribute("username") == null) {
-	RequestDispatcher rd = request.getRequestDispatcher("index.html");
- 	rd.forward(request,response);
-}%>
+
+<%@page import="managers.QuizManager"%>
+<%
+	if (session.getAttribute("username") == null) {
+		RequestDispatcher rd = request.getRequestDispatcher("index.html");
+		rd.forward(request, response);
+	}
+%>
 <%@page import="managers.MainManager"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
@@ -41,9 +45,13 @@ div.scrolForm {
 
 		<%
 			ServletContext sc = request.getServletContext();
-			int quizID = (int) session.getAttribute("quizID");
-			String quizName = (String) session.getAttribute("quizID");
+			int quizID = 1;
+			if (session.getAttribute("quizID") != null)
+				quizID = (int) session.getAttribute("quizID");
+			else
+				quizID = Integer.parseInt(request.getParameter("quizID"));
 			MainManager mainManager = (MainManager) sc.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
+			QuizManager quizManager = mainManager.getQuizManager();
 			String quizDescription = mainManager.getQuizManager().getQuizDescription(quizID);
 			ArrayList<DataCouple> lastPerformances = mainManager.getQuizManager().getLastPerformances(quizID);
 			ArrayList<DataCouple> highestPerformsOrderByDate = mainManager.getQuizManager()
@@ -59,16 +67,11 @@ div.scrolForm {
 	</div>
 
 	<div class="title-bar">
-		<section>
-		<design class="active" href="#home">Home</design></section>
-		<section>
-		<design href="#quiz">Quiz</design></section>
-		<section>
-		<design href="#friends">Friends</design></section>
-		<section>
-		<design href="#messages">Messages</design></section>
-		<section>
-		<design href="#achievements">Achievements</design></section>
+		<section> <design class="active" href="#home">Home</design></section>
+		<section> <design href="#quiz">Quiz</design></section>
+		<section> <design href="#friends">Friends</design></section>
+		<section> <design href="#messages">Messages</design></section>
+		<section> <design href="#achievements">Achievements</design></section>
 	</div>
 
 	<h2 class="nameForm">
@@ -382,33 +385,45 @@ div.scrolForm {
 	</div>
 
 
-<div class = "reviews">
-	
-	<%
-	
-	for(Review  review : mainManager.getQuizManager().getQuizReviews(quizID)){
-	%>
-	<br>
-		<div class  = "review-form"><%= review.getText() %> 
-			<div class = "review-info-form"> username : <%= mainManager.getAccountManager().getUsernameByUserId(review.getAccountId()) %> </div>
-			<div class = "review-info-form"> date : <%= review.getDate() %></div>
+	<div class="reviews">
+
+		<%
+			for (Review review : mainManager.getQuizManager().getQuizReviews(quizID)) {
+		%>
+		<br>
+		<div class="review-form"><%=review.getText()%>
+			<div class="review-info-form">
+				username :
+				<%=mainManager.getAccountManager().getUsernameByUserId(review.getAccountId())%>
+			</div>
+			<div class="review-info-form">
+				date :
+				<%=review.getDate()%></div>
 		</div>
-	
-	<%}%>
-	
-	<%
 
-		for (int i = 0; i < mainManager.getQuizManager().getQuizStars(quizID); i++) {
-			if( i == 0 ){
-	%>
-		 <i class="fa fa-star fa-5x" aria-hidden="true" style = "color : hsl(51, 100%, 55%); margin-left: 30%;"></i>
-		
-	<%}else{%>
-	 	<i class="fa fa-star fa-5x" aria-hidden="true" style = "color : hsl(51, 100%, 55%); margin-left: 10px;"></i>
-	<%} }%>
+		<%
+			}
+		%>
 
-</div>
-<br>
+		<%
+			for (int i = 0; i < mainManager.getQuizManager().getQuizStars(quizID); i++) {
+				if (i == 0) {
+		%>
+		<i class="fa fa-star fa-5x" aria-hidden="true"
+			style="color: hsl(51, 100%, 55%); margin-left: 30%;"></i>
+
+		<%
+			} else {
+		%>
+		<i class="fa fa-star fa-5x" aria-hidden="true"
+			style="color: hsl(51, 100%, 55%); margin-left: 10px;"></i>
+		<%
+			}
+			}
+		%>
+
+	</div>
+	<br>
 
 
 
@@ -416,7 +431,8 @@ div.scrolForm {
 		<button class="button" style="margin-left: 6%; margin-top: 20px">
 			Edit quiz</button>
 		<button class="button" style="margin-left: 30%; margin-top: 20px">
-			Start quiz</button>
+			<a href=<%="display-quiz.jsp?quizId=" + quizID%>>
+						<i class="top"> Start quiz </i> </a></button>
 		<button class="button" style="margin-left: 30%; margin-top: 20px">
 			practice mode</button>
 

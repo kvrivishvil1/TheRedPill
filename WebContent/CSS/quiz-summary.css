@@ -36,6 +36,15 @@ design:hover:not (.active ) {
 	background-color: silver;
 }
 
+.top {
+	color: white;
+}
+
+
+a, a:visited, a:hover, a:active {
+	text-decoration: none;
+}
+
 .active {
 	background-color: black;
 }
