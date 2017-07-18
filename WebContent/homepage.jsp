@@ -18,22 +18,22 @@
 </head>
 <body>
 	<div class="form clearfix">
-		<section> <design class="active" href="#home"> <a
+		<section> <design class="active"> <a
 			href=""><i class="fa top fa-home" aria-hidden="true"></i></a> </design> </section>
 		<section> <design href="#quiz"> <a href=""><i
 			class="fa top fa-server" aria-hidden="true"></i></a> </design> </section>
-		<section> <design href="#friends">
+		<section> <design>
 		<div class="friend-request">
-			<a href=""><i class="fa top fa-address-book-o" aria-hidden="true"></i></a>
+			<a href="friend-request.jsp"><i class="fa top fa-address-book-o" aria-hidden="true"></i></a>
 			<div class="triangle transform"></div>
 			<div class="friend-request-display"><jsp:include
 					page="friend-request-min.jsp"></jsp:include></div>
 		</div>
 		</design> </section>
-		<section> <design href="#messages"> <a
+		<section> <design> <a
 			href="conversation.jsp"><i class="fa top fa-envelope-open-o"
 			aria-hidden="true"></i></a> </design> </section>
-		<section> <design href="#log-out"> <a href="">
+		<section> <design> <a href="">
 			<i class="fa fa-sign-out" aria-hidden="true"></i>
 		</a> </design> </section>
 	</div>
