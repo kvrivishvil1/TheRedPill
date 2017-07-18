@@ -35,39 +35,52 @@
 	</div>
 	<div class="container clearfix">
 		<div class="icon-form">
-			<i class="fa fa-paint-brush  fa-5x" aria-hidden="true">
-				<p class="category-title-form">Art</p>
+			<i class="fa fa-paint-brush  fa-5x" aria-hidden="true"> <a
+				href="quiz-list.jsp?id=1">
+					<p class="category-title-form">Art</p>
+			</a>
 			</i>
 		</div>
 
 		<div class="icon-form">
-			<i class="fa fa-shopping-bag  fa-5x" aria-hidden="true">
-				<p class="category-title-form">Fashion</p>
+			<i class="fa fa-shopping-bag  fa-5x" aria-hidden="true"> <a
+				href="quiz-list.jsp?id=2">
+					<p class="category-title-form">Fashion</p>
+			</a>
 			</i>
 		</div>
 
 		<div class="icon-form">
-			<i class="fa fa-futbol-o fa-5x" aria-hiddenF="true">
-				<p class="category-title-form">Sport</p>
+			<i class="fa fa-futbol-o fa-5x" aria-hiddenF="true"> <a
+				href="quiz-list.jsp?id=3">
+					<p class="category-title-form">Sport</p>
+
+			</a>
 			</i>
 		</div>
 		<br>
 		<div class="icon-form">
-			<i class="fa fa-music  fa-5x" aria-hidden="true">
-				<p class="category-title-form">Music</p>
+			<i class="fa fa-music  fa-5x" aria-hidden="true"> <a
+				href="quiz-list.jsp?id=4">
+					<p class="category-title-form">Music</p>
+			</a>
 			</i>
 		</div>
 
 		<div class="icon-form">
-			<i class="fa fa-film fa-5x" aria-hidden="true">
-				<p class="category-title-form">Film</p>
+			<i class="fa fa-film fa-5x" aria-hidden="true"> <a
+				href="quiz-list.jsp?id=5">
+					<p class="category-title-form">Film</p>
+			</a>
 			</i>
 		</div>
 
 
 		<div class="icon-form">
-			<i class="fa fa-users  fa-5x" aria-hidden="true">
-				<p class="category-title-form">Celebrities</p>
+			<i class="fa fa-users  fa-5x" aria-hidden="true"> <a
+				href="quiz-list.jsp?id=6">
+					<p class="category-title-form">Celebrities</p>
+			</a>
 			</i>
 		</div>
 
@@ -76,10 +89,10 @@
 			ServletContext sc = request.getServletContext();
 			MainManager mainManager = (MainManager) sc.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 			HashMap<String, String> announcements = mainManager.getMessageManager().getAdminstrationNote();
-			if (announcements != null) {
+			if (announcements != null && announcements.size() != 0) {
 		%>
 
-		<div class="quiz-section-form" style = "margin-top: 5%;">Announcements</div>
+		<div class="quiz-section-form" style="margin-top: 5%;">Announcements</div>
 		<br>
 		<%
 			for (String header : announcements.keySet()) {
@@ -113,7 +126,10 @@
 				<div class="title-form"><%=mainManager.getQuizManager().getQuizName(popularQuizzes.get(i))%></div>
 			</div>
 			<div class="announcement-content-form">
-				<div class="button" style="margin-left: 43px;">Start quiz</div>
+				<div class="button" style="margin-left: 43px;">
+					<a href=<%="display-quiz.jsp?quizId=" + popularQuizzes.get(i)%>>
+						Start quiz </a>
+				</div>
 				<div class="button">See quiz summary</div>
 			</div>
 		</div>
@@ -141,7 +157,10 @@
 				<div class="title-form"><%=mainManager.getQuizManager().getQuizName(recentQuizzes.get(i))%></div>
 			</div>
 			<div class="announcement-content-form">
-				<div class="button" style="margin-left: 43px;">Start quiz</div>
+				<div class="button" style="margin-left: 43px;">
+					<a href=<%="display-quiz.jsp?quizId=" + popularQuizzes.get(i)%>>
+						Start quiz </a>
+				</div>
 				<div class="button">See quiz summary</div>
 			</div>
 		</div>
@@ -174,7 +193,10 @@
 				<div class="title-form"><%=mainManager.getQuizManager().getQuizName(userQuizzes.get(i))%></div>
 			</div>
 			<div class="announcement-content-form">
-				<div class="button" style="margin-left: 43px;">Start quiz</div>
+				<div class="button" style="margin-left: 43px;">
+					<a href=<%="display-quiz.jsp?quizId=" + popularQuizzes.get(i)%>>
+						Start quiz </a>
+				</div>
 				<div class="button">See quiz summary</div>
 			</div>
 		</div>
