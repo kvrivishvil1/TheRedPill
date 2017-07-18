@@ -3,8 +3,6 @@ html {
 	height: 100%;
 }
 
-
-
 body {
 	width: 100%;
 	height: 100%;
@@ -14,13 +12,9 @@ body {
 	padding-left: 30%;
 }
 
-
-
 .container {
 	position: relative;
 }
-
-
 
 .registration-form {
 	border-radius: 25px;
@@ -35,8 +29,6 @@ body {
 	text-align: center;
 }
 
-
-
 .alert {
 	margin-top: 4px;
 	margin-left: auto;
@@ -48,13 +40,9 @@ body {
 	width: 80%;
 }
 
-
-
 .form-line {
 	margin-top: 20px;
 }
-
-
 
 .formTitle {
 	font-size: 30px;
@@ -62,8 +50,6 @@ body {
 	padding: 2px 0 10px 0;
 	font-weight: bold;
 }
-
-
 
 .formGender {
 	font-size: 15px;
@@ -74,8 +60,6 @@ body {
 	display: inline-block;
 	margin-right: 10px;
 }
-
-
 
 .input-field {
 	width: 80%;
@@ -89,8 +73,6 @@ body {
 	box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
 	transition: all 0.2s linear;
 }
-
-
 
 .day {
 	width: 35px;
@@ -106,8 +88,6 @@ body {
 	text-align: center;
 }
 
-
-
 .select-field {
 	width: 126px;
 	border-radius: 8px;
@@ -119,8 +99,6 @@ body {
 	font-family: 'FranchiseRegular';
 	text-align: center;
 }
-
-
 
 .submit {
 	width: 60%;

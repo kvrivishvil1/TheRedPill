@@ -14,26 +14,26 @@ body {
 }
 
 .challenges {
-	width:550px;
+	width: 550px;
 	margin: 0 auto;
 }
 
 .challenge-form {
-	width:100%;
-	margin-bottom:25px;
+	width: 100%;
+	margin-bottom: 25px;
 }
 
 .each-challenge {
-	width:100%;
+	width: 100%;
 	position: relative;
 }
 
 .challenge-info {
-	display:inline-block;
+	display: inline-block;
 }
 
 .challenge-info-line {
-	margin-bottom:10px;
+	margin-bottom: 10px;
 }
 
 .input {
@@ -58,7 +58,7 @@ body {
 
 .challenge-buttons {
 	position: absolute;
-	top:50%;
+	top: 50%;
 	transform: translateY(-50%);
 	right: 0;
 }

@@ -8,46 +8,46 @@ body {
 	height: 100%;
 }
 
-a, a:visited, a:hover, a:active{
+a, a:visited, a:hover, a:active {
 	text-decoration: none;
-	color:inherit;
-	color:blue;
+	color: inherit;
+	color: blue;
 }
 
 .content {
-	width:960px;
+	width: 960px;
 	margin: 0 auto;
 }
 
 .clearfix:before, .clearfix:after {
-  content: "";
-  display: table;
+	content: "";
+	display: table;
 }
 
 .clearfix:after {
-  clear: both;
+	clear: both;
 }
 
-.friend-line{
-	margin-bottom:15px;
+.friend-line {
+	margin-bottom: 15px;
 }
 
 .image-div {
-	width:90px;
-	height:90px;
-	margin-right:15px;
-	display:inline-block;
-	float:left;
+	width: 90px;
+	height: 90px;
+	margin-right: 15px;
+	display: inline-block;
+	float: left;
 }
 
-.profile-image{
+.profile-image {
 	height: 100%;
 	width: 100%;
 }
 
 .name {
-	height:100%;
-	line-height:90px;
-	display:inline-block;
-	float:left;
+	height: 100%;
+	line-height: 90px;
+	display: inline-block;
+	float: left;
 }

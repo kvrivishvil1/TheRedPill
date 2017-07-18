@@ -8,21 +8,37 @@ body {
 	height: 100%;
 }
 
-a, a:visited, a:hover, a:active{
+a, a:visited, a:hover, a:active {
 	text-decoration: none;
-	color:inherit;
-	color:blue;
+	color: inherit;
+	color: blue;
 }
 
-.content { 
-	width:550px;
+.content {
+	width: 550px;
 	margin: 0 auto;
 }
 
 .quiz {
-	margin-bottom:15px;
+	margin-bottom: 15px;
+	height: 50px;
+	position: relative;
 }
 
 .link {
-	font-size:20px;
+	font-size: 20px;
+}
+
+.quiz-name {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 0;
+}
+
+.summary {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 0;
 }

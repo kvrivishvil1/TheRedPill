@@ -41,7 +41,7 @@ button:hover {
 	background: #d41515;
 }
 
-#submit-area, #navigation,#review-container,#report-container {
+#submit-area, #navigation, #review-container, #report-container {
 	border-style: double;
 	padding: 5px;
 	border-radius: 10px;
@@ -54,7 +54,8 @@ button:hover {
 	float: none;
 	width: 40%;
 }
-.container1{
+
+.container1 {
 	border-style: double;
 	padding: 5px;
 	border-radius: 10px;

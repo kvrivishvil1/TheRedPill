@@ -18,6 +18,7 @@ import achievement.Achievement;
 import achievement.Property;
 import db.DbContract;
 import db.MyDbInfo;
+import db.bean.Report;
 import db.bean.quiz.Answer;
 import db.bean.quiz.Option;
 import db.bean.quiz.Quiz;

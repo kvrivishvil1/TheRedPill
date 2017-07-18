@@ -1,13 +1,9 @@
 @CHARSET "ISO-8859-1";
 
-
-
 html {
 	width: 100%;
 	height: 100%;
 }
-
-
 
 body {
 	width: 100%;
@@ -15,199 +11,157 @@ body {
 	background-color: #DDC5A2;
 }
 
-
-
 .container {
 	position: relative;
-	width : 65%;
+	width: 65%;
 	top: 10%;
 	transform: translateY(-10%);
 }
 
-
-
-
-.title-form{
-	color: #B6452C; 
-	font-family: font-family:'Carme', sans-serif; 
-	font-size: 40px; 
-	font-weight: normal; 
-	line-height: 48px; 
-	 
-	text-align: center; 
+.title-form {
+	color: #B6452C;
+	font-family: font-family : 'Carme', sans-serif;
+	font-size: 40px;
+	font-weight: normal;
+	line-height: 48px;
+	text-align: center;
 	text-shadow: 1px 1px 2px #082b34;
 }
 
-
-
-
-.form-control{
-	color:red;
+.form-control {
+	color: red;
 }
 
-
-
-.section-title-form{
+.section-title-form {
 	color: black;
 	margin-top: 10px;
-	text-align: center; 
+	text-align: center;
 }
 
-
-
-.checkbox-inline{
-	color:black;
+.checkbox-inline {
+	color: black;
 }
-
-
-
 
 #paper {
-	color:#FFF;
-	font-size:15px;
+	color: #FFF;
+	font-size: 15px;
 }
-
-
 
 #text {
-	width:100%;
-	overflow:hidden;
-	background-color:#FFF;
-	color:#222;
-	font-family:Courier, monospace;
-	font-weight:normal;
-	font-size:15px;
-	resize:none;
-	line-height:40px;
-	padding-left:250px;
-	padding-right:100px;
-	padding-top:10px;
-	padding-bottom:34px;
-	background-image:url(https://static.tumblr.com/maopbtg/E9Bmgtoht/lines.png), url(https://static.tumblr.com/maopbtg/nBUmgtogx/paper.png);
-	background-repeat:repeat-y, repeat;
+	width: 100%;
+	overflow: hidden;
+	background-color: #FFF;
+	color: #222;
+	font-family: Courier, monospace;
+	font-weight: normal;
+	font-size: 15px;
+	resize: none;
+	line-height: 40px;
+	padding-left: 250px;
+	padding-right: 100px;
+	padding-top: 10px;
+	padding-bottom: 34px;
+	background-image:
+		url(https://static.tumblr.com/maopbtg/E9Bmgtoht/lines.png),
+		url(https://static.tumblr.com/maopbtg/nBUmgtogx/paper.png);
+	background-repeat: repeat-y, repeat;
 	background-position: center, left top;
-	-webkit-border-radius:12px;
-	border-radius:12px;
+	-webkit-border-radius: 12px;
+	border-radius: 12px;
 	-webkit-box-shadow: 0px 2px 14px #000;
 	box-shadow: 0px 2px 14px #000;
-	border-top:1px solid #FFF;
-	border-bottom:1px solid #FFF;
+	border-top: 1px solid #FFF;
+	border-bottom: 1px solid #FFF;
 }
 
-
-
-
-.radio-form{
-  position: relative;
-  background: rgba(255,255,255,0.5);
-  margin: 4px auto;
-  overflow: hidden;
-  padding: 0 ;
-  -webkit-border-radius: 50px;
-  -moz-border-radius: 50px;
-  border-radius: 50px;
-  position: relative;
-  height: 26px;
-  width: 172px;
+.radio-form {
+	position: relative;
+	background: rgba(255, 255, 255, 0.5);
+	margin: 4px auto;
+	overflow: hidden;
+	padding: 0;
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	position: relative;
+	height: 26px;
+	width: 172px;
 }
 
-
-
-.radio-form > * {
-  float: left;
+.radio-form>* {
+	float: left;
 }
 
-
-
-.radio-form input[type=radio]{
-  display: none;
-  position: fixed;
-  
+.radio-form input[type=radio] {
+	display: none;
+	position: fixed;
 }
 
-
-
-.radio-form label{
-  font-family:Courier, monospace;
-  color: black;
-  z-index: 0;
-  display: block;
-  width: 80px;
-  height: 20px;
-  margin: 3px 3px;
-  -webkit-border-radius: 50px;
-  -moz-border-radius: 50px;
-  border-radius: 50px;
-  cursor: pointer;
-  z-index: 1;
-  text-align: center;
-  background: silver;
+.radio-form label {
+	font-family: Courier, monospace;
+	color: black;
+	z-index: 0;
+	display: block;
+	width: 80px;
+	height: 20px;
+	margin: 3px 3px;
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	cursor: pointer;
+	z-index: 1;
+	text-align: center;
+	background: silver;
 }
 
-
-
-.radio-option-slider{
-  width: 80px;
-  height: 20px;
-  position: absolute;
-  top: 3px;
-  -webkit-border-radius: 50px;
-  -moz-border-radius: 50px;
-  border-radius: 50px;
-  -webkit-transition: all .4s ease;
-  -moz-transition: all .4s ease;
-  -o-transition: all .4s ease;
-  -ms-transition: all .4s ease;
-  transition: all .4s ease;
+.radio-option-slider {
+	width: 80px;
+	height: 20px;
+	position: absolute;
+	top: 3px;
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	-webkit-transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	-o-transition: all .4s ease;
+	-ms-transition: all .4s ease;
+	transition: all .4s ease;
 }
 
-
-
-#yes-option-first:checked ~ .radio-option-slider{
-  background: rgba(250, 235, 215, 0.8);
-  left: 3px;
+#yes-option-first:checked ~ .radio-option-slider {
+	background: rgba(250, 235, 215, 0.8);
+	left: 3px;
 }
 
-
-
-#no-option-first:checked ~ .radio-option-slider{
-  background: rgba(250, 235, 215, 0.8);
-  left: 89px;
+#no-option-first:checked ~ .radio-option-slider {
+	background: rgba(250, 235, 215, 0.8);
+	left: 89px;
 }
 
-
-
-#yes-option-second:checked ~ .radio-option-slider{
-  background: rgba(250, 235, 215, 0.8);
-  left: 3px;
+#yes-option-second:checked ~ .radio-option-slider {
+	background: rgba(250, 235, 215, 0.8);
+	left: 3px;
 }
 
-
-
-#no-option-second:checked ~ .radio-option-slider{
-  background: rgba(250, 235, 215, 0.8);
-  left: 89px;
+#no-option-second:checked ~ .radio-option-slider {
+	background: rgba(250, 235, 215, 0.8);
+	left: 89px;
 }
 
-
-
-#yes-option-third:checked ~ .radio-option-slider{
-  background: rgba(250, 235, 215, 0.8);
-  left: 3px;
+#yes-option-third:checked ~ .radio-option-slider {
+	background: rgba(250, 235, 215, 0.8);
+	left: 3px;
 }
 
-
-#no-option-third:checked ~ .radio-option-slider{
-  background: rgba(250, 235, 215, 0.8);
-  left: 89px;
+#no-option-third:checked ~ .radio-option-slider {
+	background: rgba(250, 235, 215, 0.8);
+	left: 89px;
 }
-
-
 
 .select-field {
-	
 	border-radius: 8px;
-	background:rgba(0, 0, 0, 0.4);
+	background: rgba(0, 0, 0, 0.4);
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.8);
 	padding: 5px;
 	color: white;
@@ -216,20 +170,16 @@ body {
 	text-align: center;
 }
 
-
-
-
-.button{
+.button {
 	margin-left: 48%;
 	margin-top: 15px;
 	width: 120px;
-    background-color:#B6452C  ;
-    border: medium;
-    border-radius: 10px;
-    color: white;
-    padding: 10px 25px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 18px;
-
+	background-color: #B6452C;
+	border: medium;
+	border-radius: 10px;
+	color: white;
+	padding: 10px 25px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 18px;
 }

@@ -8,12 +8,11 @@ body {
 	height: 100%;
 }
 
-a, a:visited, a:hover, a:active{
+a, a:visited, a:hover, a:active {
 	text-decoration: none;
-	color:inherit;
-	color:blue;
+	color: inherit;
+	color: blue;
 }
-
 
 .container {
 	width: 960px;
@@ -28,39 +27,39 @@ a, a:visited, a:hover, a:active{
 .request-line {
 	margin-top: 15px;
 	width: 100%;
-	position:relative;
+	position: relative;
 }
 
 .clearfix:before, .clearfix:after {
-  content: "";
-  display: table;
+	content: "";
+	display: table;
 }
 
 .clearfix:after {
-  clear: both;
+	clear: both;
 }
 
-.profile-image{
+.profile-image {
 	height: 90px;
 	width: 90px;
 }
 
-.image-div{
-	display:inline-block;
-	float:left;
+.image-div {
+	display: inline-block;
+	float: left;
 }
 
 .name-div {
-	display:inline-block;
-	height:100%;
-	float:left;
-	line-height:90px;
-	margin-left:10px;
+	display: inline-block;
+	height: 100%;
+	float: left;
+	line-height: 90px;
+	margin-left: 10px;
 }
 
 .buttons {
 	position: absolute;
-	top:50%;
+	top: 50%;
 	transform: translateY(-50%);
 	right: 0;
 }
@@ -74,7 +73,7 @@ a, a:visited, a:hover, a:active{
 }
 
 .top {
-	margin-bottom:10px;
+	margin-bottom: 10px;
 }
 
 .input {

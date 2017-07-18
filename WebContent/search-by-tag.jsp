@@ -24,7 +24,16 @@
 	<div class = "content">
 		 <h2><%= quizzes.size() %> quizzes found with tag <%= "math" %></h2>
 		  <% for(Pair pair : quizzes) { %>
-		  	<div class="quiz"><a class="link" href="display-quiz.jsp?quizId=<%= pair.getValue()%>"><%= pair.getKey() %></a></div>
+		  	<div class="quiz">
+		  		<div class="quiz-name">
+		  			<a class="link" href="display-quiz.jsp?quizId=<%= pair.getValue()%>"> <%= pair.getKey() %></a>
+		  		</div>
+		  		<div class="summary">
+		  			<form action="quiz-summary.jsp?quizId=<%= pair.getValue()%>">
+    					<input type="submit" value="See Summary">
+					</form>
+		  		</div>
+		  	</div>
 		  <% } %>
 	</div>
 </body>

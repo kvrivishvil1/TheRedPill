@@ -3,130 +3,111 @@
 html {
 	width: 100%;
 	height: 100%;
-    background-image:  url("ff.jpg");
-    background-position: center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
+	background-image: url("ff.jpg");
+	background-position: center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	-o-background-size: cover;
 }
-
 
 body {
 	width: 100%;
 	height: 100%;
-	
 	background-color: #DDC5A2;
 }
 
-
 .container {
 	position: relative;
-	
 }
 
+.clearfix:before, .clearfix:after {
+	content: "";
+	display: table;
+}
+
+.clearfix:after {
+	clear: both;
+}
 
 .form {
-    list-style-type: none;
-    overflow: hidden;
-    background-color: #B6452C;
-    margin-top: 25%;
+	list-style-type: none;
+	background-color: #B6452C;
+	margin-top: 25%;
 }
 
- section {
-    float: right;
+section {
+	float: right;
 }
 
-section design{
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 10px 30px;
-    text-decoration: none;
-    font-style: italic;
+section design {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 15px 30px;
+	text-decoration: none;
+	font-style: italic;
 	font-size: 20px;
-    
 }
 
-design:hover:not(.active) {
-    background-color: silver;
+design:hover:not (.active ) {
+	background-color: silver;
 }
 
 .active {
-background-color: black;
+	background-color: black;
 }
 
-
-
-
-
-
-
-.icon-form{
+.icon-form {
 	margin-top: 20px;
 	margin-left: 20%;
 	float: left;
 	color: #B6452C;
 }
 
-
-.category-title-form{
+.category-title-form {
 	font-size: 20px;
 	margin-top: 5px;
 	text-align: center;
 	color: #B6452C;
 }
 
-
-.annoucement-form{
-	float : left;
+.annoucement-form {
+	float: left;
 	background: #B6452C;
 	width: 35%;
 	height: 30%;
 	margin-top: 30px;
 	margin-left: 10%;
 	border-radius: 15px;
-    box-shadow:  12px  0 20px 0 BLACK;
+	box-shadow: 12px 0 20px 0 BLACK;
 }
 
-.image-form{
+.image-form {
 	width: 90%;
 	margin-left: 5%;
 }
 
-
-.header-form{
-	height:  40px;
+.header-form {
+	height: 40px;
 	background: #DDBC95;
 	margin-bottom: 20px;
 	margin-top: 15px;
 }
 
-
-.announcement-content-form{
+.announcement-content-form {
 	margin-left: 10px;
 	margin-top: 10px;
 	font-style: normal;
 	font-family: 'FranchiseRegular';
 	color: white;
 	font-size: 30px;
-	
 }
 
-
-.title-form{
+.title-form {
 	margin-left: 10px;
 	font-style: italic;
 	font-family: 'FranchiseRegular';
 	color: #B6452C;
 	font-size: 30px;
 }
-
-
-
-
-
-
-
-
-

@@ -1,13 +1,9 @@
 @CHARSET "ISO-8859-1";
 
-
-
 html {
 	width: 100%;
 	height: 100%;
 }
-
-
 
 body {
 	width: 100%;
@@ -15,45 +11,39 @@ body {
 	background-color: #DDC5A2;
 }
 
-
-
 .title-bar {
-    list-style-type: none;
-    overflow: hidden;
-    background-color: #B6452C;
-    margin-top: 0px;
+	list-style-type: none;
+	overflow: hidden;
+	background-color: #B6452C;
+	margin-top: 0px;
 }
 
- section {
-    float: right;
+section {
+	float: right;
 }
 
-section design{
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 10px 30px;
-    text-decoration: none;
-    font-style: italic;
+section design {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 10px 30px;
+	text-decoration: none;
+	font-style: italic;
 	font-size: 20px;
-    
 }
 
-design:hover:not(.active) {
-    background-color: silver;
+design:hover:not (.active ) {
+	background-color: silver;
 }
 
 .active {
-background-color: black;
+	background-color: black;
 }
-
 
 .container {
 	position: relative;
 	text-align: center;
 }
-
-
 
 .sliderButton {
 	background: none;
@@ -65,8 +55,6 @@ background-color: black;
 	font-size: 25px;
 }
 
-
-
 .button {
 	background-color: #B6452C;
 	border: medium;
@@ -77,8 +65,6 @@ background-color: black;
 	font-size: 25px;
 }
 
-
-
 .nameForm {
 	background-color: #B6452C;
 	border-radius: 10px;
@@ -88,16 +74,12 @@ background-color: black;
 	font-size: 50px;
 }
 
-
-
 .creatorForm {
 	color: black;
 	text-align: center;
 	text-decoration: none;
 	font-size: 25px;
 }
-
-
 
 .section {
 	background-image: url("description.jpg");
@@ -109,8 +91,6 @@ background-color: black;
 	height: 700px;
 }
 
-
-
 .sectionTitleForm {
 	text-decoration: none;
 	font-size: 500%;
@@ -119,16 +99,12 @@ background-color: black;
 	font-family: 'FranchiseRegular';
 }
 
-
-
 .sectionTextForm {
 	text-decoration: none;
 	font-size: 150%;
 	color: white;
 	margin-top: 90px;
 }
-
-
 
 div.scrolForm {
 	width: 300px;
@@ -141,13 +117,9 @@ div.scrolForm {
 	overflow: scroll;
 }
 
-
-
 #table-wrapper {
 	position: relative;
 }
-
-
 
 #table-scroll {
 	height: 400px;
@@ -160,22 +132,15 @@ div.scrolForm {
 	border-radius: 25px;
 }
 
-
-
 #table-wrapper table {
 	width: 100%;
 }
 
-
-
 #table-wrapper table * {
-	font-family: font-family:'Carme', sans-serif; 
+	font-family: font-family : 'Carme', sans-serif;
 	background: rgba(250, 235, 215, 0.5s);
 	color: white;
 }
-
-
-
 
 #table-wrapper table thead th .text {
 	position: absolute;
@@ -186,8 +151,6 @@ div.scrolForm {
 	border: 1px solid red;
 }
 
-
-
 .chartTextForm {
 	text-decoration: none;
 	font-size: 25px;
@@ -195,48 +158,42 @@ div.scrolForm {
 	margin-top: 10px;
 	text-align: center;
 }
-.chart{
-  display:table;
-  table-layout: fixed;   
-  
-  width:60%;
-  max-width:700px;
-  height:200px;
-  margin:0 auto;
-  
-  
-}
-  li{
-    position:relative;
-    display:table-cell;
-    vertical-align:bottom;
-    height:400px;
-  }
-  
-  @keyframes draw{
-  0%{height:0;} 
-}
-  .span{
-   border-radius: 15px;
-    margin:0 1em;
-    display: block;
-    background: white;
-    animation: draw 1s ease-in-out;
-    
-    &:before{
-      position:absolute;
-      left:0;right:0;top:100%;
-      padding:5px 1em 0;
-  		display:block;
-      text-align:center;
-      word-wrap: break-word;
-    }
-    
-  }
-  
+
+.chart {
+	display: table;
+	table-layout: fixed;
+	width: 60%;
+	max-width: 700px;
+	height: 200px;
+	margin: 0 auto;
 }
 
+li {
+	position: relative;
+	display: table-cell;
+	vertical-align: bottom;
+	height: 400px;
+}
 
+@
+keyframes draw { 0%{
+	height: 0;
+}
 
-
-
+}
+.span {
+	border-radius: 15px;
+	margin: 0 1em;
+	display: block;
+	background: white;
+	animation: draw 1s ease-in-out; &: before { position : absolute;
+	left: 0;
+	right: 0;
+	top: 100%;
+	padding: 5px 1em 0;
+	display: block;
+	text-align: center;
+	word-wrap: break-word;
+}
+}
+}
