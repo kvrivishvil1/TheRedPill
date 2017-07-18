@@ -2,7 +2,6 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -182,7 +181,7 @@ public class AnswerTest {
 		assertEquals(answer1.getParserSymbol(), '#');
 		assertEquals(false, answer2.equals(answer1));
 		answer2.setParserSymbol('#');
-		assertEquals(true, answer2.equals(answer1));
+		assertEquals(true, answer2.equals(answer1)); 
 		
 		answer1.setAnswerID(1);
 		assertEquals(answer1.getAnswerID(), 1);

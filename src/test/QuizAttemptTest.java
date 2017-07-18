@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
-public class quizAttemptTest {
+public class QuizAttemptTest {
 
 	
 	@Test

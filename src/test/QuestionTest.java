@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import db.bean.quiz.Question;
-import db.bean.quiz.Subquestion;
 
 
 public class QuestionTest {

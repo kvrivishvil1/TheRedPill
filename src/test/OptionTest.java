@@ -1,12 +1,13 @@
 package test;
 
-import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import db.bean.quiz.Option;
 
 public class OptionTest {
-
 	@Test
 	public void test() {
 		Option option1 = new Option("opt");

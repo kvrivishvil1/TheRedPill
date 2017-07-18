@@ -115,7 +115,10 @@ public class Subquestion {
 		if(!(object instanceof Subquestion))
 			return false; 
 		Subquestion subquestion = (Subquestion)object;
-		return answers.equals(subquestion.getAnswers()) && question.equals(subquestion.getQuestion()) 
-							&& subquestionID == subquestion.getSubquestionID();
+		return answers.equals(subquestion.getAnswers()) 
+				&& 
+				question.equals(subquestion.getQuestion()) 
+				&& 
+				subquestionID == subquestion.getSubquestionID();
 	}
 }
