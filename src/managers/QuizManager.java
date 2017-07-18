@@ -266,4 +266,22 @@ public class QuizManager {
 	public ArrayList<Review> getQuizReviews(int quizID){
 		return quizDao.getQuizReviews(quizID);
 	}
+	
+	/**
+	 * Calls getCategoryQuizzes from quiz dao
+	 * @param categoryID The category id
+	 * @return category quizzes
+	 */
+	public ArrayList<Integer> getCategoryQuizzes(int categoryID){
+		return quizDao.getCategoryQuizzes(categoryID);
+	}
+	
+	/**
+	 *  Calls getCategoryName from quiz dao
+	 * @param categoryID category id
+	 * @return category name
+	 */
+	public String getCategoryName(int categoryID){
+		return quizDao.getCategoryName(categoryID);
+	}
 }

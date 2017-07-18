@@ -185,7 +185,6 @@ CREATE TABLE quiz_attempts (
 CREATE TABLE categories (
     category_id INT NOT NULL AUTO_INCREMENT,
     category_name VARCHAR(50) NOT NULL,
-    category_image_url VARCHAR(100) NOT NULL,
     CONSTRAINT categories_pk PRIMARY KEY (category_id),
     CONSTRAINT categories_uk1 UNIQUE (category_name)
 );
@@ -226,14 +225,15 @@ CREATE TABLE quiz_reports (
         REFERENCES accounts (account_id)
 );
 
-insert into categories
- (category_name, category_image_url)
+insert into categories 
+	(category_name) 
 values
- ('Mathematics','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg'),
- ('Computer Science','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg'),
- ('History','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg'),
- ('Biology','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg'),
- ('Chemistry','https://ih1.redbubble.net/image.78509451.4399/flat,800x800,075,t.u1.jpg');
+	('Art'),
+	('Fashion'),
+	('Sport'),
+	('Music'),
+	('Film'),
+	('Celebrities');
 
 insert into question_types
 	(question_type_name)

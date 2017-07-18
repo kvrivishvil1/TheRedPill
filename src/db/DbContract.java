@@ -133,7 +133,6 @@ public class DbContract {
 		public static final String TABLE_NAME = "categories";
 		public static final String COLUMN_NAME_CATEGORY_ID = "category_id";
 		public static final String COLUMN_NAME_CATEGORY_NAME = "category_name";
-		public static final String COLUMN_NAME_CATEGORY_IMAGE_URL = "category_image_url";
 	}
 
 	/**

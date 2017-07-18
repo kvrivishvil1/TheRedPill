@@ -1,0 +1,105 @@
+@CHARSET "ISO-8859-1";
+
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	background-color: #DDC5A2;
+
+}
+
+.top {
+	color: white;
+}
+
+a, a:visited, a:hover, a:active {
+	text-decoration: none;
+}
+
+.container {
+	position: relative;
+	padding-bottom: 15px;
+}
+.category-form {
+	background-color: #B6452C;
+	margin-left: 40%;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	border-radius: 20px;
+	color: white;
+	float: left;
+	width: 20%;
+	margin-top: 10px;
+	font-size: 50px;
+	font-style: italic;
+	font-family: 'FranchiseRegular';
+	text-align: center;
+	box-shadow: 0 2px 20px 0 BLACK;
+}
+
+.annoucement-form {
+	float: left;
+	background: #B6452C;
+	width: 35%;
+	height: 30%;
+	margin-top: 30px;
+	margin-left: 10%;
+	border-radius: 15px;
+	box-shadow: 12px 0 20px 0 BLACK;
+}
+
+.header-form {
+	height: 40px;
+	background: #DDBC95;
+	margin-bottom: 20px;
+	margin-top: 15px;
+}
+
+.announcement-content-form {
+	margin-left: 10px;
+	margin-top: 10px;
+	font-style: normal;
+	font-family: 'FranchiseRegular';
+	color: white;
+	font-size: 30px;
+}
+
+.title-form {
+	margin-left: 10px;
+	font-style: italic;
+	font-family: 'FranchiseRegular';
+	color: #B6452C;
+	font-size: 30px;
+}
+
+.button {
+	background-color: #DDC5A2;
+	border: medium;
+	border-radius: 10px;
+	color: white;
+	padding: 10px 25px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 18px;
+	width : 30%;
+	margin-bottom: 10px;
+	margin-left: 30%;
+}
+
+.quiz-section-form {
+	background-color: #B6452C;
+	border-radius: 10px;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	font-size: 20px;
+	float: left;
+	margin-left: 10%;
+	width: 80%;
+	margin-top: 10%;
+	font-size: 30px;
+}

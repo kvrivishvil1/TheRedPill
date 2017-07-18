@@ -1776,5 +1776,59 @@ public class QuizDao {
 	}
 	
 	
+	/**
+	 * Returns all quizzes with this category id
+	 * 
+	 * @param categoryID
+	 *            The id of category
+	 * @return The list of quizzes in this category
+	 */
+	public ArrayList<Integer> getCategoryQuizzes(int categoryID) {
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		String query = "SELECT " + DbContract.quizzesTable.TABLE_NAME + "."
+				+ DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID + " FROM " + DbContract.quizzesTable.TABLE_NAME
+				+ " WHERE " + DbContract.quizzesTable.COLUMN_NAME_CATEGORY_ID + " =?";
+		System.out.println(query);
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, categoryID);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				int quizID = rs.getInt(DbContract.quizzesTable.COLUMN_NAME_QUIZ_ID);
+				result.add(quizID);
+			}
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	
+	/**
+	 * Returns the name of the category
+	 * @param categoryID category id
+	 * @return category name
+	 */
+	public String getCategoryName(int categoryID){
+		String result ="";
+		String query = "SELECT " + DbContract.categoriesTable.COLUMN_NAME_CATEGORY_NAME
+				+ " FROM " + DbContract.categoriesTable.TABLE_NAME + " WHERE "
+				+ DbContract.categoriesTable.COLUMN_NAME_CATEGORY_ID + " =?";
+		try (Connection connection = createConnection()) {
+			PreparedStatement stm = connection.prepareStatement(query);
+			stm.setInt(1, categoryID);
+			ResultSet rs = stm.executeQuery();
+			rs.last();
+			result = rs.getString(DbContract.categoriesTable.COLUMN_NAME_CATEGORY_NAME);
+			return result;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+		}	
+		return result;
+	}
+	
 	
 }

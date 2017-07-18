@@ -30,13 +30,18 @@
 					page="friend-request-min.jsp"></jsp:include></div>
 		</div>
 		</design> </section>
-		<section> <design href="#messages"> <a href=""><i
-			class="fa top fa-envelope-open-o" aria-hidden="true"></i></a> </design> </section>
+		<section> <design href="#messages"> <a
+			href="conversation.jsp"><i class="fa top fa-envelope-open-o"
+			aria-hidden="true"></i></a> </design> </section>
+		<section> <design href="#log-out"> <a href="">
+			<i class="fa fa-sign-out" aria-hidden="true"></i>
+		</a> </design> </section>
 	</div>
+
 	<div class="container clearfix">
 		<div class="icon-form">
 			<i class="fa fa-paint-brush  fa-5x" aria-hidden="true"> <a
-				href="quiz-list.jsp?id=1">
+				href="quizList.jsp?id=1">
 					<p class="category-title-form">Art</p>
 			</a>
 			</i>
@@ -44,7 +49,7 @@
 
 		<div class="icon-form">
 			<i class="fa fa-shopping-bag  fa-5x" aria-hidden="true"> <a
-				href="quiz-list.jsp?id=2">
+				href="quizList.jsp?id=2">
 					<p class="category-title-form">Fashion</p>
 			</a>
 			</i>
@@ -52,7 +57,7 @@
 
 		<div class="icon-form">
 			<i class="fa fa-futbol-o fa-5x" aria-hiddenF="true"> <a
-				href="quiz-list.jsp?id=3">
+				href="quizList.jsp?id=3">
 					<p class="category-title-form">Sport</p>
 
 			</a>
@@ -61,7 +66,7 @@
 		<br>
 		<div class="icon-form">
 			<i class="fa fa-music  fa-5x" aria-hidden="true"> <a
-				href="quiz-list.jsp?id=4">
+				href="quizList.jsp?id=4">
 					<p class="category-title-form">Music</p>
 			</a>
 			</i>
@@ -69,7 +74,7 @@
 
 		<div class="icon-form">
 			<i class="fa fa-film fa-5x" aria-hidden="true"> <a
-				href="quiz-list.jsp?id=5">
+				href="quizList.jsp?id=5">
 					<p class="category-title-form">Film</p>
 			</a>
 			</i>
@@ -78,7 +83,7 @@
 
 		<div class="icon-form">
 			<i class="fa fa-users  fa-5x" aria-hidden="true"> <a
-				href="quiz-list.jsp?id=6">
+				href="quizList.jsp?id=6">
 					<p class="category-title-form">Celebrities</p>
 			</a>
 			</i>
@@ -127,8 +132,8 @@
 			</div>
 			<div class="announcement-content-form">
 				<div class="button" style="margin-left: 43px;">
-					<a href=<%="display-quiz.jsp?quizId=" + popularQuizzes.get(i)%>><i class="top">
-						Start quiz </i> </a>
+					<a href=<%="display-quiz.jsp?quizId=" + popularQuizzes.get(i)%>><i
+						class="top"> Start quiz </i> </a>
 				</div>
 				<div class="button">See quiz summary</div>
 			</div>
@@ -159,7 +164,8 @@
 			<div class="announcement-content-form">
 				<div class="button" style="margin-left: 43px;">
 					<a href=<%="display-quiz.jsp?quizId=" + recentQuizzes.get(i)%>>
-						<i class="top"> Start quiz </i> </a>
+						<i class="top"> Start quiz </i>
+					</a>
 				</div>
 				<div class="button">See quiz summary</div>
 			</div>
@@ -194,8 +200,9 @@
 			</div>
 			<div class="announcement-content-form">
 				<div class="button" style="margin-left: 43px;">
-					<a href=<%="display-quiz.jsp?quizId=" + userQuizzes.get(i)%>>
-						<i class="top"> Start quiz </i> </a>
+					<a href=<%="display-quiz.jsp?quizId=" + userQuizzes.get(i)%>> <i
+						class="top"> Start quiz </i>
+					</a>
 				</div>
 				<div class="button">See quiz summary</div>
 			</div>
