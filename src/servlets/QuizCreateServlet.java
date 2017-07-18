@@ -46,7 +46,8 @@ public class QuizCreateServlet extends HttpServlet {
 		String category = request.getParameter("category");
 		String tags = request.getParameter("tags");
 		Quiz quiz = new Quiz(name, category);
-		quiz.setAccountID(1);
+		int accountID = (Integer)request.getSession().getAttribute("accountID");
+		quiz.setAccountID((long)accountID);
 		quiz.setDescription(description);
 		quiz.setPracticableMode(isPracticable);
 		quiz.setRearrangableMode(isRearrangable);

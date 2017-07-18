@@ -19,7 +19,6 @@
 </head>
 <body>
 	<%
-		request.getSession().setAttribute("quizId", 3);//alert! temporary line 
 		ServletContext cont = request.getServletContext();
 		MainManager mainManager = (MainManager) cont.getAttribute(MainManager.CONTEXT_ATTRIBUTE_NAME);
 		int quizId;
@@ -28,7 +27,7 @@
 		} else {
 			quizId = (int) request.getSession().getAttribute("quizId");
 		}
-		
+		request.getSession().setAttribute("quizId", quizId);
 		Quiz quiz = mainManager.getQuizManager().getQuiz(quizId);
 	%>
 	<div class="container1">
