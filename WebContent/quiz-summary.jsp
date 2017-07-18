@@ -95,11 +95,6 @@ div.scrolForm {
 
 	</div>
 
-	<div class="title-bar">
-		<section> <design href="#home">
-		<a href="homepage.jsp">Homepage</a></design> </section>
-	</div>
-
 	<h2 class="nameForm">
 		quiz name :
 		<%=mainManager.getQuizManager().getQuizName(quizID)%>

@@ -219,8 +219,9 @@
 						class="top"> Start quiz </i>
 					</a>
 				</div>
-				<div class="button"><a href=<%="display-quiz.jsp?quizId=" + userQuizzes.get(i)%>>
-						<i class="top"> Start quiz </i> </a></div>
+				<div class="button"><a href=<%="quiz-summary.jsp?quizID=" + userQuizzes.get(i)%>><i class="top">
+				See quiz summary
+					 </i></a></div>
 			</div>
 		</div>
 
